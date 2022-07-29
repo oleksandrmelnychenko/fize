@@ -6,7 +6,39 @@
 @inject HttpClient HttpClient
 @*@inject IMailService MailService*@
 
-<div style="align-items: center;text-align: center;" class="form-group">
+<div style="background: black;display: flex;height: 650px; width: 1050px; margin: auto; justify-content: space-around;font-family: 'Kanit', sans-serif;">
+    <div style="width: 525px; background: #28292B; margin-right: auto;">
+        <div style="margin-left:100px">
+            <div style="color: white; margin-top: 80px; font-weight: 600; font-size: 3vh;">Fize Agency Tool</div>
+            <div style="color:white;font-size: 2vh; line-height: 2.4vh;">Connect and viev your customer`s current insurance docs instantily</div>
+        </div>
+        <div style="display:flex;margin-top: 40px;">
+            <div style="background: white; height: 50px; width: 50px; margin-left: 100px;place-self: center; border-radius: 20%; "></div>
+            <div style="margin-left: 15px;">
+                <div style="color: white; font-size: 2vh; line-height: 1vh; font-weight: 600;margin-bottom: 10px; ">Super quick sign up</div>
+                <div style="color:white; height: 20px; width: 300px; font-size: 1.1vh;">Create a free Fize account in under a minute,with no credit card required</div>
+            </div>
+        </div>
+        <div style="display:flex;margin-top: 40px;">
+            <div style="background: white; height: 50px; width: 50px; margin-left: 100px;place-self: center; center; border-radius: 20%;"></div>
+            <div style="margin-left: 15px;">
+                <div style="color:white;font-weight: 600; ">Enable modern customer experience</div>
+                <div style="color:white;height: 20px;width: 300px; font-size: 1.1vh;">In seconds,Your clients can simply connect and share with you their insurance datalis</div>
+            </div>
+        </div>
+        <div style="display:flex; margin-top: 40px; ">
+            <div style="background: white; height: 50px; width: 50px; margin-left: 100px;place-self: center; center; border-radius: 20%;"></div>
+            <div style="margin-left: 15px;">
+                <div style="color:white; width: 300px; font-size: 2vh; line-height: 2vh; font-weight: 600;">Reduce manual workload on your customers and close more with hyper-personalized service</div>
+                <div style="color:white;width: 300px; line-height: 2vh; font-size: 1.1vh;">Reduce your customer`s manual workload and introduce hyper-personalization</div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 525px; background: white ;margin-left: auto;"></div>
+</div>
+
+
+@*<div style="align-items: center;text-align: center;" class="form-group">
     <label>
         <input @bind="Email" required placeholder="Your Email" />
 
@@ -14,7 +46,7 @@
 </div>
 <div class="modal-body" style="align-self: center; text-align-last: center;">
     <button @onclick="StartGame">Start For Free</button>
-</div>
+</div>*@
 
 @code {
     public string Email { get; set; }
@@ -25,10 +57,10 @@
         //bool correctEmail = MailService.IsValidEmail(Email);
         if (Email is not null)
         {
-            MailSettings mail = new MailSettings{ToEmail = Email};
-            var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email",mail);
+            MailSettings mail = new MailSettings { ToEmail = Email };
+            var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email", mail);
         }
-        
+
     }
 
 }
