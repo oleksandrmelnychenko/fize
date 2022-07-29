@@ -1,0 +1,34 @@
+﻿@using System.Net;
+@using System.Net.Mail;
+@using FizeRegistration.Common
+@*@inject FizeRegistration.Common.IMailService MailService*@
+@inject NavigationManager UrlManager
+@inject HttpClient HttpClient
+@*@inject IMailService MailService*@
+
+<div style="align-items: center;text-align: center;" class="form-group">
+    <label>
+        <input @bind="Email" required placeholder="Your Email" />
+
+    </label>
+</div>
+<div class="modal-body" style="align-self: center; text-align-last: center;">
+    <button @onclick="StartGame">Start For Free</button>
+</div>
+
+@code {
+    public string Email { get; set; }
+
+    private async void StartGame()
+    {
+
+        //bool correctEmail = MailService.IsValidEmail(Email);
+        if (Email is not null)
+        {
+            MailSettings mail = new MailSettings{ToEmail = Email};
+            var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email",mail);
+        }
+        
+    }
+
+}
