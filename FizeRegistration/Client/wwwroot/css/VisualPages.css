@@ -1,0 +1,49 @@
+﻿body {
+}
+.WhiteBox {
+    background: white;
+    height: 50px;
+    width: 50px;
+    margin-left: 100px;
+/*    place-self: center;*/
+    /*center;*/
+    border-radius: 20%;
+}
+.headwords {
+    color: white;
+    font-weight: 600;
+    width: 300px;
+    font-size: 2vh;
+    line-height: 2vh;
+}
+.basicBox {
+    background: black;
+    display: flex;
+    height: 650px;
+    width: 1050px;
+    margin: auto;
+    justify-content: space-around;
+    font-family: 'Kanit', sans-serif;
+}
+.leftSideOfRegistration {
+    width: 525px;
+    background: #28292B;
+    margin-right: auto;
+}
+
+.rightSideOfRegistration {
+    width: 525px;
+    background: white;
+    margin-left: auto;
+}
+.smallText {
+    color: #ABABAB;
+    width: 300px;
+    height: 20px;
+    line-height: 2vh;
+    font-size: 1.1vh;
+}
+.squareIndent {
+    display: flex;
+    margin-top: 40px;
+}
