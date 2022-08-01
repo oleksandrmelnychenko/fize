@@ -17,6 +17,7 @@
     <ProjectReference Include="..\FizeRegistration.Common\FizeRegistration.Common.csproj" />
     <ProjectReference Include="..\FizeRegistration.Services\FizeRegistration.Services.csproj" />
     <ProjectReference Include="..\FizeRegistration.Domain\FizeRegistration.Domain.csproj" />
+    <ProjectReference Include="..\FizeRegistration.DataBases\FizeRegistration.DataBases.csproj" />
   </ItemGroup>
 
 </Project>
