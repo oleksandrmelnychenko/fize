@@ -16,6 +16,7 @@ using FizeRegistration.Common.IdentityConfiguration;
 using FizeRegistration.Common;
 using FizeRegistration.Domain.Repositories.Identity.Contracts;
 using FizeRegistration.Domain.DbConnectionFactory;
+using FizeRegistration.Domain.DbConnectionFactory.Contracts;
 
 namespace FizeRegistration.Services.IdentityServices;
 

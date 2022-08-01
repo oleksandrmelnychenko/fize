@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace FizeRegistration.Domain.DbConnectionFactory;
+namespace FizeRegistration.Domain.DbConnectionFactory.Contracts;
 
 public interface IDbConnectionFactory
 {

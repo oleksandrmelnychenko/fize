@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using FizeRegistration.Common;
+using FizeRegistration.Domain.DbConnectionFactory.Contracts;
 
 namespace FizeRegistration.Domain.DbConnectionFactory;
 
