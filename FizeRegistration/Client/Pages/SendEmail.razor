@@ -10,7 +10,7 @@
     <div class="leftSideOfRegistration">
         <div style="margin-left:100px">
             <div class="headwords" style=" margin-top: 80px; font-size: 3vh;">Fize Agency Tool</div>
-            <div style="color:white;font-size: 2vh; line-height: 2.4vh;">Connect and viev your customer`s current insurance docs instantily</div>
+            <div style="color: white; font-size: 2vh;  width: 350px; line-height: 2.4vh; margin-top: 14px;">Connect and viev your customer`s current insurance docs instantily</div>
         </div>
         <div class="squareIndent">
             <div class="WhiteBox"></div>
@@ -35,19 +35,25 @@
         </div>
     </div>
     <div class="rightSideOfRegistration">
-        <div style="font-size: 3.4vh; font-weight:850;  margin-top: 40px; margin-left: 85px;">
+        <div style="font-size: 3.4vh; font-weight:850;  margin-top: 40px; margin-left: 125px;">
             <div>
                 <img src="/ScreenShots/Fize.jpg" style="width: 20px;" /> fize
             </div>
             <div>
                 <div class="headwords" style="color:black; font-size: 4vh; margin-top: 80px; ">Sign up with Fize</div>
-                <div class="smallText" style="color:black; margin-top: 20px; font-size: 1.3vh;">Try Fize risk free,no credit card required</div>
+                <div class="smallText" style="color: #5C5C5C; margin-top: 20px; font-size: 1.3vh;">Try Fize risk free,no credit card required</div>
                 <div>
-                    <div class="smallText">work email adress</div>
+                    <div class="smallText" style="color: black; font-size: 1.3vh;">Work email adress</div>
                     <label>
-                        <input style="height: 35px; width: 270px; font-size: 10px; padding: 10px;" />
+                        <input @bind="Email" style="height: 35px; width: 270px; font-size: 10px; padding: 10px;" />
                     </label>
-                    <div></div>
+                    <div class="smallText" style=" color: #5C5C5C; margin-top: 5px; font-size: 1.3vh;">Only work emails are allowed to register</div>
+                    <button class="smallText" style="height: 35px; width: 270px; background: black; color: white; font-size: 1.5vh; font-weight: 600;" @onclick="SendEmailPost">Start For Free</button>
+                    <div class="smallText" style=" color: #5C5C5C; font-size: 1.3vh;  width: 200px; text-align: -webkit-center; margin-left: 31px;">By clicking 'Start for free' you agree to our Terms and Privacy Policy</div>
+                    <div style="display:flex; margin-top: 40px;" >
+                        <div class="smallText" style="    color: #4F4F4F; font-size: 1.4vh; text-align: right; margin-right: 10px;" >Have a account?</div>
+                        <div class="smallText" style="color:black; font-size: 1.4vh; margin-right: 96px;">Sign In ></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,20 +62,10 @@
 </div>
 
 
-@*<div style="align-items: center;text-align: center;" class="form-group">
-    <label>
-        <input @bind="Email" required placeholder="Your Email" />
-
-    </label>
-</div>
-<div class="modal-body" style="align-self: center; text-align-last: center;">
-    <button @onclick="StartGame">Start For Free</button>
-</div>*@
-
 @code {
     public string Email { get; set; }
 
-    private async void StartGame()
+    private async void SendEmailPost()
     {
 
         //bool correctEmail = MailService.IsValidEmail(Email);
