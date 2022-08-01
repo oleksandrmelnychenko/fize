@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FizeRegistration.Domain\FizeRegistration.Domain.csproj" />
+    <ProjectReference Include="..\FizeRegistration.Common\FizeRegistration.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
   </ItemGroup>
 
   <PropertyGroup>

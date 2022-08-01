@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using FizeRegistration.Common.WebApi;
 using FizeRegistration.Common.WebApi.RoutingConfiguration;
 using FizeRegistration.Common.ResponseBuilder.Contracts;
+using FizeRegistration.Domain.DataContracts;
+using FizeRegistration.Domain.Entities.Identity;
+using FizeRegistration.Common.Exceptions.IdentityExceptions;
+using FizeRegistration.Services.IdentityServices.Contracts;
 
 namespace FizeRegistration.Server.Controllers;
 
@@ -19,27 +23,6 @@ public class IdentityController : WebApiControllerBase
          IResponseFactory responseFactory) : base(responseFactory)
     {
         _userIdentityService = userIdentityService;
-    }
-
-    [Authorize]
-    [HttpGet]
-    [AssignActionRoute(IdentitySegments.VALIDATE_TOKEN)]
-    public async Task<IActionResult> ValidateToken()
-    {
-        try
-        {
-            UserAccount user = await _userIdentityService.ValidateToken(User);
-            return Ok(SuccessResponseBody(user));
-        }
-        catch (InvalidIdentityException exc)
-        {
-            return Unauthorized(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.Unauthorized, exc.Body));
-        }
-        catch (Exception exc)
-        {
-            Log.Error(exc.Message);
-            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
-        }
     }
 
     [HttpPost]
@@ -61,7 +44,6 @@ public class IdentityController : WebApiControllerBase
         }
         catch (Exception exc)
         {
-            Log.Error(exc.Message);
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
     }
@@ -85,7 +67,6 @@ public class IdentityController : WebApiControllerBase
         }
         catch (Exception exc)
         {
-            Log.Error(exc.Message);
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
     }

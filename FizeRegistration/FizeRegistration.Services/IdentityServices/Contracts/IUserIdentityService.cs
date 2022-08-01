@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using FizeRegistration.Domain.DataContracts;
+using FizeRegistration.Domain.Entities.Identity;
 
+namespace FizeRegistration.Services.IdentityServices.Contracts;
 
 public interface IUserIdentityService
 {
