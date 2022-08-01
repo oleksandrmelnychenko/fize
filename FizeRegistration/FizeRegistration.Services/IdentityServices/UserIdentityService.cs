@@ -14,6 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using FizeRegistration.Common.Exceptions.IdentityExceptions;
 using FizeRegistration.Common.IdentityConfiguration;
 using FizeRegistration.Common;
+using FizeRegistration.Domain.Repositories.Identity.Contracts;
+using FizeRegistration.Domain.DbConnectionFactory;
 
 namespace FizeRegistration.Services.IdentityServices;
 
