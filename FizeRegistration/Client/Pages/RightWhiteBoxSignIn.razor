@@ -1,0 +1,28 @@
+﻿<div class="DivLocation">
+
+    <div>
+        <div class="RightHeadWordsBox">Welcome there!</div>
+        <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.3pt; height: 11px;">Please Sign in User</div>
+        <div>
+            <div class="smallText" style="color: black; font-size: 11.2pt; margin-top: 30px;height: 11px;">Email</div>
+            <label>
+                <input @bind="Email" class="InputMail" />
+            </label>
+            <div class="smallText" style="margin-top: 20px;  color: black; font-size: 11.2pt; height: 11px;">Password</div>
+            <label>
+                <input @bind="Password" class="InputMail" />
+            </label>
+            <button style="margin-top: 45px;" class="buttonSendEmail" @onclick="SignIn">Sign In</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string Email;
+    private string Password;
+
+    public async Task SignIn()
+    {
+      //somelogic
+    }
+ }

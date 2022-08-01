@@ -8,55 +8,24 @@
 
 <div class="basicBox" style="margin-top:7%;">
     <div class="leftSideOfRegistration">
-        <div style="margin-left:100px">
-            <div class="headwords" style=" margin-top: 80px; font-size: 27pt;">Fize Agency Tool</div>
-            <div style="color: white; font-size: 14.5pt;  width: 350px; line-height: 17pt; margin-top: 14px;">Connect and viev your customer`s current insurance docs instantily</div>
-        </div>
-        <div class="squareIndent">
-            <div class="WhiteBox"></div>
-            <div style="margin-left: 15px;">
-                <div class="headwords">Super quick sign up</div>
-                <div class="smallText">Create a free Fize account in under a minute,with no credit card required</div>
-            </div>
-        </div>
-        <div class="squareIndent">
-            <div class="WhiteBox"></div>
-            <div style="margin-left: 15px;">
-                <div class="headwords">Enable modern customer experience</div>
-                <div class="smallText">In seconds,Your clients can simply connect and share with you their insurance datalis</div>
-            </div>
-        </div>
-        <div class="squareIndent">
-            <div class="WhiteBox"></div>
-            <div style="margin-left: 15px;">
-                <div class="headwords">Reduce manual workload on your customers and close more with hyper-personalized service</div>
-                <div class="smallText">Reduce your customer`s manual workload and introduce hyper-personalization</div>
-            </div>
-        </div>
+       <LeftBlackBoxSendEmail></LeftBlackBoxSendEmail>
     </div>
     <div class="rightSideOfRegistration">
 
         <div class="DivLocation">
             <img src="/ScreenShots/Fize.jpg" style="width: 20px;" /> fize
         </div>
-        @if (SendMail)
+        @if (true)
         {
-            <div style="margin-left: 75px;">
-                <div class="RightHeadWordsBox" style="width:400px;">Confirm your Email</div>
-                <div class="boxSuccessfulMail">
-                    <div style="display: table-cell; vertical-align: middle;text-align: -webkit-center;">
-                        <div class="CenterImg">
-                            <img style="margin-top: 16px;" src="/ScreenShots/MailIcon.png" />
-                        </div>
-                        <div class="smallText" style="font-size: 10pt; color: black; font-weight: 600;  margin-top: 22px;">Successfully made your account. Check your email</div>
-                    </div>
-                </div>
-            </div>
+            <RightWhiteBoxSignIn></RightWhiteBoxSignIn>
+        }
+        else if (SendMail)
+        {
+           <RightWhiteBoxSendEmail></RightWhiteBoxSendEmail>
         }
         else
         {
             <div class="DivLocation">
-
                 <div>
                     <div class="RightHeadWordsBox">Sign up with Fize</div>
                     <div class="RightBoxText" style=" margin-top: 20px;">Try Fize risk free,no credit card required</div>
@@ -76,6 +45,7 @@
                 </div>
             </div>
         }
+        
 
 
     </div>
