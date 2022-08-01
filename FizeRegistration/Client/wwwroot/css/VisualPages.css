@@ -36,6 +36,7 @@
     background: white;
     margin-left: auto;
 }
+
 .smallText {
     color: #ABABAB;
     width: 300px;
@@ -43,7 +44,85 @@
     line-height: 2vh;
     font-size: 1.1vh;
 }
+
 .squareIndent {
     display: flex;
     margin-top: 40px;
+}
+
+.RightBoxText {
+    color: #5C5C5C;
+    font-size: 1.3vh;
+    height: 20px;
+    line-height: 2vh;
+}
+.RightHeadWordsBox {
+    color: black;
+    font-size: 4vh;
+    margin-top: 80px;
+
+    font-weight: 600;
+    width: 300px;
+    line-height: 2vh;
+}
+.buttonSendEmail {
+   
+    line-height: 2vh;
+    height: 35px;
+    width: 380px;
+    background: black;
+    color: white;
+    font-size: 1.5vh;
+    font-weight: 600;
+}
+
+.TextSignIn {
+    color: black;
+    font-size: 1.4vh;
+    margin-right: 35px;
+    width: 300px;
+    height: 20px;
+    line-height: 2vh;
+}
+.TextHaveAccount {
+    color: #4F4F4F;
+    font-size: 1.4vh;
+    text-align: right;
+    margin-right: 10px;
+    width: 300px;
+    height: 20px;
+    line-height: 2vh;
+}
+
+.InputMail {
+    height: 35px;
+    width: 380px;
+    font-size: 10px;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.DivLocation {
+    font-size: 3.4vh;
+    font-weight: 850;
+    margin-top: 40px;
+    margin-left: 75px;
+}
+.CenterImg {
+    height: 60px;
+    width: 60px;
+    background: black;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 20%;
+}
+.boxSuccessfulMail {
+    margin-top: 40px;
+    background: #EBEFFA;
+    height: 180px;
+    width: 380px;
+    text-align: center;
+    vertical-align: middle;
+    display: table;
+    border-radius: 3%;
 }

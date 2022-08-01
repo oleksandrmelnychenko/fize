@@ -35,28 +35,48 @@
         </div>
     </div>
     <div class="rightSideOfRegistration">
-        <div style="font-size: 3.4vh; font-weight:850;  margin-top: 40px; margin-left: 125px;">
-            <div>
-                <img src="/ScreenShots/Fize.jpg" style="width: 20px;" /> fize
-            </div>
-            <div>
-                <div class="headwords" style="color:black; font-size: 4vh; margin-top: 80px; ">Sign up with Fize</div>
-                <div class="smallText" style="color: #5C5C5C; margin-top: 20px; font-size: 1.3vh;">Try Fize risk free,no credit card required</div>
-                <div>
-                    <div class="smallText" style="color: black; font-size: 1.3vh;">Work email adress</div>
-                    <label>
-                        <input @bind="Email" style="height: 35px; width: 270px; font-size: 10px; padding: 10px;" />
-                    </label>
-                    <div class="smallText" style=" color: #5C5C5C; margin-top: 5px; font-size: 1.3vh;">Only work emails are allowed to register</div>
-                    <button class="smallText" style="height: 35px; width: 270px; background: black; color: white; font-size: 1.5vh; font-weight: 600;" @onclick="SendEmailPost">Start For Free</button>
-                    <div class="smallText" style=" color: #5C5C5C; font-size: 1.3vh;  width: 200px; text-align: -webkit-center; margin-left: 31px;">By clicking 'Start for free' you agree to our Terms and Privacy Policy</div>
-                    <div style="display:flex; margin-top: 40px;" >
-                        <div class="smallText" style="    color: #4F4F4F; font-size: 1.4vh; text-align: right; margin-right: 10px;" >Have a account?</div>
-                        <div class="smallText" style="color:black; font-size: 1.4vh; margin-right: 96px;">Sign In ></div>
+
+        <div class="DivLocation">
+            <img src="/ScreenShots/Fize.jpg" style="width: 20px;" /> fize
+        </div>
+        @if (SendMail)
+        {
+            <div style="margin-left: 75px;">
+                <div class="RightHeadWordsBox" style="width:400px;">Confirm your Email</div>
+                <div class="boxSuccessfulMail">
+                    <div style="display: table-cell; vertical-align: middle;text-align: -webkit-center;">
+                        <div class="CenterImg">
+                            <img style="margin-top: 16px;" src="/ScreenShots/MailIcon.png" />
+                        </div>
+                        <div class="smallText" style="font-size: 1.5vh; color: black; font-weight: 600;  margin-top: 10px;">Successfully made your account Check your email</div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="DivLocation">
+
+                <div>
+                    <div class="RightHeadWordsBox">Sign up with Fize</div>
+                    <div class="RightBoxText" style=" margin-top: 20px;">Try Fize risk free,no credit card required</div>
+                    <div>
+                        <div class="smallText" style="color: black; font-size: 1.3vh;">Work email adress</div>
+                        <label>
+                            <input @bind="Email" class="InputMail" />
+                        </label>
+                        <div class="RightBoxText" style="  margin-top: 5px; ">Only work emails are allowed to register</div>
+                        <button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
+                        <div class="RightBoxText" style=" width: 200px; text-align: -webkit-center; margin-left: 85px;">By clicking 'Start for free' you agree to our Terms and Privacy Policy</div>
+                        <div style="display:flex; margin-top: 40px;">
+                            <div class="TextHaveAccount">Have a account?</div>
+                            <div class="TextSignIn">Sign In ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
 
     </div>
 </div>
@@ -64,13 +84,14 @@
 
 @code {
     public string Email { get; set; }
-
+    private bool SendMail;
     private async void SendEmailPost()
     {
 
         //bool correctEmail = MailService.IsValidEmail(Email);
         if (Email is not null)
         {
+            SendMail = true;
             MailSettings mail = new MailSettings { ToEmail = Email };
             var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email", mail);
         }
