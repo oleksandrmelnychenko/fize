@@ -1,0 +1,19 @@
+﻿<div class="smallText" style="color: black; font-size: 12pt; height: 11px;">@TextOverLabel</div>
+<label>
+        <input type="text" spellcheck="false" @oninput="OnPositionIdChanged" class="InputMail" />
+</label>
+
+@code {
+    [Parameter]
+    public string TextOverLabel { get; set; }
+
+    [Parameter] public string PositionId { get; set; }
+
+    [Parameter] public EventCallback<string> PositionIdChanged { get; set; }
+
+    private Task OnPositionIdChanged(ChangeEventArgs e)
+    {
+        PositionId = e.Value.ToString();
+        return PositionIdChanged.InvokeAsync(PositionId);
+    }
+}

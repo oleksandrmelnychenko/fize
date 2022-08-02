@@ -1,71 +1,33 @@
 ﻿@using System.Net;
 @using System.Net.Mail;
 @using FizeRegistration.Common
-@*@inject FizeRegistration.Common.IMailService MailService*@
 @inject NavigationManager UrlManager
 @inject HttpClient HttpClient
-@*@inject IMailService MailService*@
+@page "/send"
 
 <div class="basicBox" style="margin-top:7%;">
     <div class="leftSideOfRegistration">
        <LeftBlackBoxSendEmail></LeftBlackBoxSendEmail>
     </div>
     <div class="rightSideOfRegistration">
-
-        <div class="DivLocation">
-            <img src="/ScreenShots/Fize.jpg" style="width: 20px;" /> fize
-        </div>
-        @if (true)
+        <FizeImage></FizeImage>
+        @if (LogIn)
         {
             <RightWhiteBoxSignIn></RightWhiteBoxSignIn>
         }
         else if (SendMail)
-        {
-           <RightWhiteBoxSendEmail></RightWhiteBoxSendEmail>
+        { 
+           <RightWhiteBoxSuccessfulMail></RightWhiteBoxSuccessfulMail>
         }
         else
         {
-            <div class="DivLocation">
-                <div>
-                    <div class="RightHeadWordsBox">Sign up with Fize</div>
-                    <div class="RightBoxText" style=" margin-top: 20px;">Try Fize risk free,no credit card required</div>
-                    <div>
-                        <div class="smallText" style="color: black; font-size: 12pt; height: 11px;">Work email adress</div>
-                        <label>
-                            <input @bind="Email" class="InputMail" />
-                        </label>
-                        <div class="RightBoxText" style="  margin-top: 5px; ">Only work emails are allowed to register</div>
-                        <button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
-                        <div class="RightBoxText" style=" width: 200px; text-align: -webkit-center; margin-left: 85px; font-size: 9pt; line-height: 13pt;">By clicking 'Start for free' you agree to our Terms and Privacy Policy</div>
-                        <div style="display:flex; margin-top: 80px;">
-                            <div class="TextHaveAccount">Have a account?</div>
-                            <div class="TextSignIn">Sign In ></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <RightWhiteBoxCreateMail ></RightWhiteBoxCreateMail>
         }
-        
-
-
     </div>
 </div>
 
 
 @code {
-    public string Email { get; set; }
     private bool SendMail;
-    private async void SendEmailPost()
-    {
-
-        //bool correctEmail = MailService.IsValidEmail(Email);
-        if (Email is not null)
-        {
-            SendMail = true;
-            MailSettings mail = new MailSettings { ToEmail = Email };
-            var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email", mail);
-        }
-
-    }
-
+    private bool LogIn;
 }
