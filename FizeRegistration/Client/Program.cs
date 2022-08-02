@@ -1,5 +1,5 @@
 using FizeRegistration.Client;
-using FizeRegistration.Common;
+// using FizeRegistration.Common;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

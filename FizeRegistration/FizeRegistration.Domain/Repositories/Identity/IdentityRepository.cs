@@ -59,6 +59,18 @@ public class IdentityRepository : IIdentityRepository
         ).Single();
     }
 
+    public bool IsEmailExistsAndConfirmed(string email)
+    {
+        return _connection.Query<bool>(
+            "SELECT IIF(COUNT(1) > 0, 1, 0) " +
+            "FROM [UserIdentities] " +
+            "WHERE [UserIdentities].IsDeleted = 0 " +
+            "AND [UserIdentities].IsEmailConfirmed = 1" +
+            "AND [UserIdentities].Email = @Email",
+            new { Email = email }
+        ).Single();
+    }
+
     public UserIdentity GetUserByEmail(string email)
     {
         UserIdentity userIdentity = _connection.Query<UserIdentity>(

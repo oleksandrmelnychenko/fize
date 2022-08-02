@@ -11,6 +11,7 @@ using FizeRegistration.Domain.DataContracts;
 using FizeRegistration.Domain.Entities.Identity;
 using FizeRegistration.Common.Exceptions.IdentityExceptions;
 using FizeRegistration.Services.IdentityServices.Contracts;
+using System.Security.Claims;
 
 namespace FizeRegistration.Server.Controllers;
 
@@ -26,7 +27,7 @@ public class IdentityController : WebApiControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Roles = ("UnconfirmedUser"))]
     [AssignActionRoute(IdentitySegments.NEW_ACCOUNT)]
     public async Task<IActionResult> NewUser([FromBody] NewUserDataContract newUserDataContract)
     {
@@ -34,9 +35,45 @@ public class IdentityController : WebApiControllerBase
         {
             if (newUserDataContract == null) throw new ArgumentNullException("NewUserDataContract");
 
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            var emailFromClaims = identity?.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (emailFromClaims == null) throw new ArgumentNullException(nameof(emailFromClaims));
+
+            newUserDataContract.Email = emailFromClaims;
+
+            newUserDataContract.PasswordExpiresAt = DateTime.Now.AddDays(365);
+
             UserAccount user = await _userIdentityService.NewUser(newUserDataContract);
 
             return Ok(SuccessResponseBody(user));
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+
+
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.ISSUE_CONFIRMATION)]
+    public async Task<IActionResult> IssueConfirmation([FromBody] UserEmailDataContract userEmailDataContract)
+    {
+        try
+        {
+            if (userEmailDataContract == null) throw new ArgumentNullException("userEmailDataContract");
+
+            var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
+
+            await _userIdentityService.IssueConfirmation(userEmailDataContract, baseUrl);
+
+            return Ok(SuccessResponseBody(new { Message = "Email was sent" }));
         }
         catch (InvalidIdentityException exc)
         {

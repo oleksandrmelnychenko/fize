@@ -14,4 +14,6 @@ public interface IUserIdentityService
     Task<UserAccount> ValidateToken(ClaimsPrincipal userPrincipal);
 
     Task<UserAccount> NewUser(NewUserDataContract newUserDataContract);
+
+    Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl);
 }

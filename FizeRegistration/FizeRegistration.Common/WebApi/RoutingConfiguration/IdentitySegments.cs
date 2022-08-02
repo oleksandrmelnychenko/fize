@@ -7,6 +7,10 @@ public sealed class IdentitySegments
 
     public const string NEW_ACCOUNT = "new/account";
 
+    public const string CONFIRM_EMAIL = "confirm/email";
+
+    public const string ISSUE_CONFIRMATION = "issue/confirmation";
+
     public const string UPDATE_USER = "update/user";
 
     public const string DELETE_USER = "delete/user";

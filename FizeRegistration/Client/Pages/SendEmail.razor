@@ -1,6 +1,6 @@
 ﻿@using System.Net;
 @using System.Net.Mail;
-@using FizeRegistration.Common
+@* @using FizeRegistration.Common *@
 @*@inject FizeRegistration.Common.IMailService MailService*@
 @inject NavigationManager UrlManager
 @inject HttpClient HttpClient
@@ -75,8 +75,8 @@
         //bool correctEmail = MailService.IsValidEmail(Email);
         if (Email is not null)
         {
-            MailSettings mail = new MailSettings { ToEmail = Email };
-            var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email", mail);
+            @* MailSettings mail = new MailSettings { ToEmail = Email };
+            var biba = await HttpClient.PostAsJsonAsync<MailSettings>("Email", mail); *@
         }
 
     }

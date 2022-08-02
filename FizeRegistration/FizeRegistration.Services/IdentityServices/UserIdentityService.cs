@@ -17,20 +17,27 @@ using FizeRegistration.Common;
 using FizeRegistration.Domain.Repositories.Identity.Contracts;
 using FizeRegistration.Domain.DbConnectionFactory;
 using FizeRegistration.Domain.DbConnectionFactory.Contracts;
+using FizeRegistration.Services.MailSenderServices.Contracts;
+
 
 namespace FizeRegistration.Services.IdentityServices;
 
 public class UserIdentityService : IUserIdentityService
 {
     private readonly IIdentityRepositoriesFactory _identityRepositoriesFactory;
+
     private readonly IDbConnectionFactory _connectionFactory;
+
+    private readonly IMailSenderFactory _mailSenderFactory;
 
     public UserIdentityService(
         IDbConnectionFactory connectionFactory,
-        IIdentityRepositoriesFactory identityRepositoriesFactory)
+        IIdentityRepositoriesFactory identityRepositoriesFactory,
+        IMailSenderFactory mailSenderFactory)
     {
         _identityRepositoriesFactory = identityRepositoriesFactory;
         _connectionFactory = connectionFactory;
+        _mailSenderFactory = mailSenderFactory;
     }
 
     public Task<UserAccount> SignInAsync(AuthenticationDataContract authenticateDataContract) =>
@@ -189,48 +196,102 @@ public class UserIdentityService : IUserIdentityService
         });
 
     public Task<UserAccount> NewUser(NewUserDataContract newUserDataContract) =>
+    Task.Run(() =>
+    {
+        using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+        {
+            IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
+
+            if (!Regex.IsMatch(newUserDataContract.Password, ConfigurationManager.AppSettings.PasswordStrongRegex))
+            {
+                throw new ArgumentException(ConfigurationManager.AppSettings.PasswordWeakErrorMessage);
+            }
+
+            if (!Validator.IsEmailValid(newUserDataContract.Email))
+            {
+                throw new ArgumentException(IdentityValidationMessages.EMAIL_INVALID);
+            }
+
+            if (!identityRepository.IsEmailAvailable(newUserDataContract.Email))
+            {
+                throw new ArgumentException(IdentityValidationMessages.EMAIL_NOT_AVAILABLE);
+            }
+
+            string passwordSalt = CryptoHelper.CreateSalt();
+
+            string hashedPassword = CryptoHelper.Hash(newUserDataContract.Password, passwordSalt);
+
+            UserIdentity newUser = new UserIdentity
+            {
+                CanUserResetExpiredPassword = true,
+                Email = newUserDataContract.Email,
+                PasswordExpiresAt =
+                    (newUserDataContract.PasswordExpiresAt.Date - DateTime.Now.Date).TotalDays < 0
+                        ? DateTime.Now.Date.AddDays(ConfigurationManager.AppSettings.PasswordExpiryDays)
+                        : newUserDataContract.PasswordExpiresAt,
+                PasswordHash = hashedPassword,
+                PasswordSalt = passwordSalt
+            };
+
+            newUser.IsPasswordExpired = (newUser.PasswordExpiresAt - DateTime.Now.Date).TotalDays < 0;
+
+            newUser.Id = identityRepository.NewUser(newUser);
+
+            return identityRepository.GetAccountByUserId(newUser.Id);
+        }
+    });
+
+    public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>
          Task.Run(() =>
          {
              using (IDbConnection connection = _connectionFactory.NewSqlConnection())
              {
                  IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
-                 if (!Regex.IsMatch(newUserDataContract.Password, ConfigurationManager.AppSettings.PasswordStrongRegex))
-                 {
-                     throw new ArgumentException(ConfigurationManager.AppSettings.PasswordWeakErrorMessage);
-                 }
-
-                 if (!Validator.IsEmailValid(newUserDataContract.Email))
+                 if (!Validator.IsEmailValid(userEmailDataContract.Email))
                  {
                      throw new ArgumentException(IdentityValidationMessages.EMAIL_INVALID);
                  }
 
-                 if (!identityRepository.IsEmailAvailable(newUserDataContract.Email))
+                 if (!identityRepository.IsEmailAvailable(userEmailDataContract.Email))
                  {
                      throw new ArgumentException(IdentityValidationMessages.EMAIL_NOT_AVAILABLE);
                  }
 
-                 string passwordSalt = CryptoHelper.CreateSalt();
+                 byte[] key = Encoding.ASCII.GetBytes(ConfigurationManager.AppSettings.TokenSecret);
+                 DateTime expiry = DateTime.UtcNow.AddDays(1);
+                 ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
+                     {
+                            new Claim(ClaimTypes.Expiration, expiry.Ticks.ToString())
+                     }
+                 );
 
-                 string hashedPassword = CryptoHelper.Hash(newUserDataContract.Password, passwordSalt);
+                 claims.AddClaim(new Claim(ClaimTypes.Email, userEmailDataContract.Email));
+                 claims.AddClaim(new Claim(ClaimTypes.Role, "UnconfirmedUser"));
 
-                 UserIdentity newUser = new UserIdentity
+                 SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
                  {
-                     CanUserResetExpiredPassword = true,
-                     Email = newUserDataContract.Email,
-                     PasswordExpiresAt =
-                         (newUserDataContract.PasswordExpiresAt.Date - DateTime.Now.Date).TotalDays < 0
-                             ? DateTime.Now.Date.AddDays(ConfigurationManager.AppSettings.PasswordExpiryDays)
-                             : newUserDataContract.PasswordExpiresAt,
-                     PasswordHash = hashedPassword,
-                     PasswordSalt = passwordSalt
+                     Issuer = AuthOptions.ISSUER,
+                     Audience = AuthOptions.AUDIENCE_LOCAL,
+                     Subject = claims,
+                     Expires = expiry,
+                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                         SecurityAlgorithms.HmacSha256Signature)
                  };
 
-                 newUser.IsPasswordExpired = (newUser.PasswordExpiresAt - DateTime.Now.Date).TotalDays < 0;
+                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                 JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
-                 newUser.Id = identityRepository.NewUser(newUser);
 
-                 return identityRepository.GetAccountByUserId(newUser.Id);
+                 TokenDataContract tokenData = new TokenDataContract
+                 {
+                     Token = tokenHandler.WriteToken(token),
+                 };
+
+                 var mailSenderService = _mailSenderFactory.NewMailSenderService();
+
+                 mailSenderService.SendTokenToEmail(userEmailDataContract.Email,
+                 tokenData, baseUrl);
              }
          });
 

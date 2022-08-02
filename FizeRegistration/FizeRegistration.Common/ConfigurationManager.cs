@@ -10,6 +10,8 @@ public class ConfigurationManager
 
     private static AppSettings _appSettings;
 
+    private static EmailCredentials _emailCredentials;
+
     public static void SetAppSettingsProperties(IConfiguration configuration)
     {
         _databaseConnectionString = configuration.GetConnectionString(ConnectionStringNames.DefaultConnection);
@@ -25,11 +27,20 @@ public class ConfigurationManager
                 int.Parse(configuration.GetSection("ApplicationSettings")["PasswordExpiryDays"]),
         };
 
+        EmailCredentials emailCredentials = new EmailCredentials()
+        {
+            UserName = configuration.GetSection("EmailCredentials")["UserName"],
+            Password = configuration.GetSection("EmailCredentials")["Password"],
+        };
+
         _appSettings = appSettings;
+        _emailCredentials = emailCredentials;
     }
 
     public static string DatabaseConnectionString => _databaseConnectionString;
 
     public static AppSettings AppSettings => _appSettings;
+
+    public static EmailCredentials EmailCredentials => _emailCredentials;
 
 }
