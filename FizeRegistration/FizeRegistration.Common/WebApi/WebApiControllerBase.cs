@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using FizeRegistration.Common.ResponseBuilder.Contracts;
 using System.Net;
+using FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 namespace FizeRegistration.Common.WebApi;
 

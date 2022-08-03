@@ -1,17 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
-using System;
 using System.Net;
-using System.Threading.Tasks;
 using FizeRegistration.Common.WebApi;
 using FizeRegistration.Common.WebApi.RoutingConfiguration;
-using FizeRegistration.Common.ResponseBuilder.Contracts;
-using FizeRegistration.Domain.DataContracts;
+using FizeRegistration.Shared.ResponseBuilder.Contracts;
 using FizeRegistration.Domain.Entities.Identity;
 using FizeRegistration.Common.Exceptions.IdentityExceptions;
 using FizeRegistration.Services.IdentityServices.Contracts;
 using System.Security.Claims;
+using FizeRegistration.Shared.DataContracts;
 
 namespace FizeRegistration.Server.Controllers;
 

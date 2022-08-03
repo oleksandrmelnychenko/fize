@@ -1,6 +1,4 @@
-using FizeRegistration.Common.ResponseBuilder;
-using FizeRegistration.Common.ResponseBuilder.Contracts;
-using FizeRegistration.DataBases;
+
 using FizeRegistration.Domain.DbConnectionFactory;
 using FizeRegistration.Domain.DbConnectionFactory.Contracts;
 using FizeRegistration.Domain.Repositories.Identity;
@@ -16,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FizeRegistration.Common.IdentityConfiguration;
 using Microsoft.Extensions.Primitives;
+using FizeRegistration.Shared.ResponseBuilder.Contracts;
+using FizeRegistration.Shared.ResponseBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 

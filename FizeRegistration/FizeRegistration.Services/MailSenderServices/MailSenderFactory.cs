@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Mail;
 using FizeRegistration.Common;
-using FizeRegistration.Domain.DataContracts;
 using FizeRegistration.Services.MailSenderServices.Contracts;
 
 namespace FizeRegistration.Services.MailSenderServices;

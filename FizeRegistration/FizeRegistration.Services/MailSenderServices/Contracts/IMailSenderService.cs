@@ -1,4 +1,4 @@
-using FizeRegistration.Domain.DataContracts;
+using FizeRegistration.Shared.DataContracts;
 
 namespace FizeRegistration.Services.MailSenderServices.Contracts;
 

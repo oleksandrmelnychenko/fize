@@ -1,0 +1,36 @@
+﻿<div class="basicBox" style="margin-top:7%;">
+    <div class="leftSideOfRegistration">
+        <LeftBlackBoxSendEmail></LeftBlackBoxSendEmail>
+    </div>
+    <div class="rightSideOfRegistration">
+        <FizeImage></FizeImage>
+        @if (LogIn)
+        {
+            <RightWhiteBoxSignIn></RightWhiteBoxSignIn>
+        }
+        else if (SendMail)
+        {
+            <RightWhiteBoxSuccessfulMail></RightWhiteBoxSuccessfulMail>
+        }
+        else
+        {
+            <div class="DivLocation">
+                <div>
+                    <div class="RightHeadWordsBox">Sign up with Fize</div>
+                    <div class="RightBoxText" style=" margin-top: 20px;">Try Fize risk free,no credit card required</div>
+                    <LabelSendEmail TextOverLabel="Work email adress" @bind-Email="Email"></LabelSendEmail>
+                    <div class="RightBoxText" style="  margin-top: 5px; ">Only work emails are allowed to register</div>
+                    <button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
+                </div>
+            </div>
+            <div class="RightBoxText"
+            style=" width: 200px; text-align: -webkit-center; margin-left: 85px; font-size: 9pt; line-height: 13pt;">By
+                clicking 'Start for free' you agree to our Terms and Privacy Policy</div>
+            <div style="display:flex; margin-top: 80px; margin-right: 160px;">
+                <div class="TextHaveAccount">Have a account?</div>
+                <a class="TextSignIn" @onclick="SignInAsync">Sign In ></a>
+                <div></div>
+            </div>
+        }
+    </div>
+</div>
