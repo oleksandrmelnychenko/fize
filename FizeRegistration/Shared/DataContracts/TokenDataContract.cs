@@ -1,4 +1,5 @@
-namespace FizeRegistration.Domain.DataContracts;
+namespace FizeRegistration.Shared.DataContracts;
+
 
 public class TokenDataContract
 {
