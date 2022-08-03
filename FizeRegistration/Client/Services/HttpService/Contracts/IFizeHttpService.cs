@@ -9,5 +9,9 @@ public interface IFizeHttpService
 
     Task SetHeader();
 
+    Task SetTokenToLocalStorageAndHeader(TokenDataContract tokenData);
+
     Task<IWebResponse> SendEmailForSignUp(UserEmailDataContract userEmail);
+
+    Task<IWebResponse> SendConfirmation(string password);
 }
