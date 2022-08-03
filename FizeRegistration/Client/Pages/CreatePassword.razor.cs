@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
+using FizeRegistration.Shared.Entities.Identity;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -16,6 +17,9 @@ public partial class CreatePassword : ComponentBase
 
     private string ConfirmPassword;
 
+    // "#?!@$%^&*-" spec symbols This regex will enforce these rules:
+    //  • At least one upper case english letter • At least one lower case english letter
+    //   • At least one digit • At least one special character • Minimum 8 in length
     private readonly Regex _regexPattern = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
 
     public async Task SendConfirmation()
@@ -36,6 +40,12 @@ public partial class CreatePassword : ComponentBase
         if (statusCode >= 200 && statusCode < 300)
         {
             Console.WriteLine("Signed Up");
+
+            var userAccount = sendConfirmationResponse.Body as UserAccount;
+
+            if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+
+            // need a change of controller to get token 
         }
         else
         {

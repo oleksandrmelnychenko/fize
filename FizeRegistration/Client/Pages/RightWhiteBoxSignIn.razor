@@ -1,27 +1,61 @@
-﻿<div class="DivLocation">
+﻿@using System.Text.RegularExpressions
+<div class="DivLocation">
 
     <div>
         <div class="RightHeadWordsBox">Welcome there!</div>
         <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">Please Sign in User</div>
         <div>
-            <LabeSignIn 
-                TextOverLabel="Email" @bind-PositionId="Email">
+            <LabeSignIn TextOverLabel="Email" @bind-PositionId="EmailWhite">
             </LabeSignIn>
-            <LabeSignIn 
-                TextOverLabel="Password" @bind-PositionId="Password">
+            <LabeSignIn TextOverLabel="Password" @bind-PositionId="PasswordWhite">
             </LabeSignIn>
-            <button class="buttonSendEmail" @onclick="SignIn">Sign In</button>
+            <button class="buttonSendEmail" @onclick="Login">Sign In</button>
         </div>
     </div>
 </div>
 
 @code {
-    private string Email { get; set; }
-    private string Password { get; set; }
+    private string EmailWhite { get; set; }
+    private string PasswordWhite { get; set; }
 
-    public async Task SignIn()
+    private readonly Regex _regexPattern = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+
+
+    public async Task Login()
     {
-        //somelogic
+        bool isPasswordMatch = _regexPattern.IsMatch(Password);
+
+        if (Password != ConfirmPassword || !isPasswordMatch)
+        {
+            Console.WriteLine("Password != ConfirmPassword || !isPasswordMatch");
+
+            return;
+        }
+
+        var sendConfirmationResponse = await HttpClient.SendConfirmation(Password);
+
+        int statusCode = (int)sendConfirmationResponse.StatusCode;
+
+        if (statusCode >= 200 && statusCode < 300)
+        {
+            Console.WriteLine("Signed Up");
+
+            var userAccount = sendConfirmationResponse.Body as UserAccount;
+
+            if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+
+            // need a change of controller to get token
+        }
+        else
+        {
+            var err = System.Text.Json.JsonSerializer.Serialize(sendConfirmationResponse);
+
+            Console.WriteLine(err);
+
+            throw new Exception("An errorneous response from server");
+
+            // need to show an alert etc
+        }
     }
-    
- }
+
+}
