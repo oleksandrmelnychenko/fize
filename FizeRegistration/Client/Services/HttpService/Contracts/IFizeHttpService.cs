@@ -10,4 +10,6 @@ public interface IFizeHttpService
     Task SetHeader();
 
     Task<IWebResponse> SendEmailForSignUp(UserEmailDataContract userEmail);
+
+    
 }
