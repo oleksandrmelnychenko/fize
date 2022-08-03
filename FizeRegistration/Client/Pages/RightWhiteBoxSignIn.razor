@@ -1,0 +1,27 @@
+﻿<div class="DivLocation">
+
+    <div>
+        <div class="RightHeadWordsBox">Welcome there!</div>
+        <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">Please Sign in User</div>
+        <div>
+            <LabeSignIn 
+                TextOverLabel="Email" @bind-PositionId="Email">
+            </LabeSignIn>
+            <LabeSignIn 
+                TextOverLabel="Password" @bind-PositionId="Password">
+            </LabeSignIn>
+            <button class="buttonSendEmail" @onclick="SignIn">Sign In</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string Email { get; set; }
+    private string Password { get; set; }
+
+    public async Task SignIn()
+    {
+        //somelogic
+    }
+    
+ }

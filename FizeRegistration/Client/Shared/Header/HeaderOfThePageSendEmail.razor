@@ -1,0 +1,15 @@
+﻿
+<div style="margin-left:100px">
+    <div class="headwords" style=" margin-top: 80px; font-size: 27pt;">@MainTitle</div>
+    <div style="color: white; font-size: 14.5pt;  width: 350px; line-height: 17pt; margin-top: 14px;">
+        @SmallTextMainTitle
+        </div>
+</div>
+
+@code{
+
+    [Parameter]
+    public string MainTitle { get; set; }
+     [Parameter]
+    public string SmallTextMainTitle{ get; set; }
+}

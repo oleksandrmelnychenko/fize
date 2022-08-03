@@ -1,0 +1,13 @@
+﻿<button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
+
+@code {
+    [Parameter] public string Email {get; set; }
+    private async void SendEmailPost()
+    {
+        if (Email is not null)
+        {
+            var biba = Email;
+            //SomeLogic
+        }
+    }
+}
