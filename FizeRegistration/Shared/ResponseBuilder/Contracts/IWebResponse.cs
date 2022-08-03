@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace FizeRegistration.Common.ResponseBuilder.Contracts;
+namespace FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 public interface IWebResponse
 {

@@ -3,7 +3,8 @@ using System.Net.Http.Json;
 using Blazored.LocalStorage;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
-using FizeRegistration.Shared.ResponseContracts;
+using FizeRegistration.Shared.ResponseBuilder;
+using FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 namespace FizeRegistration.Client.Services.HttpService;
 

@@ -1,5 +1,5 @@
 using FizeRegistration.Shared.DataContracts;
-using FizeRegistration.Shared.ResponseContracts;
+using FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 namespace FizeRegistration.Client.Services.HttpService.Contracts;
 

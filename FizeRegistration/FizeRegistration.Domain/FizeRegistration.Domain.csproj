@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FizeRegistration.Common\FizeRegistration.Common.csproj" />
+    <ProjectReference Include="..\Shared\FizeRegistration.Shared.csproj" />
   </ItemGroup>
 
 </Project>

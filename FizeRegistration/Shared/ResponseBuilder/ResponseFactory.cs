@@ -1,7 +1,7 @@
-﻿using FizeRegistration.Common.ResponseBuilder.Contracts;
+﻿using FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 
-namespace FizeRegistration.Common.ResponseBuilder;
+namespace FizeRegistration.Shared.ResponseBuilder;
 
 public class ResponseFactory : IResponseFactory
 {

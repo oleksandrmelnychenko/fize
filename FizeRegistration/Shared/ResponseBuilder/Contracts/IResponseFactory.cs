@@ -1,6 +1,6 @@
 ﻿
 
-namespace FizeRegistration.Common.ResponseBuilder.Contracts;
+namespace FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 public interface IResponseFactory
 {

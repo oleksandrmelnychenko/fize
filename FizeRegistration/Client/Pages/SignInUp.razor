@@ -1,14 +1,4 @@
-﻿@using System.Net;
-@using System.Net.Mail;
-@using FizeRegistration.Client.Services.HttpService.Contracts
-@using FizeRegistration.Shared.DataContracts
-@using Helpers.Validation
-
-@inject NavigationManager UrlManager
-@inject IFizeHttpService HttpClient
-@page "/send"
-
-<div class="basicBox" style="margin-top:7%;">
+﻿<div class="basicBox" style="margin-top:7%;">
     <div class="leftSideOfRegistration">
         <LeftBlackBoxSendEmail></LeftBlackBoxSendEmail>
     </div>
@@ -44,47 +34,3 @@
         }
     </div>
 </div>
-
-
-@code {
-    private string Email;
-    private bool SendMail;
-    private bool LogIn;
-
-    private async Task SignInAsync()
-    {
-        LogIn = true;
-    }
-
-    private async Task SendEmailPost()
-    {
-        if (!EmailValidator.IsEmailValid(Email))
-        {
-            throw new Exception("Email is not valid");
-            // need to show an alert etc
-        }
-
-        var sendEmailResponse = await HttpClient.SendEmailForSignUp(new UserEmailDataContract
-        {
-            Email = Email
-        });
-
-        int statusCode = (int)sendEmailResponse.StatusCode;
-
-        if (statusCode >= 200 && statusCode < 300)
-        {
-            SendMail = true;
-        }
-        else
-        {
-            var err = System.Text.Json.JsonSerializer.Serialize(sendEmailResponse);
-
-            Console.WriteLine(err);
-
-            throw new Exception("An errorneous response from server");
-
-            // need to show an alert etc
-        }
-
-    }
-}

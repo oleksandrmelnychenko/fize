@@ -6,7 +6,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FizeRegistration.Domain.DataContracts;
 using FizeRegistration.Domain.Entities.Identity;
 using FizeRegistration.Services.IdentityServices.Contracts;
 using FizeRegistration.Common.Helpers;
@@ -18,7 +17,7 @@ using FizeRegistration.Domain.Repositories.Identity.Contracts;
 using FizeRegistration.Domain.DbConnectionFactory;
 using FizeRegistration.Domain.DbConnectionFactory.Contracts;
 using FizeRegistration.Services.MailSenderServices.Contracts;
-
+using FizeRegistration.Shared.DataContracts;
 
 namespace FizeRegistration.Services.IdentityServices;
 

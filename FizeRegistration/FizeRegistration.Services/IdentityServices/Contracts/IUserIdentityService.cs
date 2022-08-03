@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using FizeRegistration.Domain.DataContracts;
 using FizeRegistration.Domain.Entities.Identity;
+using FizeRegistration.Shared.DataContracts;
 
 namespace FizeRegistration.Services.IdentityServices.Contracts;
 
