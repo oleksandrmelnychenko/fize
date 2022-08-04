@@ -39,7 +39,7 @@ public class MailSenderService : IMailSenderService
 
                 mssObj.Subject = "TextApp sign up confirm";
 
-                mssObj.Body = baseUrl + "signupconfirm?#access_token=" + tokenData.Token;
+                mssObj.Body = baseUrl + "create?#access_token=" + tokenData.Token;
 
                 client.Send(mssObj);
             }

@@ -8,6 +8,13 @@ using FizeRegistration.Shared.ResponseBuilder.Contracts;
 
 namespace FizeRegistration.Client.Services.HttpService;
 
+public sealed class HttpUrls
+{
+    public const string SEND_EMAIL = "/api/v1/identity/issue/confirmation";
+    public const string SEND_CONFIRMATION = "/api/v1/identity/new/account";
+    public const string SIGN_IN = "/api/v1/identity/signin";
+}
+
 public class FizeHttpService : IFizeHttpService
 {
     private HttpClient _httpClient;
@@ -22,6 +29,12 @@ public class FizeHttpService : IFizeHttpService
     public Uri? GetBaseAddress()
     {
         return _httpClient?.BaseAddress;
+    }
+
+    public async Task SetTokenToLocalStorageAndHeader(TokenDataContract tokenData)
+    {
+        await _localStorage.SetItemAsync<TokenDataContract>("token", tokenData);
+        await SetHeader();
     }
 
     public async Task SetHeader()
@@ -47,10 +60,32 @@ public class FizeHttpService : IFizeHttpService
 
     public async Task<IWebResponse> SendEmailForSignUp(UserEmailDataContract userEmail)
     {
+        return await SendRequest<UserEmailDataContract>(userEmail, HttpUrls.SEND_EMAIL);
+
+    }
+
+    public async Task<IWebResponse> SendConfirmation(string password)
+    {
+        var newUserDataContract = new NewUserDataContract
+        {
+            Password = password
+        };
+
+        return await SendRequest<NewUserDataContract>(newUserDataContract, HttpUrls.SEND_CONFIRMATION);
+    }
+
+
+    public async Task<IWebResponse> SignInAsync(AuthenticationDataContract authenticationDataContract)
+    {
+        return await SendRequest<AuthenticationDataContract>(authenticationDataContract, HttpUrls.SIGN_IN);
+    }
+
+    private async Task<IWebResponse> SendRequest<T>(T postData, string requestUrl)
+    {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync<UserEmailDataContract>(
-                "/api/v1/identity/issue/confirmation", userEmail);
+            var response = await _httpClient.PostAsJsonAsync<T>(
+                requestUrl, postData);
 
             if (response.IsSuccessStatusCode)
             {
@@ -79,6 +114,5 @@ public class FizeHttpService : IFizeHttpService
 
             return errorResponse;
         }
-
     }
 }
