@@ -1,13 +1,18 @@
 ﻿@using System.Text.RegularExpressions
+@using FizeRegistration.Client.Services.HttpService.Contracts
+@using FizeRegistration.Shared.DataContracts
+
+@inject IFizeHttpService HttpClient
+
 <div class="DivLocation">
 
     <div>
         <div class="RightHeadWordsBox">Welcome there!</div>
         <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">Please Sign in User</div>
         <div>
-            <LabeSignIn TextOverLabel="Email" @bind-PositionId="EmailWhite">
+            <LabeSignIn TextOverLabel="Email" @bind-PositionId="Email">
             </LabeSignIn>
-            <LabeSignIn TextOverLabel="Password" @bind-PositionId="PasswordWhite">
+            <LabeSignIn TextOverLabel="Password" @bind-PositionId="Password">
             </LabeSignIn>
             <button class="buttonSendEmail" @onclick="Login">Sign In</button>
         </div>
@@ -15,40 +20,39 @@
 </div>
 
 @code {
-    private string EmailWhite { get; set; }
-    private string PasswordWhite { get; set; }
+    private string Email { get; set; }
 
-    private readonly Regex _regexPattern = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
-
+    private string Password { get; set; }
 
     public async Task Login()
     {
-        bool isPasswordMatch = _regexPattern.IsMatch(Password);
 
-        if (Password != ConfirmPassword || !isPasswordMatch)
+        if (String.IsNullOrWhiteSpace(Password))
         {
-            Console.WriteLine("Password != ConfirmPassword || !isPasswordMatch");
+            Console.WriteLine("Empty password");
 
             return;
         }
 
-        var sendConfirmationResponse = await HttpClient.SendConfirmation(Password);
+        var authenticationDataContract = new AuthenticationDataContract
+        {
+            Email = Email,
+            Password = Password
+        };
 
-        int statusCode = (int)sendConfirmationResponse.StatusCode;
+        var signInResponse = await HttpClient.SignInAsync(authenticationDataContract);
+
+        int statusCode = (int)signInResponse.StatusCode;
 
         if (statusCode >= 200 && statusCode < 300)
         {
-            Console.WriteLine("Signed Up");
-
-            var userAccount = sendConfirmationResponse.Body as UserAccount;
-
-            if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+            Console.WriteLine("Signed In");
 
             // need a change of controller to get token
         }
         else
         {
-            var err = System.Text.Json.JsonSerializer.Serialize(sendConfirmationResponse);
+            var err = System.Text.Json.JsonSerializer.Serialize(signInResponse);
 
             Console.WriteLine(err);
 

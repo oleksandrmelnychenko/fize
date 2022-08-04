@@ -41,9 +41,9 @@ public partial class CreatePassword : ComponentBase
         {
             Console.WriteLine("Signed Up");
 
-            var userAccount = sendConfirmationResponse.Body as UserAccount;
+            // var userAccount = sendConfirmationResponse.Body as UserAccount;
 
-            if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+            // if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
 
             // need a change of controller to get token 
         }
