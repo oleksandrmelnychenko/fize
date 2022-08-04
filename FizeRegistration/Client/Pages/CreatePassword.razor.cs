@@ -16,6 +16,11 @@ public partial class CreatePassword : ComponentBase
     private string Password;
 
     private string ConfirmPassword;
+    private string SendMessageBadMail;
+
+    private bool SuccessfulPassword;
+    private bool LoadingProcess;
+    private bool BadRequestEmail;
 
     // "#?!@$%^&*-" spec symbols This regex will enforce these rules:
     //  • At least one upper case english letter • At least one lower case english letter
@@ -24,12 +29,23 @@ public partial class CreatePassword : ComponentBase
 
     public async Task SendConfirmation()
     {
+
+        LoadingProcess = true;
+        if (Password == null)
+        {
+            SendMessageBadMail = "Password Empty";
+            LoadingProcess = false;
+            BadRequestEmail = true;
+            return;
+        }
         bool isPasswordMatch = _regexPattern.IsMatch(Password);
 
         if (Password != ConfirmPassword || !isPasswordMatch)
         {
-            Console.WriteLine("Password != ConfirmPassword || !isPasswordMatch");
-
+            //Console.WriteLine("Password != ConfirmPassword || !isPasswordMatch");
+            SendMessageBadMail = "Password != ConfirmPassword || !isPasswordMatch";
+            LoadingProcess = false;
+            BadRequestEmail = true;
             return;
         }
 
@@ -40,7 +56,8 @@ public partial class CreatePassword : ComponentBase
         if (statusCode >= 200 && statusCode < 300)
         {
             Console.WriteLine("Signed Up");
-
+            SuccessfulPassword = true;
+            
             // var userAccount = sendConfirmationResponse.Body as UserAccount;
 
             // if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
@@ -52,11 +69,12 @@ public partial class CreatePassword : ComponentBase
             var err = System.Text.Json.JsonSerializer.Serialize(sendConfirmationResponse);
 
             Console.WriteLine(err);
-
-            throw new Exception("An errorneous response from server");
-
+            LoadingProcess = false;
+            SendMessageBadMail = "An errorneous response from server";
+            //throw new Exception("An errorneous response from server");
             // need to show an alert etc
         }
+        LoadingProcess = false;
     }
 
 

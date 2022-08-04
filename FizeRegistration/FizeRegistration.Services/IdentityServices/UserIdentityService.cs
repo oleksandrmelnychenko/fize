@@ -250,6 +250,7 @@ public class UserIdentityService : IUserIdentityService
                  if (!Validator.IsEmailValid(userEmailDataContract.Email))
                  {
                      throw new ArgumentException(IdentityValidationMessages.EMAIL_INVALID);
+                     
                  }
 
                  if (!identityRepository.IsEmailAvailable(userEmailDataContract.Email))

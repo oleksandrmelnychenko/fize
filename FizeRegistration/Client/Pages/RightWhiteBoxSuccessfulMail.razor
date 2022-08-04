@@ -5,7 +5,11 @@
             <div class="CenterImg">
                 <img style="margin-top: 16px;" src="/ScreenShots/MailIcon.png" />
             </div>
-            <div class="smallText" style="font-size: 10pt; color: black; font-weight: 600;  margin-top: 22px;">Successfully made your account. Check your email</div>
+            <div class="smallText" style="font-size: 10pt; color: black; font-weight: 600;  margin-top: 22px;">@Message</div>
         </div>
     </div>
 </div>
+
+@code{
+    [Parameter] public string Message { get; set; } = "Successfully made your account. Check your email";
+}

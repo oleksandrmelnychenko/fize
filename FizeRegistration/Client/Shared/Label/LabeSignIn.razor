@@ -1,6 +1,6 @@
 ﻿<div class="smallText" style="color: black; font-size: 11.2pt; margin-top: 20px;height: 11px;">@TextOverLabel</div>
 <label>
-    <input type="text" spellcheck="false" @oninput="OnPositionIdChanged" class="InputMail" />
+    <input type="@TypeWord" spellcheck="false" @oninput="OnPositionIdChanged" class="InputMail" />
 </label>
 
 
@@ -13,6 +13,8 @@
     [Parameter] public string PositionId { get; set; }
 
     [Parameter] public EventCallback<string> PositionIdChanged { get; set; }
+
+    [Parameter] public string TypeWord { get; set; } = "text";
 
     private Task OnPositionIdChanged(ChangeEventArgs e)
     {

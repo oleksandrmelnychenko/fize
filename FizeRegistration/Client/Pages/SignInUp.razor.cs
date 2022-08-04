@@ -12,11 +12,11 @@ public partial class SignInUp : ComponentBase
     private string Email = String.Empty;
 
     private bool SendMail;
-    
+
     private bool LogIn;
 
     private bool BadRequestEmail;
-    private bool EmailEmty;
+    private bool LoadingProcess;
 
     private string SendMessageBadMail;
     private const string PLEASE_ENTER_CORRECT_MAIL = "please enter correct email";
@@ -27,11 +27,12 @@ public partial class SignInUp : ComponentBase
 
     private async Task SendEmailPost()
     {
-
-        if (Email == String.Empty)
+        LoadingProcess = true;
+        if (Email == String.Empty || !EmailValidator.IsEmailValid(Email))
         {
-            EmailEmty = true;
+            BadRequestEmail = true;
             SendMessageBadMail = $"Empty mail ,{PLEASE_ENTER_CORRECT_MAIL}";
+            LoadingProcess = false;
             return;
         }
 
@@ -54,8 +55,8 @@ public partial class SignInUp : ComponentBase
 
             BadRequestEmail = true;
             SendMessageBadMail = $"incorrect input,{PLEASE_ENTER_CORRECT_MAIL}";
-           
-        }
 
+        }
+        LoadingProcess = false;
     }
 }

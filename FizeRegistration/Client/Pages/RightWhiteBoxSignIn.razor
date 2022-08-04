@@ -5,61 +5,25 @@
 @inject IFizeHttpService HttpClient
 
 <div class="DivLocation">
-
     <div>
         <div class="RightHeadWordsBox">Welcome there!</div>
         <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">Please Sign in User</div>
         <div>
             <LabeSignIn TextOverLabel="Email" @bind-PositionId="Email">
             </LabeSignIn>
-            <LabeSignIn TextOverLabel="Password" @bind-PositionId="Password">
+            <LabeSignIn TypeWord="password" TextOverLabel="Password" @bind-PositionId="Password">
             </LabeSignIn>
+            @if (BadRequestEmail)
+            {
+                <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
+
+            }
             <button class="buttonSendEmail" @onclick="Login">Sign In</button>
         </div>
     </div>
 </div>
 
 @code {
-    private string Email { get; set; }
 
-    private string Password { get; set; }
-
-    public async Task Login()
-    {
-
-        if (String.IsNullOrWhiteSpace(Password))
-        {
-            Console.WriteLine("Empty password");
-
-            return;
-        }
-
-        var authenticationDataContract = new AuthenticationDataContract
-        {
-            Email = Email,
-            Password = Password
-        };
-
-        var signInResponse = await HttpClient.SignInAsync(authenticationDataContract);
-
-        int statusCode = (int)signInResponse.StatusCode;
-
-        if (statusCode >= 200 && statusCode < 300)
-        {
-            Console.WriteLine("Signed In");
-
-            // need a change of controller to get token
-        }
-        else
-        {
-            var err = System.Text.Json.JsonSerializer.Serialize(signInResponse);
-
-            Console.WriteLine(err);
-
-            throw new Exception("An errorneous response from server");
-
-            // need to show an alert etc
-        }
-    }
 
 }
