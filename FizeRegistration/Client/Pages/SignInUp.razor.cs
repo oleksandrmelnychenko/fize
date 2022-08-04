@@ -15,6 +15,11 @@ public partial class SignInUp : ComponentBase
     
     private bool LogIn;
 
+    private bool BadRequestEmail;
+    private bool EmailEmty;
+
+    private string SendMessageBadMail;
+    private const string PLEASE_ENTER_CORRECT_MAIL = "please enter correct email";
     private void SignInAsync()
     {
         LogIn = true;
@@ -22,10 +27,12 @@ public partial class SignInUp : ComponentBase
 
     private async Task SendEmailPost()
     {
-        if (!EmailValidator.IsEmailValid(Email))
+
+        if (Email == String.Empty)
         {
-            throw new Exception("Email is not valid");
-            // need to show an alert etc
+            EmailEmty = true;
+            SendMessageBadMail = $"Empty mail ,{PLEASE_ENTER_CORRECT_MAIL}";
+            return;
         }
 
         var sendEmailResponse = await HttpClient.SendEmailForSignUp(new UserEmailDataContract
@@ -45,9 +52,9 @@ public partial class SignInUp : ComponentBase
 
             Console.WriteLine(err);
 
-            throw new Exception("An errorneous response from server");
-
-            // need to show an alert etc
+            BadRequestEmail = true;
+            SendMessageBadMail = $"incorrect input,{PLEASE_ENTER_CORRECT_MAIL}";
+           
         }
 
     }
