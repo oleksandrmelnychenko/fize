@@ -175,6 +175,7 @@
     background: #dadee7;
     width: 160px;
     height: 160px;
+    border-radius: 5%;
 }
 .buttonContactUs {
     width: 120px;
