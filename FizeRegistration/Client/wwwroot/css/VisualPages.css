@@ -209,3 +209,14 @@
     animation: donut-spin 1.2s linear infinite;
     z-index: 99999;
 }
+
+.LabelDetails {
+    width: 290px;
+    height: 41px;
+    border: 2px solid #00000012;
+    font-size:13pt;
+}
+.TextDetails {
+    font-size: 11pt;
+    font-weight: 800;
+}

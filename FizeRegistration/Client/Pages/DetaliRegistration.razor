@@ -43,38 +43,101 @@
         </div>
     </div>
     <div class="rightBoxDetails">
-        <div style="margin-left: 115px; border: 2px solid black;  margin-right: 180px;">Let`s set up your agency</div>
+        <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 95px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">Let`s set up your agency</div>
         <div>
             <div></div>
             <div style="display:flex">
                 <div style="margin-left: 115px;margin-right: 35px;">
-                    <div>Agency Name</div>
+                    <div class="TextDetails">Agency Name</div>
                     <label>
-                        <input class="InputMail" style=" width: 290px; height: 41px;" />
+                        <input class="LabelDetails" placeholder="Enter your agency name" />
                     </label>
                 </div>
-                <div >
-                    <div>WebSite</div>
+                <div>
+                    <div style="font-weight: 800;">WebSite</div>
                     <label>
-                        <input class="InputMail" style=" width: 290px; height: 41px;" />
+                        <input class="LabelDetails"  placeholder="Enter your company website" />
                     </label>
                 </div>
             </div>
             <div style="display:flex">
                 <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
-                    <div>Brand Color</div>
-                    <label>
-                        <input class="InputMail" style=" width: 290px; height: 41px;" />
+                    <div class="TextDetails">Brand Color</div>
+                    <label style="display:flex">
+                        <input class="LabelDetails" style="width: 240px; border-right: none;" placeholder="Enter or choose HEX" name="color"  />
+                        <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
+                            <input style="width: 50px; margin-top: 3px;height: 30px; border: none;" type="color"  value="color" >
+                        </div>
                     </label>
+                   @* <form action="handler.php">
+                        <p>
+                            Укажите цвет фона: 
+                            <input type="submit" value="Выбрать">
+                        </p>
+                    </form>*@
                 </div>
-
-                <div style="margin-top: 15px;">
-                    <div>Logo</div>
-                    <label>
-                        <input class="InputMail" style=" width: 290px; height: 41px;" />
+                <div style="margin-top: 15px; ">
+                    <div class="TextDetails">Logo</div>
+                    <label style="display: flex; align-items: center;">
+                        <input style="width: 220px; border-right: none;" class="LabelDetails" placeholder="Drag & drop it here or upload" />
+                        <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
+                            <button style="margin-top: 3px;    font-weight: 600; background: white;">Upload</button>
+                        </div>
                     </label>
                 </div>
             </div>
         </div>
+
+        <div style="margin-left: 115px; ">
+            <div style="border-bottom: 1px solid #00000012; margin-right: 180px; margin-top: 35px; font-weight: 800;  font-size: 15pt; margin-bottom: 20px;">Let`s set up your profile</div>
+            <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
+            <div style="display:flex">
+                <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
+                <button style="    height: 28px; width: 70px; align-self: center; margin-left: 15px; font-size: 11pt; font-weight: 800; border: 1px solid black; background:white;">Upload</button>
+            </div>
+        </div>
+
+        <div>
+            <div></div>
+            <div style="display:flex">
+                <div style="margin-left: 115px;margin-right: 35px;">
+                    <div class="TextDetails">First Name</div>
+                    <label>
+                        <input class="LabelDetails" placeholder="Enter your first name" />
+                    </label>
+                </div>
+                <div>
+                    <div class="TextDetails">Last Name</div>
+                    <label>
+                        <input class="LabelDetails" placeholder="Enter your last name" />
+                    </label>
+                </div>
+            </div>
+            <div style="display:flex">
+                <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
+                    <div class="TextDetails">Link</div>
+                    <label>
+                        <input class="LabelDetails" placeholder="Enter link here" />
+                    </label>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <div class="TextDetails">Phone Number</div>
+                    <label>
+                        <input class="LabelDetails" placeholder="Enter a valid phone number" />
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div style="margin-left: 115px;">
+            <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 50px; margin-bottom: 27px;"></div>
+            <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;">Discard Changes</button>
+            <button style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;">Continue</button>
+        </div>
     </div>
 </div>
+
+@code {
+    private string biba { get; set; }
+    private string Color { get; set; } = "black";
+      }
