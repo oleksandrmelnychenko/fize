@@ -1,0 +1,14 @@
+﻿<div style="display: flex;">
+    <div class="circleDetails"></div>
+    <div style="margin-left: 10px;">
+        <div class="StepText">@StepText</div>
+        <div class="subtitleTextStep">@SubtitleText</div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public string StepText{ get; set; }
+    [Parameter]
+    public string SubtitleText{ get; set; }
+}

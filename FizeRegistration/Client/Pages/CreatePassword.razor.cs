@@ -42,7 +42,7 @@ public partial class CreatePassword : ComponentBase
 
         if (Password != ConfirmPassword || !isPasswordMatch)
         {
-            //Console.WriteLine("Password != ConfirmPassword || !isPasswordMatch");
+           
             SendMessageBadMail = "Password != ConfirmPassword || !isPasswordMatch";
             LoadingProcess = false;
             BadRequestEmail = true;
@@ -58,9 +58,9 @@ public partial class CreatePassword : ComponentBase
             Console.WriteLine("Signed Up");
             SuccessfulPassword = true;
             
-            // var userAccount = sendConfirmationResponse.Body as UserAccount;
+           // var userAccount = sendConfirmationResponse.Body as UserAccount;
 
-            // if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+           //if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
 
             // need a change of controller to get token 
         }

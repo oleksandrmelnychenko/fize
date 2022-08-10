@@ -214,9 +214,20 @@
     width: 290px;
     height: 41px;
     border: 2px solid #00000012;
-    font-size:13pt;
+    font-size:12pt;
 }
 .TextDetails {
     font-size: 11pt;
     font-weight: 800;
+}
+
+.StepText {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #a0a6b1;
+}
+.subtitleTextStep {
+    font-weight: 800;
+    color: #5b5c5e;
+    font-size: 11pt;
 }

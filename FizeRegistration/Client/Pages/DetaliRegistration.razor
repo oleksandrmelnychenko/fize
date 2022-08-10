@@ -7,39 +7,13 @@
                 <FizeImage></FizeImage>
             </div>
             <div style="margin-top: 57px;margin-left: 45px;">
-                <div style="display: flex;">
-                    <div class="circleDetails"></div>
-                    <div style="margin-left: 10px;">
-                        <div style="font-size: 10pt;  font-weight: 600;">Step 1</div>
-                        <div style="font-weight: 800;  font-size: 11pt; font-family: monospace;">Basic Detalis</div>
-                    </div>
-                </div>
-
+                <CircleDetails StepText="Step 1" SubtitleText="Basic Detalis"></CircleDetails>
                 <div class="lineDetails"></div>
-                <div style="display: flex;">
-                    <div class="circleDetails"></div>
-                    <div style="margin-left: 10px;">
-                        <div style="font-size: 10pt;  font-weight: 600;color: #a0a6b1;">Step 2</div>
-                        <div style="font-weight: 800; color: #5b5c5e; font-size: 11pt;">Tour</div>
-                    </div>
-                </div>
+                <CircleDetails StepText="Step 2" SubtitleText="Tour"></CircleDetails>
                 <div class="lineDetails"></div>
-                <div style="display: flex;">
-                    <div class="circleDetails"></div>
-                    <div style="margin-left: 10px;">
-                        <div style="font-size: 10pt;  font-weight: 600;">Step 3</div>
-                        <div style="font-weight: 800;">Collect Dec Pages</div>
-                    </div>
-                </div>
+                <CircleDetails StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleDetails>
             </div>
-            <div class="blockContactUs" style="text-align: -webkit-center; margin-top: 200px; margin-left: 35px;">
-                <div style="height: 20px;"></div>
-                <div style="background: #00000042; border: 0px solid #00000042; margin-bottom: 10px;" class="circleDetails"></div>
-                <div style="width: 160px; font-size: 11pt; color: black;" class="headwords">Having troubles?</div>
-                <div style=" width: 160px; font-size: 10pt; color: #7a7a7a; font-weight: 500;" class="smallText">We would love to help</div>
-                <button class="buttonContactUs">Contact Us</button>
-            </div>
-
+            <ButtonContactUs></ButtonContactUs>
         </div>
     </div>
     <div class="rightBoxDetails">
@@ -48,33 +22,21 @@
             <div></div>
             <div style="display:flex">
                 <div style="margin-left: 115px;margin-right: 35px;">
-                    <div class="TextDetails">Agency Name</div>
-                    <label>
-                        <input class="LabelDetails" placeholder="Enter your agency name" />
-                    </label>
+                    <LabelDetails TextOverLabel="Agency Name" @bind-InputWord="AgencyName" PlaceHolder="Enter your agency name"></LabelDetails>
                 </div>
                 <div>
-                    <div style="font-weight: 800;">WebSite</div>
-                    <label>
-                        <input class="LabelDetails"  placeholder="Enter your company website" />
-                    </label>
+                    <LabelDetails TextOverLabel="WebSite" @bind-InputWord="WebSite" PlaceHolder="Enter your company website"></LabelDetails>
                 </div>
             </div>
             <div style="display:flex">
                 <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
                     <div class="TextDetails">Brand Color</div>
                     <label style="display:flex">
-                        <input class="LabelDetails" style="width: 240px; border-right: none;" placeholder="Enter or choose HEX" name="color"  />
+                        <input class="LabelDetails" style="width: 240px; border-right: none;" placeholder="Enter or choose HEX" name="color" />
                         <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
-                            <input style="width: 50px; margin-top: 3px;height: 30px; border: none;" type="color"  value="color" >
+                            <input style="width: 50px; margin-top: 3px;height: 30px; border: none;" type="color" value="color">
                         </div>
                     </label>
-                   @* <form action="handler.php">
-                        <p>
-                            Укажите цвет фона: 
-                            <input type="submit" value="Выбрать">
-                        </p>
-                    </form>*@
                 </div>
                 <div style="margin-top: 15px; ">
                     <div class="TextDetails">Logo</div>
@@ -100,44 +62,39 @@
         <div>
             <div></div>
             <div style="display:flex">
-                <div style="margin-left: 115px;margin-right: 35px;">
-                    <div class="TextDetails">First Name</div>
-                    <label>
-                        <input class="LabelDetails" placeholder="Enter your first name" />
-                    </label>
+                <div style="margin-left: 115px;margin-right: 35px; margin-top:15px">
+                    <LabelDetails TextOverLabel="First Name" @bind-InputWord="FirstName" PlaceHolder="Enter your first name"></LabelDetails>
                 </div>
                 <div>
-                    <div class="TextDetails">Last Name</div>
-                    <label>
-                        <input class="LabelDetails" placeholder="Enter your last name" />
-                    </label>
+                    <LabelDetails TextOverLabel="Last Name" @bind-InputWord="LastName" PlaceHolder="Enter your last name"></LabelDetails>
                 </div>
             </div>
             <div style="display:flex">
                 <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
-                    <div class="TextDetails">Link</div>
-                    <label>
-                        <input class="LabelDetails" placeholder="Enter link here" />
-                    </label>
+
+                    <LabelDetails TextOverLabel="Link" @bind-InputWord="Link" PlaceHolder="Enter link here"></LabelDetails>
                 </div>
 
                 <div style="margin-top: 15px;">
-                    <div class="TextDetails">Phone Number</div>
-                    <label>
-                        <input class="LabelDetails" placeholder="Enter a valid phone number" />
-                    </label>
+
+                    <LabelDetails TextOverLabel="Phone Numbe" PlaceHolder="Enter a valid phone number" @bind-InputWord="PhoneNumber"></LabelDetails>
                 </div>
             </div>
         </div>
         <div style="margin-left: 115px;">
             <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 50px; margin-bottom: 27px;"></div>
-            <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;">Discard Changes</button>
+            <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;" @onclick="DiscardChanges">Discard Changes</button>
             <button style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;">Continue</button>
         </div>
     </div>
 </div>
 
 @code {
-    private string biba { get; set; }
     private string Color { get; set; } = "black";
+    private string AgencyName { get; set; }
+    private string WebSite { get; set; }
+    private string LastName { get; set; }
+    private string Link { get; set; }
+    private string FirstName { get; set; }
+    private string PhoneNumber { get; set; }
       }

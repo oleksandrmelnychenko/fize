@@ -1,0 +1,29 @@
+﻿@*<div class="smallText" style="color: black; font-size: 12pt; height: 11px;">@TextOverLabel</div>
+<label>
+    <input type="text" spellcheck="false" @oninput="OnWordChangedChanged" class="InputMail" />
+</label>
+
+*@
+
+<div class="TextDetails">@TextOverLabel</div>
+<label>
+    <input class="LabelDetails" placeholder="@PlaceHolder" @oninput="OnInputWordChangedChanged"/>
+</label>
+
+
+@code {
+    [Parameter]
+    public string TextOverLabel { get; set; }
+
+    [Parameter] public string InputWord { get; set; }
+
+    [Parameter] public string PlaceHolder{ get; set; }
+
+    [Parameter] public EventCallback<string> InputWordChanged { get; set; }
+
+    private Task OnInputWordChangedChanged(ChangeEventArgs e)
+    {
+        InputWord = e.Value.ToString();
+        return InputWordChanged.InvokeAsync(InputWord);
+    }
+}
