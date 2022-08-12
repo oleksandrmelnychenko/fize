@@ -30,4 +30,19 @@ public class UserIdentity : EntityBase
     public bool CanUserResetExpiredPassword { get; set; } = true;
 
     public DateTime PasswordExpiresAt { get; set; } = DateTime.UtcNow.AddYears(1);
+    public Details Details { get; set; }
+}
+public class Details
+{
+    public string Id { get; set; }
+    public string UserIdentityId { get; set; }
+    public string Color { get; set; }
+    public string AgencyName { get; set; }
+    public string WebSite { get; set; }
+    public string Logo { get; set; } //Picture
+    public string PictureUser { get; set; } //Picture
+    public string LastName { get; set; }
+    public string Link { get; set; }
+    public string FirstName { get; set; }
+    public string PhoneNumber { get; set; }
 }
