@@ -8,8 +8,8 @@ public class UserIdentityDbContext : DbContext
 {
     public UserIdentityDbContext()
     {
-        Database.EnsureDeleted();
-        Database.EnsureCreated();
+        //Database.EnsureDeleted();
+        //Database.EnsureCreated();
     }
 
     public DbSet<UserIdentity> UserIdentities { get; set; }

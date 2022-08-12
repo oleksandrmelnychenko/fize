@@ -31,12 +31,7 @@
             <div style="display:flex">
                 <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
                     <div class="TextDetails">Brand Color</div>
-                    <label style="display:flex">
-                        <input class="LabelDetails" style="width: 240px; border-right: none;" placeholder="Enter or choose HEX" name="color" />
-                        <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
-                            <input style="width: 50px; margin-top: 3px;height: 30px; border: none;" type="color" value="color">
-                        </div>
-                    </label>
+                    <LableColor @bind-ColorId="Color"></LableColor>
                 </div>
                 <div style="margin-top: 15px; ">
                     <div class="TextDetails">Logo</div>
@@ -84,17 +79,19 @@
         <div style="margin-left: 115px;">
             <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 50px; margin-bottom: 27px;"></div>
             <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;" @onclick="DiscardChanges">Discard Changes</button>
-            <button style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;">Continue</button>
+            <button style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;" @onclick="ContinueNext">Continue</button>
         </div>
     </div>
 </div>
 
 @code {
-    private string Color { get; set; } = "black";
+    private string Color { get; set; }
     private string AgencyName { get; set; }
     private string WebSite { get; set; }
     private string LastName { get; set; }
     private string Link { get; set; }
     private string FirstName { get; set; }
     private string PhoneNumber { get; set; }
+
+  
       }
