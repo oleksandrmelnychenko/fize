@@ -82,6 +82,32 @@ public class IdentityController : WebApiControllerBase
         }
     }
 
+
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.NEW_DETAILS)]
+    public async Task<IActionResult> NewDetails([FromBody] NewDetailsDataContract newDetailsDataContract)
+    {
+        try
+        {
+            if (newDetailsDataContract == null) throw new ArgumentNullException("newDetailsDataContract");
+
+            var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
+
+            //await _userIdentityService.IssueConfirmation(newDetailsDataContract, baseUrl);
+            await _userIdentityService.NewDetails(newDetailsDataContract);
+            return Ok(SuccessResponseBody(new { Message = "Details create"}));
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.SIGN_IN)]

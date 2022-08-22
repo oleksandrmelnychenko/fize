@@ -24,5 +24,7 @@ public sealed class IdentitySegments
     public const string FORGOT_PASSWORD = "forgot/password";
 
     public const string GENERATE_PASSWORD = "generate/password";
+
+    public const string NEW_DETAILS = "new/details";
 }
 

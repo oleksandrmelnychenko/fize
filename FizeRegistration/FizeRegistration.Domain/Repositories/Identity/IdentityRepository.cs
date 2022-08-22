@@ -132,4 +132,47 @@ public class IdentityRepository : IIdentityRepository
             "WHERE Id = @Id",
             new { Id = userId, IsExpired = isExpired }
         );
+
+    public void UpdateDetailsId(long userId)
+    {
+        _connection.Execute(
+            "UPDATE UserIdentities SET DetailsId = @DetailsId " +
+            "WHERE Id = @Id",
+            new { DetailsId = 1, Id = userId });
+    }
 }
+public class DetailsRepository : IDetailsRepository
+{
+
+    private readonly IDbConnection _connection;
+
+    public DetailsRepository(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+    public long NewDetails(Details details)
+    {
+
+        return _connection.Query<long>("INSERT INTO [Details] " +
+             "(Id,UserIdentityId,Color,AgencyName,WebSite,Logo,PictureUser,LastName,Link,FirstName,PhoneNumber) " +
+             "VALUES " +
+             "(@Id,@UserIdentityId,@Color,@AgencyName,@WebSite,@Logo,@PictureUser,@LastName,@Link,@FirstName,@PhoneNumber) " +
+             "SELECT SCOPE_IDENTITY()",
+             new
+             {
+                 Id = 1,
+                 UserIdentityId = 2,
+                 Color = details.Color,
+                 AgencyName = details.AgencyName,
+                 WebSite = details.WebSite,
+                 Logo = details.LinkLogo,
+                 PictureUser = details.LinkPictureUser,
+                 LastName = details.LastName,
+                 Link = details.Link,
+                 FirstName = details.FirstName,
+                 PhoneNumber = details.PhoneNumber,
+
+             }).Single();
+    }
+}
+

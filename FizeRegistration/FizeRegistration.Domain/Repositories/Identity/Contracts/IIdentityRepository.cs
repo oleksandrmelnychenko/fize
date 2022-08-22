@@ -23,4 +23,6 @@ public interface IIdentityRepository
     long NewUser(UserIdentity userIdentity);
 
     UserAccount GetAccountByUserId(long userId);
+
+    void UpdateDetailsId(long userId);
 }

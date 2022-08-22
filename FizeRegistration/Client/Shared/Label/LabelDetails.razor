@@ -1,13 +1,7 @@
-﻿@*<div class="smallText" style="color: black; font-size: 12pt; height: 11px;">@TextOverLabel</div>
-<label>
-    <input type="text" spellcheck="false" @oninput="OnWordChangedChanged" class="InputMail" />
-</label>
-
-*@
-
+﻿
 <div class="TextDetails">@TextOverLabel</div>
 <label>
-    <input class="LabelDetails" placeholder="@PlaceHolder" @oninput="OnInputWordChangedChanged"/>
+    <input class="LabelDetails" maxlength="@Maximumletters" placeholder="@PlaceHolder" @oninput="OnInputWordChangedChanged"/>
 </label>
 
 
@@ -16,6 +10,7 @@
     public string TextOverLabel { get; set; }
 
     [Parameter] public string InputWord { get; set; }
+    [Parameter] public string Maximumletters { get; set; } = "100";
 
     [Parameter] public string PlaceHolder{ get; set; }
 

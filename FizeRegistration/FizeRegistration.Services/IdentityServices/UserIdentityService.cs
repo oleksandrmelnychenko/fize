@@ -24,6 +24,7 @@ namespace FizeRegistration.Services.IdentityServices;
 public class UserIdentityService : IUserIdentityService
 {
     private readonly IIdentityRepositoriesFactory _identityRepositoriesFactory;
+    private readonly IDetailsRepositoriesFactory _detailsRepositoriesFactory;
 
     private readonly IDbConnectionFactory _connectionFactory;
 
@@ -32,11 +33,13 @@ public class UserIdentityService : IUserIdentityService
     public UserIdentityService(
         IDbConnectionFactory connectionFactory,
         IIdentityRepositoriesFactory identityRepositoriesFactory,
-        IMailSenderFactory mailSenderFactory)
+        IMailSenderFactory mailSenderFactory,
+        IDetailsRepositoriesFactory detailsRepositoriesFactory)
     {
         _identityRepositoriesFactory = identityRepositoriesFactory;
         _connectionFactory = connectionFactory;
         _mailSenderFactory = mailSenderFactory;
+        _detailsRepositoriesFactory = detailsRepositoriesFactory;
     }
 
     public Task<UserAccount> SignInAsync(AuthenticationDataContract authenticateDataContract) =>
@@ -239,61 +242,86 @@ public class UserIdentityService : IUserIdentityService
             return identityRepository.GetAccountByUserId(newUser.Id);
         }
     });
-
-    public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>
-         Task.Run(() =>
+    public Task NewDetails(NewDetailsDataContract newDetailsDataContract) =>
+     Task.Run(() =>
+     {
+         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
          {
-             using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+             IDetailsRepository detailsRepository = _detailsRepositoriesFactory.NewDetailsRepository(connection);
+             IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
+
+             Details details = new Details
              {
-                 IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
-                 if (!Validator.IsEmailValid(userEmailDataContract.Email))
-                 {
-                     throw new ArgumentException(IdentityValidationMessages.EMAIL_INVALID);
-                     
-                 }
+                 AgencyName = newDetailsDataContract.AgencyName,
+                 FirstName = newDetailsDataContract.FirstName,
+                 Color = newDetailsDataContract.Color,
+                 LastName = newDetailsDataContract.LastName,
+                 Link = newDetailsDataContract.Link,
+                 PhoneNumber = newDetailsDataContract.PhoneNumber,
+                 WebSite = newDetailsDataContract.WebSite,
+                 LinkLogo = newDetailsDataContract.LinkLogo,
+                 LinkPictureUser = newDetailsDataContract.LinkPictureUser,
+             };
 
-                 if (!identityRepository.IsEmailAvailable(userEmailDataContract.Email))
-                 {
-                     throw new ArgumentException(IdentityValidationMessages.EMAIL_NOT_AVAILABLE);
-                 }
+            var biba = detailsRepository.NewDetails(details);
+             identityRepository.UpdateDetailsId(1);
+         }
+     });
+    public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>
+    Task.Run(() =>
+    {
+        using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+        {
+            IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
-                 byte[] key = Encoding.ASCII.GetBytes(ConfigurationManager.AppSettings.TokenSecret);
-                 DateTime expiry = DateTime.UtcNow.AddDays(1);
-                 ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
-                     {
+            if (!Validator.IsEmailValid(userEmailDataContract.Email))
+            {
+                throw new ArgumentException(IdentityValidationMessages.EMAIL_INVALID);
+
+            }
+
+            if (!identityRepository.IsEmailAvailable(userEmailDataContract.Email))
+            {
+                throw new ArgumentException(IdentityValidationMessages.EMAIL_NOT_AVAILABLE);
+            }
+
+            byte[] key = Encoding.ASCII.GetBytes(ConfigurationManager.AppSettings.TokenSecret);
+            DateTime expiry = DateTime.UtcNow.AddDays(1);
+            ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
+                {
                             new Claim(ClaimTypes.Expiration, expiry.Ticks.ToString())
-                     }
-                 );
+                }
+            );
 
-                 claims.AddClaim(new Claim(ClaimTypes.Email, userEmailDataContract.Email));
-                 claims.AddClaim(new Claim(ClaimTypes.Role, "UnconfirmedUser"));
+            claims.AddClaim(new Claim(ClaimTypes.Email, userEmailDataContract.Email));
+            claims.AddClaim(new Claim(ClaimTypes.Role, "UnconfirmedUser"));
 
-                 SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
-                 {
-                     Issuer = AuthOptions.ISSUER,
-                     Audience = AuthOptions.AUDIENCE_LOCAL,
-                     Subject = claims,
-                     Expires = expiry,
-                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                         SecurityAlgorithms.HmacSha256Signature)
-                 };
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = AuthOptions.ISSUER,
+                Audience = AuthOptions.AUDIENCE_LOCAL,
+                Subject = claims,
+                Expires = expiry,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
 
-                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                 JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
 
-                 TokenDataContract tokenData = new TokenDataContract
-                 {
-                     Token = tokenHandler.WriteToken(token),
-                 };
+            TokenDataContract tokenData = new TokenDataContract
+            {
+                Token = tokenHandler.WriteToken(token),
+            };
 
-                 var mailSenderService = _mailSenderFactory.NewMailSenderService();
+            var mailSenderService = _mailSenderFactory.NewMailSenderService();
 
-                 mailSenderService.SendTokenToEmail(userEmailDataContract.Email,
-                 tokenData, baseUrl);
-             }
-         });
+            mailSenderService.SendTokenToEmail(userEmailDataContract.Email,
+            tokenData, baseUrl);
+        }
+    });
 
     private bool IsUserPasswordExpired(
         UserIdentity user)

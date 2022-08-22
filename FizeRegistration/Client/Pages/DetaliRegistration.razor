@@ -37,9 +37,14 @@
                     <div class="TextDetails">Logo</div>
                     <label style="display: flex; align-items: center;">
                         <input style="width: 220px; border-right: none;" class="LabelDetails" placeholder="Drag & drop it here or upload" />
-                        <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
-                            <button style="margin-top: 3px;    font-weight: 600; background: white;">Upload</button>
-                        </div>
+                        @*<div style="height: 41px; border: 2px solid #00000012; border-left: none;">
+
+                        <input  class="custom-file-upload" style="margin-top: 3px; width:70px;   font-weight: 600; background: white;" value="Upload" />
+                        </div>*@
+                        <label for="file-upload" class="custom-file-upload">
+                            <i class="fa fa-cloud-upload"></i> Upload
+                        </label>
+                        <input id="file-upload" type="file" />
                     </label>
                 </div>
             </div>
@@ -50,7 +55,11 @@
             <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
             <div style="display:flex">
                 <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
-                <button style="    height: 28px; width: 70px; align-self: center; margin-left: 15px; font-size: 11pt; font-weight: 800; border: 1px solid black; background:white;">Upload</button>
+                @*<button style="    height: 28px; width: 70px; align-self: center; margin-left: 15px; font-size: 11pt; font-weight: 800; border: 1px solid black; background:white;">Upload</button>*@
+                <label for="file-upload" class="custom-file-upload" style="align-self:center; margin-left:10px;padding:0px;height: 30px; font-size: 12pt;    ">
+                    <i class="fa fa-cloud-upload"></i> Upload
+                </label>
+                <input id="file-upload" type="file" />
             </div>
         </div>
 
@@ -58,7 +67,7 @@
             <div></div>
             <div style="display:flex">
                 <div style="margin-left: 115px;margin-right: 35px; margin-top:15px">
-                    <LabelDetails TextOverLabel="First Name" @bind-InputWord="FirstName" PlaceHolder="Enter your first name"></LabelDetails>
+                    <LabelDetails Maximumletters="10" TextOverLabel="First Name" @bind-InputWord="FirstName" PlaceHolder="Enter your first name"></LabelDetails>
                 </div>
                 <div style="margin-top:15px">
                     <LabelDetails TextOverLabel="Last Name" @bind-InputWord="LastName" PlaceHolder="Enter your last name"></LabelDetails>
@@ -72,7 +81,11 @@
 
                 <div style="margin-top: 15px;">
 
-                    <LabelDetails TextOverLabel="Phone Numbe" PlaceHolder="Enter a valid phone number" @bind-InputWord="PhoneNumber"></LabelDetails>
+                    <LabelDetails TextOverLabel="Phone Number" PlaceHolder="Enter a valid phone number" @bind-InputWord="PhoneNumbers"></LabelDetails>
+                    @if (!IsPhoneNumber)
+                    {
+                        <div style="color:red;font-size:12pt;">wrong phone number entered</div>
+                    }
                 </div>
             </div>
         </div>
@@ -91,7 +104,7 @@
     private string LastName { get; set; }
     private string Link { get; set; }
     private string FirstName { get; set; }
-    private string PhoneNumber { get; set; }
+    private string PhoneNumbers { get; set; }
 
-  
+
       }

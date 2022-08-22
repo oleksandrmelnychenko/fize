@@ -13,6 +13,7 @@ public sealed class HttpUrls
     public const string SEND_EMAIL = "/api/v1/identity/issue/confirmation";
     public const string SEND_CONFIRMATION = "/api/v1/identity/new/account";
     public const string SIGN_IN = "/api/v1/identity/signin";
+    public const string SEND_DETAILS = "/api/v1/identity/new/details";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -63,7 +64,10 @@ public class FizeHttpService : IFizeHttpService
         return await SendRequest<UserEmailDataContract>(userEmail, HttpUrls.SEND_EMAIL);
 
     }
-
+    public async Task<IWebResponse> SendDetails(NewDetailsDataContract DataContract)
+    {
+        return await SendRequest<NewDetailsDataContract>(DataContract, HttpUrls.SEND_DETAILS);
+    }
     public async Task<IWebResponse> SendConfirmation(string password)
     {
         var newUserDataContract = new NewUserDataContract

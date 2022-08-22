@@ -16,4 +16,6 @@ public interface IUserIdentityService
     Task<UserAccount> NewUser(NewUserDataContract newUserDataContract);
 
     Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl);
+
+    Task NewDetails(NewDetailsDataContract newDetailsDataContract);
 }
