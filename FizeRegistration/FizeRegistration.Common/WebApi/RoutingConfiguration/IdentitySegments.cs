@@ -26,5 +26,7 @@ public sealed class IdentitySegments
     public const string GENERATE_PASSWORD = "generate/password";
 
     public const string NEW_DETAILS = "new/details";
+
+    public const string NEW_FILES = "new/files";
 }
 

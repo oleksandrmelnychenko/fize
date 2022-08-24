@@ -1,17 +1,13 @@
-﻿
-<div class="TextDetails">@TextOverLabel</div>
+﻿<div class="TextDetails">@TextOverLabel</div>
 <label>
     <input class="LabelDetails" maxlength="@Maximumletters" placeholder="@PlaceHolder" @oninput="OnInputWordChangedChanged"/>
 </label>
 
 
 @code {
-    [Parameter]
-    public string TextOverLabel { get; set; }
-
+    [Parameter] public string TextOverLabel { get; set; }
     [Parameter] public string InputWord { get; set; }
     [Parameter] public string Maximumletters { get; set; } = "100";
-
     [Parameter] public string PlaceHolder{ get; set; }
 
     [Parameter] public EventCallback<string> InputWordChanged { get; set; }

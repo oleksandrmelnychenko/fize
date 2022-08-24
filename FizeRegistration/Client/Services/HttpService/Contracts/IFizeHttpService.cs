@@ -13,6 +13,8 @@ public interface IFizeHttpService
 
     Task<IWebResponse> SendEmailForSignUp(UserEmailDataContract userEmail);
 
+    Task<IWebResponse> SendFile(MultipartFormDataContent file);
+
     Task<IWebResponse> SendConfirmation(string password);
 
     Task<IWebResponse> SignInAsync(AuthenticationDataContract authenticationDataContract);

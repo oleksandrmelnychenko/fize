@@ -7,6 +7,7 @@ namespace FizeRegistration.Client.Pages;
 
 public partial class SignInUp : ComponentBase
 {
+    [Inject] NavigationManager navigate { get; set; }
     [Inject] IFizeHttpService HttpClient { get; set; }
 
     private string Email = String.Empty;
@@ -23,6 +24,7 @@ public partial class SignInUp : ComponentBase
     private void SignInAsync()
     {
         LogIn = true;
+        navigate.NavigateTo("/auth/signinup");
     }
 
     private async Task SendEmailPost()

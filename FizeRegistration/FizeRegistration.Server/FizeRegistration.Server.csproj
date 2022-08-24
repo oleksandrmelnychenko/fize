@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Shared\FizeRegistration.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ImageFiles\" />
+  </ItemGroup>
+
 </Project>

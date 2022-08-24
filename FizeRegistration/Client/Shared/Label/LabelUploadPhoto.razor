@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Http
+<label for="file-upload" class="custom-file-upload" style="@Style">Upload
+    <InputFile OnChange="@LoadFiles" style="opacity:0;"/>
+</label>
+
+
+
+@code {
+    [Parameter] public string Style { get; set; } = string.Empty;
+
+    [Parameter] public IBrowserFile Photo { get; set; }
+
+    [Parameter] public EventCallback<IBrowserFile> PhotoChanged { get; set; }
+
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        Photo  = e.File;
+    }
+    private Task OnPhotoChangedChanged(ChangeEventArgs e)
+    {
+        
+        return PhotoChanged.InvokeAsync(Photo);
+    }
+}

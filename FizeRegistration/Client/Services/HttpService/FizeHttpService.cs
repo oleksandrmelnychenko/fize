@@ -5,6 +5,7 @@ using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Shared.ResponseBuilder;
 using FizeRegistration.Shared.ResponseBuilder.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace FizeRegistration.Client.Services.HttpService;
 
@@ -14,13 +15,13 @@ public sealed class HttpUrls
     public const string SEND_CONFIRMATION = "/api/v1/identity/new/account";
     public const string SIGN_IN = "/api/v1/identity/signin";
     public const string SEND_DETAILS = "/api/v1/identity/new/details";
+    public const string SEND_DETAILS_FILE = "/api/v1/identity/new/details";
 }
 
 public class FizeHttpService : IFizeHttpService
 {
     private HttpClient _httpClient;
     private ILocalStorageService _localStorage;
-
     public FizeHttpService(HttpClient httpClient, ILocalStorageService localStorage)
     {
         _httpClient = httpClient;
@@ -68,6 +69,7 @@ public class FizeHttpService : IFizeHttpService
     {
         return await SendRequest<NewDetailsDataContract>(DataContract, HttpUrls.SEND_DETAILS);
     }
+
     public async Task<IWebResponse> SendConfirmation(string password)
     {
         var newUserDataContract = new NewUserDataContract
@@ -118,5 +120,16 @@ public class FizeHttpService : IFizeHttpService
 
             return errorResponse;
         }
+    }
+
+    public async Task<IWebResponse> SendFile(MultipartFormDataContent model)
+    {
+         await _httpClient.PostAsync(HttpUrls.SEND_DETAILS_FILE, model);
+        return  new SuccessResponse
+        {
+            Body = new Object(),
+            Message = "SuccessResponse",
+            StatusCode = System.Net.HttpStatusCode.Created
+        }; ;
     }
 }

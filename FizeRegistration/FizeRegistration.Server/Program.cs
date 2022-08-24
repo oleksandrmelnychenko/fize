@@ -16,11 +16,12 @@ using FizeRegistration.Common.IdentityConfiguration;
 using Microsoft.Extensions.Primitives;
 using FizeRegistration.Shared.ResponseBuilder.Contracts;
 using FizeRegistration.Shared.ResponseBuilder;
+using FizeRegistration.Common.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigManager.SetAppSettingsProperties(builder.Configuration);
-
+NoltFolderManager.InitializeFolderManager(builder.Environment.ContentRootPath);
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 

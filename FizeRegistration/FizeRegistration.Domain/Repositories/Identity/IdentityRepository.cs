@@ -154,9 +154,9 @@ public class DetailsRepository : IDetailsRepository
     {
 
         return _connection.Query<long>("INSERT INTO [Details] " +
-             "(Id,UserIdentityId,Color,AgencyName,WebSite,Logo,PictureUser,LastName,Link,FirstName,PhoneNumber) " +
+             "(Id,UserIdentityId,Color,AgencyName,WebSite,LastName,Link,FirstName,PhoneNumber) " +
              "VALUES " +
-             "(@Id,@UserIdentityId,@Color,@AgencyName,@WebSite,@Logo,@PictureUser,@LastName,@Link,@FirstName,@PhoneNumber) " +
+             "(@Id,@UserIdentityId,@Color,@AgencyName,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
              "SELECT SCOPE_IDENTITY()",
              new
              {
@@ -165,8 +165,8 @@ public class DetailsRepository : IDetailsRepository
                  Color = details.Color,
                  AgencyName = details.AgencyName,
                  WebSite = details.WebSite,
-                 Logo = details.LinkLogo,
-                 PictureUser = details.LinkPictureUser,
+                 //Logo = details.LinkLogo,
+                 //PictureUser = details.LinkPictureUser,
                  LastName = details.LastName,
                  Link = details.Link,
                  FirstName = details.FirstName,

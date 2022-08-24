@@ -1,4 +1,12 @@
-﻿@page "/"
+﻿
+@page "/"
 
-<SignInUp></SignInUp>
+@inject NavigationManager NavigationManager
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+         NavigationManager.NavigateTo("/auth");
+    }
+}
+@*<SignInUp></SignInUp>*@
 @*<DetaliRegistration></DetaliRegistration>*@

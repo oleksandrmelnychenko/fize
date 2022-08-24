@@ -9,6 +9,7 @@ using FizeRegistration.Common.Exceptions.IdentityExceptions;
 using FizeRegistration.Services.IdentityServices.Contracts;
 using System.Security.Claims;
 using FizeRegistration.Shared.DataContracts;
+using FizeRegistration.Common.Helpers;
 
 namespace FizeRegistration.Server.Controllers;
 
@@ -86,16 +87,27 @@ public class IdentityController : WebApiControllerBase
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.NEW_DETAILS)]
-    public async Task<IActionResult> NewDetails([FromBody] NewDetailsDataContract newDetailsDataContract)
+    public async Task<IActionResult> NewDetails(/*[FromBody] NewDetailsDataContract newDetailsDataContract ,*/ [FromForm] IFormFile file)
     {
         try
         {
-            if (newDetailsDataContract == null) throw new ArgumentNullException("newDetailsDataContract");
+            if (file != null)
+            {
+                string exention = ".png";
+                var path = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), file.Name + exention);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            //string path = "/Files/" + uploadedFile.FileName;
 
-            var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
+            //if (newDetailsDataContract == null) throw new ArgumentNullException("newDetailsDataContract");
 
-            //await _userIdentityService.IssueConfirmation(newDetailsDataContract, baseUrl);
-            await _userIdentityService.NewDetails(newDetailsDataContract);
+            //var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
+
+            ////await _userIdentityService.IssueConfirmation(newDetailsDataContract, baseUrl);
+            //await _userIdentityService.NewDetails(newDetailsDataContract);
             return Ok(SuccessResponseBody(new { Message = "Details create"}));
         }
         catch (InvalidIdentityException exc)

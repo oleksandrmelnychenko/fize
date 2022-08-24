@@ -260,12 +260,10 @@ public class UserIdentityService : IUserIdentityService
                  Link = newDetailsDataContract.Link,
                  PhoneNumber = newDetailsDataContract.PhoneNumber,
                  WebSite = newDetailsDataContract.WebSite,
-                 LinkLogo = newDetailsDataContract.LinkLogo,
-                 LinkPictureUser = newDetailsDataContract.LinkPictureUser,
              };
 
             var biba = detailsRepository.NewDetails(details);
-             identityRepository.UpdateDetailsId(1);
+             //identityRepository.UpdateDetailsId(1);
          }
      });
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>

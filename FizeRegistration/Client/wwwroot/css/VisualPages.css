@@ -272,9 +272,9 @@
             background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
         }
 
-input[type="file"] {
+/*input[type="file"] {
     display: none;
-}
+}*/
 
 .custom-file-upload {
     border: 2px solid #00000012;
@@ -287,3 +287,5 @@ input[type="file"] {
     width: 70px;
     height: 41px;
 }
+
+
