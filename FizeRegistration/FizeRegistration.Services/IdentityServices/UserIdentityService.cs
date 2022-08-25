@@ -18,6 +18,7 @@ using FizeRegistration.Domain.DbConnectionFactory;
 using FizeRegistration.Domain.DbConnectionFactory.Contracts;
 using FizeRegistration.Services.MailSenderServices.Contracts;
 using FizeRegistration.Shared.DataContracts;
+using Microsoft.AspNetCore.Http;
 
 namespace FizeRegistration.Services.IdentityServices;
 
@@ -242,6 +243,18 @@ public class UserIdentityService : IUserIdentityService
             return identityRepository.GetAccountByUserId(newUser.Id);
         }
     });
+    public Task NewFile(string urlFilePicture) =>
+     Task.Run(() =>
+     {
+         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+         {
+             IDetailsRepository detailsRepository = _detailsRepositoriesFactory.NewDetailsRepository(connection);
+             IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
+
+             //var biba = detailsRepository.NewDetails(details);
+             //identityRepository.UpdateDetailsId(1);
+         }
+     });
     public Task NewDetails(NewDetailsDataContract newDetailsDataContract) =>
      Task.Run(() =>
      {
@@ -259,11 +272,13 @@ public class UserIdentityService : IUserIdentityService
                  LastName = newDetailsDataContract.LastName,
                  Link = newDetailsDataContract.Link,
                  PhoneNumber = newDetailsDataContract.PhoneNumber,
+                 LinkLogo = newDetailsDataContract.LinkLogo,
+                 LinkPictureUser = newDetailsDataContract.LinkPicture,
                  WebSite = newDetailsDataContract.WebSite,
              };
 
-            var biba = detailsRepository.NewDetails(details);
-             //identityRepository.UpdateDetailsId(1);
+             //var biba = detailsRepository.NewDetails(details);
+             identityRepository.UpdateDetailsId(2);
          }
      });
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>

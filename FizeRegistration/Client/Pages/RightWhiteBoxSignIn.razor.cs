@@ -44,7 +44,7 @@ namespace FizeRegistration.Client.Pages
                 Console.WriteLine("Signed In");
                 SendMessageBadMail = "Signed In";
                 LoadingProcess = false;
-                NavigationManager.NavigateTo($"/auth/signinup/Detail");
+                NavigationManager.NavigateTo($"/auth/signinup/Detail/{Email}");
                 // need a change of controller to get token
             }
             else

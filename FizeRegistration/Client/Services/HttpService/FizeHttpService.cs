@@ -15,7 +15,7 @@ public sealed class HttpUrls
     public const string SEND_CONFIRMATION = "/api/v1/identity/new/account";
     public const string SIGN_IN = "/api/v1/identity/signin";
     public const string SEND_DETAILS = "/api/v1/identity/new/details";
-    public const string SEND_DETAILS_FILE = "/api/v1/identity/new/details";
+    public const string SEND_DETAILS_FILE = "/api/v1/identity/new/files";
 }
 
 public class FizeHttpService : IFizeHttpService

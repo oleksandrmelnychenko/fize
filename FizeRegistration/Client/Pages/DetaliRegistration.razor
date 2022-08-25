@@ -1,106 +1,131 @@
-﻿@page "/auth/signinup/Detail"
+﻿@page "/auth/signinup/Detail/{Email}"
 @using Microsoft.AspNetCore.Http
-
-<div class="basicBox" style="background:white;height: 800px; width:1150px">
-    <div class="leftBoxInformation">
-        <div>
-            <div class="FizeImageDetails" style="margin-left: 45px;">
-                <FizeImage></FizeImage>
+<EditForm Model="@detailsInformation" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="basicBox" style="background:white;height: 800px; width:1150px">
+        <div class="leftBoxInformation">
+            <div>
+                <div class="FizeImageDetails" style="margin-left: 45px;">
+                    <FizeImage></FizeImage>
+                </div>
+                <div style="margin-top: 57px;margin-left: 45px;">
+                    <CircleDetails StepText="Step 1" SubtitleText="Basic Detalis"></CircleDetails>
+                    <div class="lineDetails"></div>
+                    <CircleDetails StepText="Step 2" SubtitleText="Tour"></CircleDetails>
+                    <div class="lineDetails"></div>
+                    <CircleDetails StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleDetails>
+                </div>
+                <ButtonContactUs></ButtonContactUs>
             </div>
-            <div style="margin-top: 57px;margin-left: 45px;">
-                <CircleDetails StepText="Step 1" SubtitleText="Basic Detalis"></CircleDetails>
-                <div class="lineDetails"></div>
-                <CircleDetails StepText="Step 2" SubtitleText="Tour"></CircleDetails>
-                <div class="lineDetails"></div>
-                <CircleDetails StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleDetails>
-            </div>
-            <ButtonContactUs></ButtonContactUs>
         </div>
-    </div>
-    <div class="rightBoxDetails">
-        <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 95px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">Let`s set up your agency</div>
-        <div>
-            <div></div>
-            <div style="display:flex">
-                <div style="margin-left: 115px;margin-right: 35px;">
-                    <LabelDetails TextOverLabel="Agency Name" @bind-InputWord="AgencyName" PlaceHolder="Enter your agency name"></LabelDetails>
+
+
+        <div class="rightBoxDetails">
+            <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 50px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">Let`s set up your agency</div>
+            <div>
+                <div></div>
+                <div style="display:flex">
+                    <div style="margin-left: 115px;margin-right: 35px;">
+                        <LabelDetails TextOverLabel="Agency Name" @bind-InputWord="detailsInformation.AgencyName" PlaceHolder="Enter your agency name"></LabelDetails>
+                    </div>
+                    <div>
+                        <LabelDetails TextOverLabel="WebSite" @bind-InputWord="detailsInformation.WebSite" PlaceHolder="Enter your company website"></LabelDetails>
+                    </div>
                 </div>
-                <div>
-                    <LabelDetails TextOverLabel="WebSite" @bind-InputWord="WebSite" PlaceHolder="Enter your company website"></LabelDetails>
+                <div style="display:flex">
+                    <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
+                        <div class="TextDetails">Brand Color</div>
+                        <LableColor @bind-ColorId="detailsInformation.Color"></LableColor>
+                    </div>
+                    <div style="margin-top: 15px; ">
+                        <div class="TextDetails">Logo</div>
+                        <label style="display: flex; align-items: center;">
+                            <input style="width: 220px; border-right: none;" class="LabelDetails" placeholder="Drag & drop it here or upload" />
+                            <label for="file-upload" class="custom-file-upload">
+                                Upload
+                                <InputFile OnChange="@LinkLogoFiles" style="opacity:0;" />
+                            </label>
+                        </label>
+                    </div>
                 </div>
             </div>
-            <div style="display:flex">
-                <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
-                    <div class="TextDetails">Brand Color</div>
-                    <LableColor @bind-ColorId="Color"></LableColor>
-                </div>
-                <div style="margin-top: 15px; ">
-                    <div class="TextDetails">Logo</div>
-                    <label style="display: flex; align-items: center;">
-                        <input style="width: 220px; border-right: none;" class="LabelDetails" placeholder="Drag & drop it here or upload" />
-                        <label for="file-upload" class="custom-file-upload" >
-                            Upload
-                            <InputFile OnChange="@LinkLogoFiles" style="opacity:0;" />
-                        </label>
+            <div style="margin-left: 115px; ">
+                <div style="border-bottom: 1px solid #00000012; margin-right: 180px; margin-top: 35px; font-weight: 800;  font-size: 15pt; margin-bottom: 20px;">Let`s set up your profile</div>
+                <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
+                <div style="display:flex">
+                    <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
+                    <label for="file-upload" class="custom-file-upload" style="align-self:center;text-align: center; margin-left:10px;padding:0px;height: 30px; font-size: 12pt;">
+                        Upload
+                        <InputFile OnChange="@LinkPictureFiles" style="opacity:0;" />
                     </label>
                 </div>
             </div>
-        </div>
-        <div style="margin-left: 115px; ">
-            <div style="border-bottom: 1px solid #00000012; margin-right: 180px; margin-top: 35px; font-weight: 800;  font-size: 15pt; margin-bottom: 20px;">Let`s set up your profile</div>
-            <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
-            <div style="display:flex">
-                <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
-                <label for="file-upload" class="custom-file-upload" style="align-self:center;text-align: center; margin-left:10px;padding:0px;height: 30px; font-size: 12pt;">
-                    Upload
-                    <InputFile OnChange="@LinkPictureFiles" style="opacity:0;" />
-                </label>
+
+            <div>
+                <div></div>
+                <div style="display:flex">
+                    <div style="display: grid;mar n-left: 115px;margin-right: 35px; margin-top:15px">
+                        @*<LabelDetails Maximumletters="10" TextOverLabel="First Name" @bind-InputWord="detailsInformation.FirstName" PlaceHolder="Enter your first name"></LabelDetails>*@
+
+
+                        <label for="firstname">First Name </label>
+                        <InputText @bind-Value="@detailsInformation.FirstName" class="LabelDetails"  placeholder="Enter your first namer"></InputText>
+                        <ValidationMessage For="@(() => @detailsInformation.FirstName)" />
+
+                    </div>
+                    <div style="margin-top:15px">
+                        <LabelDetails TextOverLabel="Last Name" @bind-InputWord="detailsInformation.LastName" PlaceHolder="Enter your last name"></LabelDetails>
+                         <label for="firstname">Last Name </label>
+                        <InputText @bind-Value="@detailsInformation.LastName" class="LabelDetails"  placeholder="Enter your last name"></InputText>
+                        <ValidationMessage For="@(() => @detailsInformation.LastName)" />
+                    </div>
+                </div>
+                <div style="display:flex">
+                    <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
+
+                        <LabelDetails TextOverLabel="Link" @bind-InputWord="detailsInformation.Link" PlaceHolder="Enter link here"></LabelDetails>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+
+                        <LabelDetails TextOverLabel="Phone Number" PlaceHolder="Enter a valid phone number" @bind-InputWord="detailsInformation.PhoneNumbers"></LabelDetails>
+                        @if (!isPhoneNumber)
+                        {
+                            <div style="color:red;font-size:12pt;">wrong phone number entered</div>
+                        }
+                    </div>
+                </div>
+
+
             </div>
-        </div>
-
-        <div>
-            <div></div>
-            <div style="display:flex">
-                <div style="margin-left: 115px;margin-right: 35px; margin-top:15px">
-                    <LabelDetails Maximumletters="10" TextOverLabel="First Name" @bind-InputWord="FirstName" PlaceHolder="Enter your first name"></LabelDetails>
-                </div>
-                <div style="margin-top:15px">
-                    <LabelDetails TextOverLabel="Last Name" @bind-InputWord="LastName" PlaceHolder="Enter your last name"></LabelDetails>
-                </div>
+            <div style="margin-left: 115px;">
+                <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 50px; margin-bottom: 27px;"></div>
+                <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;" @onclick="DiscardChanges">Discard Changes</button>
+                <button style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;" @onclick="ContinueNext">Continue</button>
             </div>
-            <div style="display:flex">
-                <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
 
-                    <LabelDetails TextOverLabel="Link" @bind-InputWord="Link" PlaceHolder="Enter link here"></LabelDetails>
-                </div>
 
-                <div style="margin-top: 15px;">
-
-                    <LabelDetails TextOverLabel="Phone Number" PlaceHolder="Enter a valid phone number" @bind-InputWord="PhoneNumbers"></LabelDetails>
-                    @if (!IsPhoneNumber)
-                    {
-                        <div style="color:red;font-size:12pt;">wrong phone number entered</div>
-                    }
-                </div>
-            </div>
-        </div>
-        <div style="margin-left: 115px;">
-            <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 50px; margin-bottom: 27px;"></div>
-            <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;" @onclick="DiscardChanges">Discard Changes</button>
-            <button style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;" @onclick="ContinueNext">Continue</button>
         </div>
     </div>
-</div>
+</EditForm>
+
 
 @code {
-
+    [Parameter] public string Email { get; set; }
 
     private void LinkLogoFiles(InputFileChangeEventArgs e)
     {
-        LinkLogo = e.File;
+        detailsInformation.Logo = e.File;
     }
-     private void LinkPictureFiles(InputFileChangeEventArgs e)
+    private void LinkPictureFiles(InputFileChangeEventArgs e)
     {
-        LinkPicture = e.File;
+        detailsInformation.Picture = e.File;
+    }
+    @code {
+        //private DetaliRegistration person = new DetaliRegistration();
+        private void HandleValidSubmit()
+        {
+            Console.WriteLine("OnValidSubmit");
+        }
     }
       }

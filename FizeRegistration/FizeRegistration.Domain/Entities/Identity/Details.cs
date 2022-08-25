@@ -9,8 +9,8 @@ public class Details
     public string Color { get; set; }
     public string AgencyName { get; set; }
     public string WebSite { get; set; }
-    public IBrowserFile LinkLogo { get; set; } //Picture
-    public IBrowserFile LinkPictureUser { get; set; } //Picture
+    public string LinkLogo { get; set; } //Picture
+    public string LinkPictureUser { get; set; } //Picture
     public string LastName { get; set; }
     public string Link { get; set; }
     public string FirstName { get; set; }

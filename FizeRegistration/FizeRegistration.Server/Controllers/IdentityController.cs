@@ -10,6 +10,7 @@ using FizeRegistration.Services.IdentityServices.Contracts;
 using System.Security.Claims;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Common.Helpers;
+using Newtonsoft.Json;
 
 namespace FizeRegistration.Server.Controllers;
 
@@ -81,34 +82,60 @@ public class IdentityController : WebApiControllerBase
         {
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
-    }
+    } 
 
 
     [HttpPost]
     [AllowAnonymous]
-    [AssignActionRoute(IdentitySegments.NEW_DETAILS)]
-    public async Task<IActionResult> NewDetails(/*[FromBody] NewDetailsDataContract newDetailsDataContract ,*/ [FromForm] IFormFile file)
+    [AssignActionRoute(IdentitySegments.NEW_FILES)]
+    public async Task<IActionResult> NewFiles( [FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string DetailsData)
     {
         try
         {
-            if (file != null)
+
+            if (filePictire != null && fileLogo != null && DetailsData != null)
             {
+                var newDetailsDataContract = JsonConvert.DeserializeObject<NewDetailsDataContract>(DetailsData);
                 string exention = ".png";
-                var path = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), file.Name + exention);
-                using (var stream = new FileStream(path, FileMode.Create))
+                string pathPictire = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), filePictire.FileName + exention);
+                string pathLogo = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), fileLogo.FileName + exention);
+                newDetailsDataContract.LinkPicture = pathPictire;
+                newDetailsDataContract.LinkLogo = pathLogo;
+                await _userIdentityService.NewDetails(newDetailsDataContract);
+
+                using (var stream = new FileStream(pathPictire, FileMode.Create))
                 {
-                    await file.CopyToAsync(stream);
+                    await filePictire.CopyToAsync(stream);
+                } 
+                using (var stream = new FileStream(pathLogo, FileMode.Create))
+                {
+                    await fileLogo.CopyToAsync(stream);
                 }
             }
-            //string path = "/Files/" + uploadedFile.FileName;
+            return Ok(SuccessResponseBody(new { Message = "Files Send"}));
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.NEW_DETAILS)]
+    public async Task<IActionResult> NewDetails([FromBody] NewDetailsDataContract newDetailsDataContract)
+    {
+        try
+        {
+           if (newDetailsDataContract == null) throw new ArgumentNullException("newDetailsDataContract");
 
-            //if (newDetailsDataContract == null) throw new ArgumentNullException("newDetailsDataContract");
+            var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
 
-            //var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
-
-            ////await _userIdentityService.IssueConfirmation(newDetailsDataContract, baseUrl);
-            //await _userIdentityService.NewDetails(newDetailsDataContract);
-            return Ok(SuccessResponseBody(new { Message = "Details create"}));
+            await _userIdentityService.NewDetails(newDetailsDataContract);
+            return Ok(SuccessResponseBody(new { Message = "Details create" }));
         }
         catch (InvalidIdentityException exc)
         {
