@@ -12,34 +12,41 @@ namespace FizeRegistration.Client.Pages
 {
     public sealed class DetailsInformation
     {
+        //[Required]
+        //[StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         public string Color { get; set; }
+        [Required]
+        [StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         public string AgencyName { get; set; }
+
+        [Required]
+        //[RegularExpression(@"/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A - Za - z0 - 9.-] +| (?: www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-] +)((?:\/[\+~%\/.\w - _] *)?\?? (?:[-\+= &;%@.\w_]*)#?(?:[\w]*))?)/$", ErrorMessage = "Characters are not allowed")]
         public string WebSite { get; set; }
+
+        [Required]
+        [StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         public string LastName { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         public string Link { get; set; }
+
         [Required]
         [StringLength(15, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         public string FirstName { get; set; }
+
+        [Required]
+        [RegularExpression(@"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$", ErrorMessage = "Characters are not allowed")]
         public string PhoneNumbers { get; set; }
+        [Required]
         public IBrowserFile Logo { get; set; }
         public IBrowserFile Picture { get; set; }
     }
+    
     public partial class DetaliRegistration
     {
         DetailsInformation detailsInformation = new DetailsInformation();
-         //private string Color { get; set; }
-         //private string AgencyName { get; set; }
-         //private string WebSite { get; set; }
-         //private string LastName { get; set; }
-         //private string Link { get; set; }
-         //[Required]
-         //[StringLength(10, ErrorMessage = "Name is too long.")]
-         //private string FirstName { get; set; }
-         //private string PhoneNumbers { get; set; }
-         //private IBrowserFile Logo { get; set; }
-         //private IBrowserFile Picture { get; set; }
-
-         [Inject] IFizeHttpService HttpClient { get; set; }
+       
+        [Inject] IFizeHttpService HttpClient { get; set; }
         public async Task DiscardChanges()
         {
             detailsInformation.AgencyName = null;
@@ -55,54 +62,54 @@ namespace FizeRegistration.Client.Pages
         private bool isLogo;
         public async Task ContinueNext()
         {
-         
+
+            StreamContent fileLogo = null;
+            StreamContent filePictire = null;
             isPhoneNumber = PhoneNumber.IsPhoneNbr(detailsInformation.PhoneNumbers);
             var formDataLogo = new MultipartFormDataContent();
 
-            var fileLogo = new StreamContent(detailsInformation.Logo.OpenReadStream());
-            var filePictire = new StreamContent(detailsInformation.Picture.OpenReadStream());
+            fileLogo = new StreamContent(detailsInformation.Logo.OpenReadStream());
             formDataLogo.Add(fileLogo, "fileLogo", Guid.NewGuid().ToString());
+
+            filePictire = new StreamContent(detailsInformation.Picture.OpenReadStream());
             formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
 
             isPhoneNumber = PhoneNumber.IsPhoneNbr(detailsInformation.PhoneNumbers);
-            
+
             var output = new MemoryStream();
             await detailsInformation.Picture.OpenReadStream().CopyToAsync(output);
 
-        
-            NewDetailsDataContract MockDetailsDataContract = new NewDetailsDataContract
+            NewDetailsDataContract newDetailsDataContract = new NewDetailsDataContract
             {
-
-                AgencyName = "biba",
-                FirstName = "bibovich",
-                LastName = "boba",
-                PhoneNumber = "0671306621",
-                Link = "xz",
-                Color = "nigga",
-                Email = "balis77",
-                WebSite = "google",
+                AgencyName = detailsInformation.AgencyName,
+                FirstName = detailsInformation.FirstName,
+                Color = detailsInformation.Color,
+                LastName = detailsInformation.LastName,
+                Link = detailsInformation.Link,
+                PhoneNumber = detailsInformation.PhoneNumbers,
+                WebSite = detailsInformation.WebSite,
             };
+            //NewDetailsDataContract MockDetailsDataContract = new NewDetailsDataContract
+            //{
+            //    AgencyName = "biba",
+            //    FirstName = "bibovich",
+            //    LastName = "boba",
+            //    PhoneNumber = "0671306621",
+            //    Link = "xz",
+            //    Color = "nigga",
+            //    Email = "balis77",
+            //    WebSite = "google",
+            //};
 
-            var st = JsonConvert.SerializeObject(MockDetailsDataContract);
-            
+            var st = JsonConvert.SerializeObject(newDetailsDataContract);
             var str = new StringContent(st);
             formDataLogo.Add(str, "DetailsData");
+
+                await HttpClient.SendFile(formDataLogo);
+
             
-            //NewDetailsDataContract newDetailsDataContract = new NewDetailsDataContract
-            //{
-            //    AgencyName = AgencyName,
-            //    FirstName = FirstName,
-            //    Color = Color,
-            //    LastName = LastName,
-            //    LinkLogo = LinkLogo,
-            //    LinkPictureUser = LinkPicture,
-            //    Link = Link,
-            //    PhoneNumber = PhoneNumbers,
-            //    WebSite = WebSite,
-            //};
-            await HttpClient.SendFile(formDataLogo);
 
         }
     }
-  
+
 }
