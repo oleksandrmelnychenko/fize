@@ -12,8 +12,8 @@ namespace FizeRegistration.Client.Pages
 {
     public sealed class DetailsInformation
     {
-        //[Required]
-        //[StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
+        [Required]
+        [StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         public string Color { get; set; }
         [Required]
         [StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
@@ -37,7 +37,7 @@ namespace FizeRegistration.Client.Pages
         [Required]
         [RegularExpression(@"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$", ErrorMessage = "Characters are not allowed")]
         public string PhoneNumbers { get; set; }
-        [Required]
+        
         public IBrowserFile Logo { get; set; }
         public IBrowserFile Picture { get; set; }
     }
@@ -101,6 +101,8 @@ namespace FizeRegistration.Client.Pages
             //    WebSite = "google",
             //};
 
+
+
             var st = JsonConvert.SerializeObject(newDetailsDataContract);
             var str = new StringContent(st);
             formDataLogo.Add(str, "DetailsData");
@@ -109,6 +111,14 @@ namespace FizeRegistration.Client.Pages
 
             
 
+        }
+        private void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
+        {
+            detailsInformation.Logo = e.File;
+        }
+        private void OnLinkPictureFilesChange(InputFileChangeEventArgs e)
+        {
+            detailsInformation.Picture = e.File;
         }
     }
 
