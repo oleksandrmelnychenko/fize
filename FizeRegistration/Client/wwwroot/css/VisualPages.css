@@ -6,8 +6,6 @@
     height: 50px;
     width: 50px;
     margin-left: 100px;
-    /*    place-self: center;*/
-    /*center;*/
     border-radius: 20%;
 }
 
@@ -149,10 +147,10 @@
     width: 250px;
     background: #E9ECF3;
 }
-.rightBoxDetails {
+.rightBoxAgency {
     width: 950px;
 }
-.FizeImageDetails {
+.FizeImageAgency {
     margin-top: 30px;
     font-size: 20pt;
     font-weight: 850;
@@ -163,7 +161,7 @@
     border-radius: 50%;
     border: 2px solid #00000042;
 }
-.lineDetails {
+.lineAgency {
     margin-left: 20.7px;
     height: 65px;
     width: 3px;
@@ -210,13 +208,13 @@
     z-index: 99999;
 }
 
-.LabelDetails {
+.LabelAgency {
     width: 290px;
     height: 41px;
     border: 2px solid #00000012;
     font-size:12pt;
 }
-.TextDetails {
+.TextAgency {
     font-size: 11pt;
     font-weight: 800;
 }

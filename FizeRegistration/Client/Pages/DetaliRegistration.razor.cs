@@ -20,7 +20,7 @@ namespace FizeRegistration.Client.Pages
         public string AgencyName { get; set; }
 
         [Required]
-        //[RegularExpression(@"/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A - Za - z0 - 9.-] +| (?: www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-] +)((?:\/[\+~%\/.\w - _] *)?\?? (?:[-\+= &;%@.\w_]*)#?(?:[\w]*))?)/$", ErrorMessage = "Characters are not allowed")]
+        [RegularExpression(@"/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A - Za - z0 - 9.-] +| (?: www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-] +)((?:\/[\+~%\/.\w - _] *)?\?? (?:[-\+= &;%@.\w_]*)#?(?:[\w]*))?)/$", ErrorMessage = "Characters are not allowed")]
         public string WebSite { get; set; }
 
         [Required]
