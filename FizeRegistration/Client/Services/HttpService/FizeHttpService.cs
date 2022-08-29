@@ -14,8 +14,8 @@ public sealed class HttpUrls
     public const string SEND_EMAIL = "/api/v1/identity/issue/confirmation";
     public const string SEND_CONFIRMATION = "/api/v1/identity/new/account";
     public const string SIGN_IN = "/api/v1/identity/signin";
-    public const string SEND_DETAILS = "/api/v1/identity/new/details";
-    public const string SEND_DETAILS_FILE = "/api/v1/identity/new/files";
+    public const string SEND_AGENCY = "/api/v1/identity/new/details";
+    public const string SEND_AGENCY_FILE = "/api/v1/identity/new/files";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -64,10 +64,6 @@ public class FizeHttpService : IFizeHttpService
     {
         return await SendRequest<UserEmailDataContract>(userEmail, HttpUrls.SEND_EMAIL);
 
-    }
-    public async Task<IWebResponse> SendDetails(NewDetailsDataContract DataContract)
-    {
-        return await SendRequest<NewDetailsDataContract>(DataContract, HttpUrls.SEND_DETAILS);
     }
 
     public async Task<IWebResponse> SendConfirmation(string password)
@@ -124,7 +120,7 @@ public class FizeHttpService : IFizeHttpService
 
     public async Task<IWebResponse> SendFile(MultipartFormDataContent model)
     {
-         await _httpClient.PostAsync(HttpUrls.SEND_DETAILS_FILE, model);
+         await _httpClient.PostAsync(HttpUrls.SEND_AGENCY_FILE, model);
         return  new SuccessResponse
         {
             Body = new Object(),

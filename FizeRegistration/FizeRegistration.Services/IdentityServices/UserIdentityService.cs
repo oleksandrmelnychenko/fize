@@ -25,7 +25,7 @@ namespace FizeRegistration.Services.IdentityServices;
 public class UserIdentityService : IUserIdentityService
 {
     private readonly IIdentityRepositoriesFactory _identityRepositoriesFactory;
-    private readonly IDetailsRepositoriesFactory _detailsRepositoriesFactory;
+    private readonly IAgencyRepositoriesFactory _agencyRepositoriesFactory;
 
     private readonly IDbConnectionFactory _connectionFactory;
 
@@ -35,12 +35,12 @@ public class UserIdentityService : IUserIdentityService
         IDbConnectionFactory connectionFactory,
         IIdentityRepositoriesFactory identityRepositoriesFactory,
         IMailSenderFactory mailSenderFactory,
-        IDetailsRepositoriesFactory detailsRepositoriesFactory)
+        IAgencyRepositoriesFactory detailsRepositoriesFactory)
     {
         _identityRepositoriesFactory = identityRepositoriesFactory;
         _connectionFactory = connectionFactory;
         _mailSenderFactory = mailSenderFactory;
-        _detailsRepositoriesFactory = detailsRepositoriesFactory;
+        _agencyRepositoriesFactory = detailsRepositoriesFactory;
     }
 
     public Task<UserAccount> SignInAsync(AuthenticationDataContract authenticateDataContract) =>
@@ -244,30 +244,30 @@ public class UserIdentityService : IUserIdentityService
         }
     });
 
-    public Task NewDetails(NewDetailsDataContract newDetailsDataContract) =>
+    public Task NewAgency(AgencyDataContract agencyDataContract) =>
      Task.Run(() =>
      {
          using (IDbConnection connection = _connectionFactory.NewSqlConnection())
          {
-             IDetailsRepository detailsRepository = _detailsRepositoriesFactory.NewDetailsRepository(connection);
+             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
              IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
-             Agencion details = new Agencion
+             Agencion agency = new Agencion
              {
 
-                 AgencyName = newDetailsDataContract.AgencyName,
-                 FirstName = newDetailsDataContract.FirstName,
-                 Color = newDetailsDataContract.Color,
-                 LastName = newDetailsDataContract.LastName,
-                 Link = newDetailsDataContract.Link,
-                 PhoneNumber = newDetailsDataContract.PhoneNumber,
-                 LinkLogo = newDetailsDataContract.LinkLogo,
-                 LinkPictureUser = newDetailsDataContract.LinkPicture,
-                 WebSite = newDetailsDataContract.WebSite,
+                 AgencyName = agencyDataContract.AgencyName,
+                 FirstName = agencyDataContract.FirstName,
+                 Color = agencyDataContract.Color,
+                 LastName = agencyDataContract.LastName,
+                 Link = agencyDataContract.Link,
+                 PhoneNumber = agencyDataContract.PhoneNumber,
+                 LinkLogo = agencyDataContract.LinkLogo,
+                 LinkPictureUser = agencyDataContract.LinkPicture,
+                 WebSite = agencyDataContract.WebSite,
              };
-             var boba = identityRepository.GetUserByEmail(newDetailsDataContract.Email);
-             long biba = detailsRepository.NewDetails(details);
-             detailsRepository.UpdateDetailsId(biba,boba.Id);
+             var User = identityRepository.GetUserByEmail(agencyDataContract.Email);
+             long IdAgency = AgencyRepository.AddAgency(agency);
+             AgencyRepository.UpdateAgencyId(IdAgency,User.Id);
          }
      });
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>

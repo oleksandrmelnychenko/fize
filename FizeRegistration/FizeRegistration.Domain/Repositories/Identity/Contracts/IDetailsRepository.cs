@@ -2,10 +2,10 @@
 
 namespace FizeRegistration.Domain.Repositories.Identity.Contracts;
 
-public interface IDetailsRepository
+public interface IAgencyRepository
 {
-    long NewDetails(Agencion details);
+    long AddAgency(Agencion details);
 
-    void UpdateDetailsId(long AgencionId, long UserIdentitiesId);
+    void UpdateAgencyId(long AgencionId, long UserIdentitiesId);
 
 }

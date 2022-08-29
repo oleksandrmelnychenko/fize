@@ -135,43 +135,41 @@ public class IdentityRepository : IIdentityRepository
 
     
 }
-public class DetailsRepository : IDetailsRepository
+public class AgencyRepository : IAgencyRepository
 {
 
     private readonly IDbConnection _connection;
 
-    public DetailsRepository(IDbConnection connection)
+    public AgencyRepository(IDbConnection connection)
     {
         _connection = connection;
     }
-    public long NewDetails(Agencion details)
-    {
 
-        return _connection.Query<long>("INSERT INTO [Agencion] " +
+    public long AddAgency(Agencion Agency) =>
+        _connection.Query<long>("INSERT INTO [Agencion] " +
              "(Color,AgencyName,LinkLogo,LinkPictureUser,WebSite,LastName,Link,FirstName,PhoneNumber) " +
              "VALUES " +
              "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
              "SELECT SCOPE_IDENTITY()",
              new
              {
-                 Color = details.Color,
-                 AgencyName = details.AgencyName,
-                 WebSite = details.WebSite,
-                 LinkLogo = details.LinkLogo,
-                 LinkPictureUser = details.LinkPictureUser,
-                 LastName = details.LastName,
-                 Link = details.Link,
-                 FirstName = details.FirstName,
-                 PhoneNumber = details.PhoneNumber,
-
+                 Color = Agency.Color,
+                 AgencyName = Agency.AgencyName,
+                 WebSite = Agency.WebSite,
+                 LinkLogo = Agency.LinkLogo,
+                 LinkPictureUser = Agency.LinkPictureUser,
+                 LastName = Agency.LastName,
+                 Link = Agency.Link,
+                 FirstName = Agency.FirstName,
+                 PhoneNumber = Agency.PhoneNumber,
              }).Single();
-    }
-    public void UpdateDetailsId(long AgencionId, long UserIdentitiesId)
+
+    public void UpdateAgencyId(long AgencionId, long UserIdentitiesId)
     {
         _connection.Execute(
-            "UPDATE Agencion SET UserIdentityId = @DetailsId " +
+            "UPDATE Agencion SET UserIdentityId = @UserIdentityId " +
             "WHERE Id = @Id",
-            new { DetailsId = UserIdentitiesId, Id = AgencionId });
+            new { UserIdentityId = UserIdentitiesId, Id = AgencionId });
     }
 }
 

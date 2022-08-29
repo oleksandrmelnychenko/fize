@@ -2,7 +2,7 @@
 
 namespace FizeRegistration.Domain.Repositories.Identity.Contracts;
 
-public interface IDetailsRepositoriesFactory
+public interface IAgencyRepositoriesFactory
 {
-    IDetailsRepository NewDetailsRepository(IDbConnection connection);
+    IAgencyRepository NewAgencyRepository(IDbConnection connection);
 }

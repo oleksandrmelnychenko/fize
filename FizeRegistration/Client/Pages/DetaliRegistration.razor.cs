@@ -10,7 +10,7 @@ using System.Text;
 
 namespace FizeRegistration.Client.Pages
 {
-    public sealed class DetailsInformation
+    public sealed class AgencyInformation
     {
         [Required]
         [StringLength(20, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
@@ -44,83 +44,71 @@ namespace FizeRegistration.Client.Pages
 
     public partial class DetaliRegistration
     {
-        DetailsInformation detailsInformation = new DetailsInformation();
+        [Parameter] public string Email { get; set; }
+
+        AgencyInformation AgencyInformation = new AgencyInformation();
 
         [Inject] IFizeHttpService HttpClient { get; set; }
         public async Task DiscardChanges()
         {
-            detailsInformation.AgencyName = null;
-            detailsInformation.FirstName = null;
-            detailsInformation.LastName = null;
-            detailsInformation.PhoneNumbers = null;
-            detailsInformation.Link = null;
-            detailsInformation.Color = null;
+            AgencyInformation.AgencyName = null;
+            AgencyInformation.FirstName = null;
+            AgencyInformation.LastName = null;
+            AgencyInformation.PhoneNumbers = null;
+            AgencyInformation.Link = null;
+            AgencyInformation.Color = null;
             StateHasChanged();
         }
-        private bool SuccessfulAgencyDetails;
+        private bool SuccessfulAgency;
 
         public async Task ContinueNext()
         {
 
-            StreamContent fileLogo = null;
-            StreamContent filePictire = null;
+            StreamContent fileLogo = new StreamContent(AgencyInformation.Logo.OpenReadStream());
+            StreamContent filePictire = new StreamContent(AgencyInformation.Picture.OpenReadStream());
             var formDataLogo = new MultipartFormDataContent();
 
-            fileLogo = new StreamContent(detailsInformation.Logo.OpenReadStream());
+            fileLogo = new StreamContent(AgencyInformation.Logo.OpenReadStream());
             formDataLogo.Add(fileLogo, "fileLogo", Guid.NewGuid().ToString());
 
-            filePictire = new StreamContent(detailsInformation.Picture.OpenReadStream());
             formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
 
 
             var output = new MemoryStream();
-            await detailsInformation.Picture.OpenReadStream().CopyToAsync(output);
+            await AgencyInformation.Picture.OpenReadStream().CopyToAsync(output);
 
-            NewDetailsDataContract newDetailsDataContract = new NewDetailsDataContract
+            AgencyDataContract AgencyDataContract = new AgencyDataContract
             {
-                AgencyName = detailsInformation.AgencyName,
-                FirstName = detailsInformation.FirstName,
-                Color = detailsInformation.Color,
-                LastName = detailsInformation.LastName,
-                Link = detailsInformation.Link,
-                PhoneNumber = detailsInformation.PhoneNumbers,
-                WebSite = detailsInformation.WebSite,
+                AgencyName = AgencyInformation.AgencyName,
+                FirstName = AgencyInformation.FirstName,
+                Color = AgencyInformation.Color,
+                LastName = AgencyInformation.LastName,
+                Link = AgencyInformation.Link,
+                PhoneNumber = AgencyInformation.PhoneNumbers,
+                WebSite = AgencyInformation.WebSite,
                 Email = Email,
             };
-            //NewDetailsDataContract MockDetailsDataContract = new NewDetailsDataContract
-            //{
-            //    AgencyName = "biba",
-            //    FirstName = "bibovich",
-            //    LastName = "boba",
-            //    PhoneNumber = "0671306621",
-            //    Link = "xz",
-            //    Color = "nigga",
-            //    Email = "balis77",
-            //    WebSite = "google",
-            //};
 
-
-
-            var st = JsonConvert.SerializeObject(newDetailsDataContract);
-            var str = new StringContent(st);
-            formDataLogo.Add(str, "DetailsData");
+            var jsonAgency = JsonConvert.SerializeObject(AgencyDataContract);
+            var stringContentAgency = new StringContent(jsonAgency);
+            formDataLogo.Add(stringContentAgency, "DetailsData");
 
             var sendConfirmationResponse = await HttpClient.SendFile(formDataLogo);
             int statusCode = (int)sendConfirmationResponse.StatusCode;
 
             if (statusCode >= 200 && statusCode < 300)
             {
-                SuccessfulAgencyDetails = true;
+                SuccessfulAgency = true;
             }
 
         }
         private void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
-            detailsInformation.Logo = e.File;
+            AgencyInformation.Logo = e.File;
         }
         private void OnLinkPictureFilesChange(InputFileChangeEventArgs e)
         {
-            detailsInformation.Picture = e.File;
+            AgencyInformation.Picture = e.File;
         }
     }
 

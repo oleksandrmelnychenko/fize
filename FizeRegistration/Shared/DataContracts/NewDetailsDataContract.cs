@@ -2,7 +2,7 @@
 
 namespace FizeRegistration.Shared.DataContracts;
 
-public sealed class NewDetailsDataContract
+public sealed class AgencyDataContract
 {
     public string UserIdentityId { get; set; }
     public string Color { get; set; }

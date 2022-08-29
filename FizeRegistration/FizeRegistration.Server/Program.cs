@@ -30,7 +30,7 @@ builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 builder.Services.AddScoped<IMailSenderFactory, MailSenderFactory>();
 builder.Services.AddScoped<IIdentityRepositoriesFactory, IdentityRepositoriesFactory>();
-builder.Services.AddScoped<IDetailsRepositoriesFactory, DetatailsRepositoryFactory>();
+builder.Services.AddScoped<IAgencyRepositoriesFactory, AgencyRepositoryFactory>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

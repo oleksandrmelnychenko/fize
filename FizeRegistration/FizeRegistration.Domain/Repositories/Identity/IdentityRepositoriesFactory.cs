@@ -9,8 +9,3 @@ public class IdentityRepositoriesFactory : IIdentityRepositoriesFactory
         new IdentityRepository(connection);
 
 }
-public class DetatailsRepositoryFactory : IDetailsRepositoriesFactory
-{
-    public IDetailsRepository NewDetailsRepository(IDbConnection connection) =>
-        new DetailsRepository(connection);
-}

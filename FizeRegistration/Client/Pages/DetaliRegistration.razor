@@ -3,7 +3,7 @@
 
 
 <div class="basicBox" style="background:white;height: 800px; width:1150px">
-    @if (!SuccessfulAgencyDetails)
+    @if (!SuccessfulAgency)
     {
         <div class="leftBoxInformation">
             <div>
@@ -11,17 +11,17 @@
                     <FizeImage></FizeImage>
                 </div>
                 <div style="margin-top: 57px;margin-left: 45px;">
-                    <CircleDetails StepText="Step 1" SubtitleText="Basic Detalis"></CircleDetails>
+                    <CircleAgency StepText="Step 1" SubtitleText="Basic Detalis"></CircleAgency>
                     <div class="lineDetails"></div>
-                    <CircleDetails StepText="Step 2" SubtitleText="Tour"></CircleDetails>
+                    <CircleAgency StepText="Step 2" SubtitleText="Tour"></CircleAgency>
                     <div class="lineDetails"></div>
-                    <CircleDetails StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleDetails>
+                    <CircleAgency StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleAgency>
                 </div>
                 <ButtonContactUs></ButtonContactUs>
             </div>
         </div>
 
-        <EditForm Model="@detailsInformation" OnValidSubmit="@ContinueNext">
+        <EditForm Model="@AgencyInformation" OnValidSubmit="@ContinueNext">
             <DataAnnotationsValidator />
             <div class="rightBoxDetails">
                 <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 50px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">Let`s set up your agency</div>
@@ -31,20 +31,20 @@
                         <div style="margin-left: 115px;margin-right: 35px; display:grid">
 
                             <label for="agencyname">Agency Name </label>
-                            <InputText id="agencyname" @bind-Value="@detailsInformation.AgencyName" class="LabelDetails" placeholder="Enter your agency name"></InputText>
-                            <ValidationMessage For="@(() => @detailsInformation.AgencyName)" />
+                            <InputText id="agencyname" @bind-Value="@AgencyInformation.AgencyName" class="LabelDetails" placeholder="Enter your agency name"></InputText>
+                            <ValidationMessage For="@(() => AgencyInformation.AgencyName)" />
                         </div>
                         <div style="display:grid">
 
                             <label for="website">WebSite </label>
-                            <InputText id="website" @bind-Value="@detailsInformation.WebSite" class="LabelDetails" placeholder="Enter your company website"></InputText>
-                            <ValidationMessage For="@(() => @detailsInformation.WebSite)" />
+                            <InputText id="website" @bind-Value="@AgencyInformation.WebSite" class="LabelDetails" placeholder="Enter your company website"></InputText>
+                            <ValidationMessage For="@(() => AgencyInformation.WebSite)" />
                         </div>
                     </div>
                     <div style="display:flex ">
                         <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
                             <div class="TextDetails">Brand Color</div>
-                            <LableColor @bind-ColorId="detailsInformation.Color"></LableColor>
+                            <LableColor @bind-ColorId="AgencyInformation.Color"></LableColor>
                         </div>
                         <div style="margin-top: 15px; ">
                             <label class="TextDetails">Logo</label>
@@ -53,7 +53,7 @@
                                 <InputFile class="custom-file-input" OnChange="OnLinkLogoFilesChange" />
 
                             </div>
-                            <ValidationMessage For="@(() => detailsInformation.Logo)" />
+                            <ValidationMessage For="@(() => AgencyInformation.Logo)" />
                         </div>
                     </div>
                 </div>
@@ -73,28 +73,28 @@
                     <div style="display:flex">
                         <div style="display: grid;margin-left: 115px;margin-right: 35px; margin-top:15px">
                             <label for="firstname">First Name </label>
-                            <InputText Id="firstname" @bind-Value="@detailsInformation.FirstName" class="LabelDetails" placeholder="Enter your first namer"></InputText>
-                            <ValidationMessage For="@(() => @detailsInformation.FirstName)" />
+                            <InputText Id="firstname" @bind-Value="@AgencyInformation.FirstName" class="LabelDetails" placeholder="Enter your first namer"></InputText>
+                            <ValidationMessage For="@(() => AgencyInformation.FirstName)" />
 
                         </div>
                         <div style="display: grid;margin-top:15px">
                             <label for="lastname">Last Name </label>
-                            <InputText Id="lastname" @bind-Value="@detailsInformation.LastName" class="LabelDetails" placeholder="Enter your last name"></InputText>
-                            <ValidationMessage For="@(() => @detailsInformation.LastName)" />
+                            <InputText Id="lastname" @bind-Value="@AgencyInformation.LastName" class="LabelDetails" placeholder="Enter your last name"></InputText>
+                            <ValidationMessage For="@(() => AgencyInformation.LastName)" />
                         </div>
                     </div>
                     <div style="display:flex">
                         <div style="display: grid;margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
                             <label for="link">Link </label>
-                            <InputText Id="link" @bind-Value="@detailsInformation.Link" class="LabelDetails" placeholder="Enter link here"></InputText>
-                            <ValidationMessage For="@(() => @detailsInformation.Link)" />
+                            <InputText Id="link" @bind-Value="@AgencyInformation.Link" class="LabelDetails" placeholder="Enter link here"></InputText>
+                            <ValidationMessage For="@(() => AgencyInformation.Link)" />
                         </div>
 
                         <div style="display: grid;margin-top: 15px;">
 
                             <label for="phonenumbers">PhoneNumbers </label>
-                            <InputText Id="phonenumbers" @bind-Value="@detailsInformation.PhoneNumbers" class="LabelDetails" placeholder="Enter a valid phone number"></InputText>
-                            <ValidationMessage For="@(() => @detailsInformation.PhoneNumbers)" />
+                            <InputText Id="phonenumbers" @bind-Value="@AgencyInformation.PhoneNumbers" class="LabelDetails" placeholder="Enter a valid phone number"></InputText>
+                            <ValidationMessage For="@(() => AgencyInformation.PhoneNumbers)" />
                         </div>
                     </div>
                 </div>
@@ -127,14 +127,4 @@
 @code {
 
 
-    [Parameter] public string Email { get; set; }
-
-
-    @code {
-        //private DetaliRegistration person = new DetaliRegistration();
-        private void HandleValidSubmit()
-        {
-            Console.WriteLine("OnValidSubmit");
-        }
-    }
       }

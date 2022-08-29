@@ -84,24 +84,22 @@ public class IdentityController : WebApiControllerBase
         }
     } 
 
-
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.NEW_FILES)]
-    public async Task<IActionResult> NewFiles( [FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string DetailsData)
+    public async Task<IActionResult> NewFiles( [FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
     {
         try
         {
-
-            if (filePictire != null && fileLogo != null && DetailsData != null)
+            if (filePictire != null && fileLogo != null && agencyData != null)
             {
-                var newDetailsDataContract = JsonConvert.DeserializeObject<NewDetailsDataContract>(DetailsData);
+                var agencyDataContract = JsonConvert.DeserializeObject<AgencyDataContract>(agencyData);
                 string exention = ".png";
                 string pathPictire = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), filePictire.FileName + exention);
                 string pathLogo = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), fileLogo.FileName + exention);
-                newDetailsDataContract.LinkPicture = pathPictire;
-                newDetailsDataContract.LinkLogo = pathLogo;
-                await _userIdentityService.NewDetails(newDetailsDataContract);
+                agencyDataContract.LinkPicture = pathPictire;
+                agencyDataContract.LinkLogo = pathLogo;
+                await _userIdentityService.NewAgency(agencyDataContract);
 
                 using (var stream = new FileStream(pathPictire, FileMode.Create))
                 {
@@ -113,29 +111,6 @@ public class IdentityController : WebApiControllerBase
                 }
             }
             return Ok(SuccessResponseBody(new { Message = "Files Send"}));
-        }
-        catch (InvalidIdentityException exc)
-        {
-            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
-        }
-        catch (Exception exc)
-        {
-            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
-        }
-    }
-    [HttpPost]
-    [AllowAnonymous]
-    [AssignActionRoute(IdentitySegments.NEW_DETAILS)]
-    public async Task<IActionResult> NewDetails([FromBody] NewDetailsDataContract newDetailsDataContract)
-    {
-        try
-        {
-           if (newDetailsDataContract == null) throw new ArgumentNullException("newDetailsDataContract");
-
-            var baseUrl = $"{this.Request.Scheme}://{this.Request.Host}/";
-
-            await _userIdentityService.NewDetails(newDetailsDataContract);
-            return Ok(SuccessResponseBody(new { Message = "Details create" }));
         }
         catch (InvalidIdentityException exc)
         {

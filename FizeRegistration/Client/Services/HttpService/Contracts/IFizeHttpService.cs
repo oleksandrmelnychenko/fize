@@ -19,5 +19,4 @@ public interface IFizeHttpService
 
     Task<IWebResponse> SignInAsync(AuthenticationDataContract authenticationDataContract);
 
-    Task<IWebResponse> SendDetails(NewDetailsDataContract DataContract);
 }
