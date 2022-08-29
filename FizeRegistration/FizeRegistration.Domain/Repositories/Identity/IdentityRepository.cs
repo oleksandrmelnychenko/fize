@@ -133,13 +133,7 @@ public class IdentityRepository : IIdentityRepository
             new { Id = userId, IsExpired = isExpired }
         );
 
-    public void UpdateDetailsId(long userId)
-    {
-        _connection.Execute(
-            "UPDATE UserIdentities SET DetailsId = @DetailsId " +
-            "WHERE Id = @Id",
-            new { DetailsId = 1, Id = userId });
-    }
+    
 }
 public class DetailsRepository : IDetailsRepository
 {
@@ -150,29 +144,34 @@ public class DetailsRepository : IDetailsRepository
     {
         _connection = connection;
     }
-    public long NewDetails(Details details)
+    public long NewDetails(Agencion details)
     {
 
-        return _connection.Query<long>("INSERT INTO [Details] " +
-             "(Id,UserIdentityId,Color,AgencyName,Logo,PictureUser,WebSite,LastName,Link,FirstName,PhoneNumber) " +
+        return _connection.Query<long>("INSERT INTO [Agencion] " +
+             "(Color,AgencyName,LinkLogo,LinkPictureUser,WebSite,LastName,Link,FirstName,PhoneNumber) " +
              "VALUES " +
-             "(@Id,@UserIdentityId,@Color,@AgencyName,@Logo,@PictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
+             "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
              "SELECT SCOPE_IDENTITY()",
              new
              {
-                 Id = 1,
-                 UserIdentityId = 2,
                  Color = details.Color,
                  AgencyName = details.AgencyName,
                  WebSite = details.WebSite,
-                 Logo = details.LinkLogo,
-                 PictureUser = details.LinkPictureUser,
+                 LinkLogo = details.LinkLogo,
+                 LinkPictureUser = details.LinkPictureUser,
                  LastName = details.LastName,
                  Link = details.Link,
                  FirstName = details.FirstName,
                  PhoneNumber = details.PhoneNumber,
 
              }).Single();
+    }
+    public void UpdateDetailsId(long AgencionId, long UserIdentitiesId)
+    {
+        _connection.Execute(
+            "UPDATE Agencion SET UserIdentityId = @DetailsId " +
+            "WHERE Id = @Id",
+            new { DetailsId = UserIdentitiesId, Id = AgencionId });
     }
 }
 

@@ -37,15 +37,15 @@ namespace FizeRegistration.Client.Pages
         [Required]
         [RegularExpression(@"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$", ErrorMessage = "Characters are not allowed")]
         public string PhoneNumbers { get; set; }
-        
+
         public IBrowserFile Logo { get; set; }
         public IBrowserFile Picture { get; set; }
     }
-    
+
     public partial class DetaliRegistration
     {
         DetailsInformation detailsInformation = new DetailsInformation();
-       
+
         [Inject] IFizeHttpService HttpClient { get; set; }
         public async Task DiscardChanges()
         {
@@ -57,15 +57,13 @@ namespace FizeRegistration.Client.Pages
             detailsInformation.Color = null;
             StateHasChanged();
         }
-        private bool isPhoneNumber = true;
-        private bool isPicture;
-        private bool isLogo;
+        private bool SuccessfulAgencyDetails;
+
         public async Task ContinueNext()
         {
 
             StreamContent fileLogo = null;
             StreamContent filePictire = null;
-            isPhoneNumber = PhoneNumber.IsPhoneNbr(detailsInformation.PhoneNumbers);
             var formDataLogo = new MultipartFormDataContent();
 
             fileLogo = new StreamContent(detailsInformation.Logo.OpenReadStream());
@@ -74,7 +72,6 @@ namespace FizeRegistration.Client.Pages
             filePictire = new StreamContent(detailsInformation.Picture.OpenReadStream());
             formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
 
-            isPhoneNumber = PhoneNumber.IsPhoneNbr(detailsInformation.PhoneNumbers);
 
             var output = new MemoryStream();
             await detailsInformation.Picture.OpenReadStream().CopyToAsync(output);
@@ -88,6 +85,7 @@ namespace FizeRegistration.Client.Pages
                 Link = detailsInformation.Link,
                 PhoneNumber = detailsInformation.PhoneNumbers,
                 WebSite = detailsInformation.WebSite,
+                Email = Email,
             };
             //NewDetailsDataContract MockDetailsDataContract = new NewDetailsDataContract
             //{
@@ -107,9 +105,13 @@ namespace FizeRegistration.Client.Pages
             var str = new StringContent(st);
             formDataLogo.Add(str, "DetailsData");
 
-                await HttpClient.SendFile(formDataLogo);
+            var sendConfirmationResponse = await HttpClient.SendFile(formDataLogo);
+            int statusCode = (int)sendConfirmationResponse.StatusCode;
 
-            
+            if (statusCode >= 200 && statusCode < 300)
+            {
+                SuccessfulAgencyDetails = true;
+            }
 
         }
         private void OnLinkLogoFilesChange(InputFileChangeEventArgs e)

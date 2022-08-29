@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FizeRegistration.DataBases.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,6 +32,40 @@ namespace FizeRegistration.DataBases.Migrations
                     table.PrimaryKey("PK_UserIdentities", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Agencion",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserIdentityId = table.Column<long>(type: "bigint", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgencyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WebSite = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkLogo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LinkPictureUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agencion", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Agencion_UserIdentities_UserIdentityId",
+                        column: x => x.UserIdentityId,
+                        principalTable: "UserIdentities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Agencion_UserIdentityId",
+                table: "Agencion",
+                column: "UserIdentityId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_UserIdentities_Email",
                 table: "UserIdentities",
@@ -41,6 +75,9 @@ namespace FizeRegistration.DataBases.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Agencion");
+
             migrationBuilder.DropTable(
                 name: "UserIdentities");
         }

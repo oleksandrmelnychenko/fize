@@ -30,5 +30,5 @@ public class UserIdentity : EntityBase
     public bool CanUserResetExpiredPassword { get; set; } = true;
 
     public DateTime PasswordExpiresAt { get; set; } = DateTime.UtcNow.AddYears(1);
-    public Details Details { get; set; }
+    public Agencion Agencion { get; set; }
 }

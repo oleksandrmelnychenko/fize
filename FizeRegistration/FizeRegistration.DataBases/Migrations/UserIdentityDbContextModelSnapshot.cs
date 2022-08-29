@@ -22,10 +22,13 @@ namespace FizeRegistration.DataBases.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.Details", b =>
+            modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.Agencion", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("AgencyName")
                         .IsRequired()
@@ -47,7 +50,11 @@ namespace FizeRegistration.DataBases.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Logo")
+                    b.Property<string>("LinkLogo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkPictureUser")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -55,13 +62,9 @@ namespace FizeRegistration.DataBases.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PictureUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserIdentityId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long?>("UserIdentityId")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bigint");
 
                     b.Property<string>("WebSite")
                         .IsRequired()
@@ -69,7 +72,11 @@ namespace FizeRegistration.DataBases.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Details");
+                    b.HasIndex("UserIdentityId")
+                        .IsUnique()
+                        .HasFilter("[UserIdentityId] IS NOT NULL");
+
+                    b.ToTable("Agencion");
                 });
 
             modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.UserIdentity", b =>
@@ -87,9 +94,6 @@ namespace FizeRegistration.DataBases.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("getutcdate()");
-
-                    b.Property<string>("DetailsId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -123,21 +127,23 @@ namespace FizeRegistration.DataBases.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DetailsId");
-
                     b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("UserIdentities");
                 });
 
+            modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.Agencion", b =>
+                {
+                    b.HasOne("FizeRegistration.Domain.Entities.Identity.UserIdentity", null)
+                        .WithOne("Agencion")
+                        .HasForeignKey("FizeRegistration.Domain.Entities.Identity.Agencion", "UserIdentityId");
+                });
+
             modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.UserIdentity", b =>
                 {
-                    b.HasOne("FizeRegistration.Domain.Entities.Identity.Details", "Details")
-                        .WithMany()
-                        .HasForeignKey("DetailsId");
-
-                    b.Navigation("Details");
+                    b.Navigation("Agencion")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

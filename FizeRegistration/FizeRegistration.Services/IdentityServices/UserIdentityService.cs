@@ -243,18 +243,7 @@ public class UserIdentityService : IUserIdentityService
             return identityRepository.GetAccountByUserId(newUser.Id);
         }
     });
-    public Task NewFile(string urlFilePicture) =>
-     Task.Run(() =>
-     {
-         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
-         {
-             IDetailsRepository detailsRepository = _detailsRepositoriesFactory.NewDetailsRepository(connection);
-             IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
-             //var biba = detailsRepository.NewDetails(details);
-             //identityRepository.UpdateDetailsId(1);
-         }
-     });
     public Task NewDetails(NewDetailsDataContract newDetailsDataContract) =>
      Task.Run(() =>
      {
@@ -263,7 +252,7 @@ public class UserIdentityService : IUserIdentityService
              IDetailsRepository detailsRepository = _detailsRepositoriesFactory.NewDetailsRepository(connection);
              IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
-             Details details = new Details
+             Agencion details = new Agencion
              {
 
                  AgencyName = newDetailsDataContract.AgencyName,
@@ -276,9 +265,9 @@ public class UserIdentityService : IUserIdentityService
                  LinkPictureUser = newDetailsDataContract.LinkPicture,
                  WebSite = newDetailsDataContract.WebSite,
              };
-
-             //var biba = detailsRepository.NewDetails(details);
-             identityRepository.UpdateDetailsId(2);
+             var boba = identityRepository.GetUserByEmail(newDetailsDataContract.Email);
+             long biba = detailsRepository.NewDetails(details);
+             detailsRepository.UpdateDetailsId(biba,boba.Id);
          }
      });
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>

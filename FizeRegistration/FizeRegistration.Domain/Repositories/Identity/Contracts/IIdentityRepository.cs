@@ -24,5 +24,4 @@ public interface IIdentityRepository
 
     UserAccount GetAccountByUserId(long userId);
 
-    void UpdateDetailsId(long userId);
 }

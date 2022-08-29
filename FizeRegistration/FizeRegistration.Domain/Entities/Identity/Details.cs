@@ -1,11 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FizeRegistration.Domain.Entities.Identity;
 
-public class Details
+public class Agencion
 {
-    public string Id { get; set; }
-    public string UserIdentityId { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long Id { get; set; }
+    
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public long? UserIdentityId { get; set; }
     public string Color { get; set; }
     public string AgencyName { get; set; }
     public string WebSite { get; set; }

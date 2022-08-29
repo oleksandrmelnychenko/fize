@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FizeRegistration.DataBases.Migrations
 {
     [DbContext(typeof(UserIdentityDbContext))]
-    [Migration("20220801150120_init")]
-    partial class init
+    [Migration("20220829102352_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,62 @@ namespace FizeRegistration.DataBases.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.Agencion", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("AgencyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkLogo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LinkPictureUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserIdentityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("WebSite")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserIdentityId")
+                        .IsUnique();
+
+                    b.ToTable("Agencion");
+                });
 
             modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.UserIdentity", b =>
                 {
@@ -76,6 +132,21 @@ namespace FizeRegistration.DataBases.Migrations
                         .IsUnique();
 
                     b.ToTable("UserIdentities");
+                });
+
+            modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.Agencion", b =>
+                {
+                    b.HasOne("FizeRegistration.Domain.Entities.Identity.UserIdentity", null)
+                        .WithOne("Agencion")
+                        .HasForeignKey("FizeRegistration.Domain.Entities.Identity.Agencion", "UserIdentityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FizeRegistration.Domain.Entities.Identity.UserIdentity", b =>
+                {
+                    b.Navigation("Agencion")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

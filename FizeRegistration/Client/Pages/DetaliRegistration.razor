@@ -3,109 +3,126 @@
 
 
 <div class="basicBox" style="background:white;height: 800px; width:1150px">
-    <div class="leftBoxInformation">
-        <div>
-            <div class="FizeImageDetails" style="margin-left: 45px;">
-                <FizeImage></FizeImage>
-            </div>
-            <div style="margin-top: 57px;margin-left: 45px;">
-                <CircleDetails StepText="Step 1" SubtitleText="Basic Detalis"></CircleDetails>
-                <div class="lineDetails"></div>
-                <CircleDetails StepText="Step 2" SubtitleText="Tour"></CircleDetails>
-                <div class="lineDetails"></div>
-                <CircleDetails StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleDetails>
-            </div>
-            <ButtonContactUs></ButtonContactUs>
-        </div>
-    </div>
-
-    <EditForm Model="@detailsInformation" OnValidSubmit="@ContinueNext">
-        <DataAnnotationsValidator />
-        <div class="rightBoxDetails">
-            <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 50px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">Let`s set up your agency</div>
+    @if (!SuccessfulAgencyDetails)
+    {
+        <div class="leftBoxInformation">
             <div>
-                <div></div>
-                <div style="display:flex">
-                    <div style="margin-left: 115px;margin-right: 35px; display:grid">
-
-                        <label for="agencyname">Agency Name </label>
-                        <InputText id="agencyname" @bind-Value="@detailsInformation.AgencyName" class="LabelDetails" placeholder="Enter your agency name"></InputText>
-                        <ValidationMessage For="@(() => @detailsInformation.AgencyName)" />
-                    </div>
-                    <div style="display:grid">
-
-                        <label for="website">WebSite </label>
-                        <InputText id="website" @bind-Value="@detailsInformation.WebSite" class="LabelDetails" placeholder="Enter your company website"></InputText>
-                        <ValidationMessage For="@(() => @detailsInformation.WebSite)" />
-                    </div>
+                <div class="FizeImageDetails" style="margin-left: 45px;">
+                    <FizeImage></FizeImage>
                 </div>
-                <div style="display:flex ">
-                    <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
-                        <div class="TextDetails">Brand Color</div>
-                        <LableColor @bind-ColorId="detailsInformation.Color"></LableColor>
-                    </div>
-                    <div style="margin-top: 15px; ">
-                        <label class="TextDetails">Logo</label>
-                        <div style="display:flex;">
-                            <input style="width: 220px; border-right: none;" class="LabelDetails" placeholder="Drag & drop it here or upload" />
-                            <InputFile class="custom-file-input"  OnChange ="OnLinkLogoFilesChange"/>
-                            
+                <div style="margin-top: 57px;margin-left: 45px;">
+                    <CircleDetails StepText="Step 1" SubtitleText="Basic Detalis"></CircleDetails>
+                    <div class="lineDetails"></div>
+                    <CircleDetails StepText="Step 2" SubtitleText="Tour"></CircleDetails>
+                    <div class="lineDetails"></div>
+                    <CircleDetails StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleDetails>
+                </div>
+                <ButtonContactUs></ButtonContactUs>
+            </div>
+        </div>
+
+        <EditForm Model="@detailsInformation" OnValidSubmit="@ContinueNext">
+            <DataAnnotationsValidator />
+            <div class="rightBoxDetails">
+                <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 50px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">Let`s set up your agency</div>
+                <div>
+                    <div></div>
+                    <div style="display:flex">
+                        <div style="margin-left: 115px;margin-right: 35px; display:grid">
+
+                            <label for="agencyname">Agency Name </label>
+                            <InputText id="agencyname" @bind-Value="@detailsInformation.AgencyName" class="LabelDetails" placeholder="Enter your agency name"></InputText>
+                            <ValidationMessage For="@(() => @detailsInformation.AgencyName)" />
                         </div>
-                        <ValidationMessage For="@(() => detailsInformation.Logo)" />
+                        <div style="display:grid">
+
+                            <label for="website">WebSite </label>
+                            <InputText id="website" @bind-Value="@detailsInformation.WebSite" class="LabelDetails" placeholder="Enter your company website"></InputText>
+                            <ValidationMessage For="@(() => @detailsInformation.WebSite)" />
+                        </div>
+                    </div>
+                    <div style="display:flex ">
+                        <div style="margin-left: 115px; margin-top: 15px;margin-right: 35px;">
+                            <div class="TextDetails">Brand Color</div>
+                            <LableColor @bind-ColorId="detailsInformation.Color"></LableColor>
+                        </div>
+                        <div style="margin-top: 15px; ">
+                            <label class="TextDetails">Logo</label>
+                            <div style="display:flex;">
+                                <input style="width: 220px; border-right: none;" class="LabelDetails" placeholder="Drag & drop it here or upload" />
+                                <InputFile class="custom-file-input" OnChange="OnLinkLogoFilesChange" />
+
+                            </div>
+                            <ValidationMessage For="@(() => detailsInformation.Logo)" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style="margin-left: 115px; ">
-                <div style="border-bottom: 1px solid #00000012; margin-right: 180px; margin-top: 25px; font-weight: 800;  font-size: 15pt; margin-bottom: 20px;">Let`s set up your profile</div>
-                <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
-                <div style="display:flex">
-                    <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
-                   
-                        <InputFile class="custom-file-upload"  OnChange ="OnLinkPictureFilesChange" style="align-self: center;margin-left: 10px;" />
+                <div style="margin-left: 115px; ">
+                    <div style="border-bottom: 1px solid #00000012; margin-right: 180px; margin-top: 25px; font-weight: 800;  font-size: 15pt; margin-bottom: 20px;">Let`s set up your profile</div>
+                    <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
+                    <div style="display:flex">
+                        <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
 
-                </div>
-            </div>
+                        <InputFile class="custom-file-upload" OnChange="OnLinkPictureFilesChange" style="align-self: center;margin-left: 10px;" />
 
-            <div>
-                <div></div>
-                <div style="display:flex">
-                    <div style="display: grid;margin-left: 115px;margin-right: 35px; margin-top:15px">
-                        <label for="firstname">First Name </label>
-                        <InputText Id="firstname" @bind-Value="@detailsInformation.FirstName" class="LabelDetails" placeholder="Enter your first namer"></InputText>
-                        <ValidationMessage For="@(() => @detailsInformation.FirstName)" />
-
-                    </div>
-                    <div style="display: grid;margin-top:15px">
-                        <label for="lastname">Last Name </label>
-                        <InputText Id="lastname" @bind-Value="@detailsInformation.LastName" class="LabelDetails" placeholder="Enter your last name"></InputText>
-                        <ValidationMessage For="@(() => @detailsInformation.LastName)" />
                     </div>
                 </div>
-                <div style="display:flex">
-                    <div style="display: grid;margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
-                        <label for="link">Link </label>
-                        <InputText Id="link" @bind-Value="@detailsInformation.Link" class="LabelDetails" placeholder="Enter link here"></InputText>
-                        <ValidationMessage For="@(() => @detailsInformation.Link)" />
+
+                <div>
+                    <div></div>
+                    <div style="display:flex">
+                        <div style="display: grid;margin-left: 115px;margin-right: 35px; margin-top:15px">
+                            <label for="firstname">First Name </label>
+                            <InputText Id="firstname" @bind-Value="@detailsInformation.FirstName" class="LabelDetails" placeholder="Enter your first namer"></InputText>
+                            <ValidationMessage For="@(() => @detailsInformation.FirstName)" />
+
+                        </div>
+                        <div style="display: grid;margin-top:15px">
+                            <label for="lastname">Last Name </label>
+                            <InputText Id="lastname" @bind-Value="@detailsInformation.LastName" class="LabelDetails" placeholder="Enter your last name"></InputText>
+                            <ValidationMessage For="@(() => @detailsInformation.LastName)" />
+                        </div>
                     </div>
+                    <div style="display:flex">
+                        <div style="display: grid;margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
+                            <label for="link">Link </label>
+                            <InputText Id="link" @bind-Value="@detailsInformation.Link" class="LabelDetails" placeholder="Enter link here"></InputText>
+                            <ValidationMessage For="@(() => @detailsInformation.Link)" />
+                        </div>
 
-                    <div style="display: grid;margin-top: 15px;">
+                        <div style="display: grid;margin-top: 15px;">
 
-                        <label for="phonenumbers">PhoneNumbers </label>
-                        <InputText Id="phonenumbers" @bind-Value="@detailsInformation.PhoneNumbers" class="LabelDetails" placeholder="Enter a valid phone number"></InputText>
-                        <ValidationMessage For="@(() => @detailsInformation.PhoneNumbers)" />
+                            <label for="phonenumbers">PhoneNumbers </label>
+                            <InputText Id="phonenumbers" @bind-Value="@detailsInformation.PhoneNumbers" class="LabelDetails" placeholder="Enter a valid phone number"></InputText>
+                            <ValidationMessage For="@(() => @detailsInformation.PhoneNumbers)" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style="margin-left: 115px;">
-                <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 25px; margin-bottom: 15px;"></div>
-                <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;" @onclick="DiscardChanges">Discard Changes</button>
-                <button type="submit" style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;">Continue</button>
-            </div>
+                <div style="margin-left: 115px;">
+                    <div style="width: 616px; background: #00000012; height: 1px;  margin-top: 25px; margin-bottom: 15px;"></div>
+                    <button style="height: 40px; width: 140px; background: white; color: black; font-weight: 800;" @onclick="DiscardChanges">Discard Changes</button>
+                    <button type="submit" style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;">Continue</button>
+                </div>
 
 
+            </div>
+        </EditForm>
+
+    }
+    else
+    {
+        <div>
+            <div class="RightHeadWordsBox" style="width:443px;">Save Agency Information</div>
+            <div class="boxSuccessfulMail" style="margin-left: 35px;">
+                <div style="display: table-cell; vertical-align: middle;text-align: -webkit-center;">
+                    <div class="CenterImg">
+                        <img style="margin-top: 16px;" src="/ScreenShots/MailIcon.png" />
+                    </div>
+                    <div class="smallText" style="font-size: 10pt; color: black; font-weight: 600;  margin-top: 22px;">Successful</div>
+                </div>
+            </div>
         </div>
-    </EditForm>
-
+    }
 </div>
 @code {
 
