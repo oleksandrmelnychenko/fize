@@ -1,3 +1,9 @@
 ﻿@page "/"
 
-<SendEmail></SendEmail>
+@inject NavigationManager NavigationManager
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+         NavigationManager.NavigateTo("/auth");
+    }
+}
