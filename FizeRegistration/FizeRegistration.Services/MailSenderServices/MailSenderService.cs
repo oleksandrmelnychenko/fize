@@ -39,7 +39,19 @@ public class MailSenderService : IMailSenderService
 
                 mssObj.Subject = "TextApp sign up confirm";
 
-                mssObj.Body = baseUrl + "createpassword?#access_token=" + tokenData.Token;
+                var confirmUrl = baseUrl + "createpassword?#access_token=" + tokenData.Token;
+
+                var confirmButton = "<a target=\"_blank\" href=\"" + confirmUrl + "\">link</a>";
+
+                var firstParagraph = "<p>Click the " + confirmButton + " to confirm signing up with Fize!</p>";
+
+                var secondParagraph = "<p style=\"margin-top: 100px;\">Ignore this email if you didn't apply for signing up.</p>";
+
+                var bodyMessage = "<div>" + firstParagraph + secondParagraph + "</div>";
+
+                mssObj.Body = bodyMessage;
+
+                mssObj.IsBodyHtml = true;
 
                 client.Send(mssObj);
             }
