@@ -43,7 +43,7 @@ public class UserIdentityService : IUserIdentityService
         _agencyRepositoriesFactory = detailsRepositoriesFactory;
     }
 
-    public Task<UserAccount> SignInAsync(AuthenticationDataContract authenticateDataContract) =>
+    public Task<TokenDataContract> SignInAsync(AuthenticationDataContract authenticateDataContract) =>
           Task.Run(() =>
           {
               if (!Validator.IsEmailValid(authenticateDataContract.Email))
@@ -103,12 +103,17 @@ public class UserIdentityService : IUserIdentityService
                   };
 
                   JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+
+                  tokenHandler.OutboundClaimTypeMap.Clear();
+
                   JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+
+                  string encodedToken = tokenHandler.WriteToken(token);
 
                   UserAccount userData = new UserAccount(user)
                   {
                       TokenExpiresAt = expiry,
-                      Token = tokenHandler.WriteToken(token),
+                      Token = encodedToken,
                   };
 
                   if (IsUserPasswordExpired(user))
@@ -129,7 +134,12 @@ public class UserIdentityService : IUserIdentityService
                       repository.UpdateUserLastLoggedInDate(user.Id, user.LastLoggedIn.Value);
                   }
 
-                  return userData;
+                  TokenDataContract tokenDataContract = new TokenDataContract
+                  {
+                      Token = encodedToken,
+                  };
+
+                  return tokenDataContract;
               }
           });
 

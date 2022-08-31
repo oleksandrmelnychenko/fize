@@ -8,7 +8,7 @@ namespace FizeRegistration.Services.IdentityServices.Contracts;
 public interface IUserIdentityService
 {
 
-    Task<UserAccount> SignInAsync(AuthenticationDataContract authenticateDataContract);
+    Task<TokenDataContract> SignInAsync(AuthenticationDataContract authenticateDataContract);
 
 
     Task<UserAccount> ValidateToken(ClaimsPrincipal userPrincipal);
