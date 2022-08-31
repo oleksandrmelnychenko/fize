@@ -267,7 +267,7 @@ public class UserIdentityService : IUserIdentityService
              };
              var User = identityRepository.GetUserByEmail(agencyDataContract.Email);
              long IdAgency = AgencyRepository.AddAgency(agency);
-             AgencyRepository.UpdateAgencyId(IdAgency,User.Id);
+             AgencyRepository.UpdateAgencyId(IdAgency, User.Id);
          }
      });
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>
@@ -289,15 +289,16 @@ public class UserIdentityService : IUserIdentityService
             }
 
             byte[] key = Encoding.ASCII.GetBytes(ConfigurationManager.AppSettings.TokenSecret);
-            DateTime expiry = DateTime.UtcNow.AddDays(1);
+            DateTime expiry = DateTime.UtcNow.AddMinutes(30);
+
             ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
                 {
-                            new Claim(ClaimTypes.Expiration, expiry.Ticks.ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(ClaimTypes.Expiration, expiry.Ticks.ToString()),
+                            new Claim(ClaimTypes.Email, userEmailDataContract.Email),
+                            new Claim(ClaimTypes.Role, "UnconfirmedUser")
                 }
             );
-
-            claims.AddClaim(new Claim(ClaimTypes.Email, userEmailDataContract.Email));
-            claims.AddClaim(new Claim(ClaimTypes.Role, "UnconfirmedUser"));
 
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -310,8 +311,10 @@ public class UserIdentityService : IUserIdentityService
             };
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
+            tokenHandler.OutboundClaimTypeMap.Clear();
+
+            JwtSecurityToken token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
             TokenDataContract tokenData = new TokenDataContract
             {
