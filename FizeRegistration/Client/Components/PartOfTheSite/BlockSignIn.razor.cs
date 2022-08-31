@@ -1,11 +1,19 @@
-﻿using FizeRegistration.Shared.DataContracts;
+﻿using System.Text.Json;
+using FizeRegistration.Client.Services.HttpService.Contracts;
+using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FizeRegistration.Client.Components.PartOfTheSite
 {
     public partial class BlockSignIn
     {
         [Inject] NavigationManager NavigationManager { get; set; }
+
+        [Inject] IFizeHttpService HttpClient { get; set; }
+
+        [Inject] AuthenticationStateProvider AuthState { get; set; }
+
         private string SendMessageBadMail;
 
         //private bool SuccessfulPassword;
@@ -17,39 +25,54 @@ namespace FizeRegistration.Client.Components.PartOfTheSite
 
         public async Task Login()
         {
-          
-
-            LoadingProcess = true;
-            if (String.IsNullOrWhiteSpace(Password))
+            try
             {
-                Console.WriteLine("Empty password");
-                SendMessageBadMail = "Empty password";
-                LoadingProcess = false;
-                BadRequestEmail = true;
-                return;
-            }
+                LoadingProcess = true;
 
-            var authenticationDataContract = new AuthenticationDataContract
-            {
-                Email = Email,
-                Password = Password
-            };
+                if (String.IsNullOrWhiteSpace(Password))
+                {
+                    Console.WriteLine("Empty password");
+                    SendMessageBadMail = "Empty password";
+                    LoadingProcess = false;
+                    BadRequestEmail = true;
+                    return;
+                }
 
-            var signInResponse = await HttpClient.SignInAsync(authenticationDataContract);
+                var authenticationDataContract = new AuthenticationDataContract
+                {
+                    Email = Email,
+                    Password = Password
+                };
 
-            int statusCode = (int)signInResponse.StatusCode;
+                var signInResponse = await HttpClient.SignInAsync(authenticationDataContract);
 
-            if (statusCode >= 200 && statusCode < 300)
-            {
+                int statusCode = (int)signInResponse.StatusCode;
+
+                if (statusCode < 200 && statusCode >= 299)
+                {
+                    throw new Exception("status code = " + statusCode);
+                }
+
                 Console.WriteLine("Signed In");
+
                 SendMessageBadMail = "Signed In";
+
                 LoadingProcess = false;
-                NavigationManager.NavigateTo($"/auth/signinup/Detail/{Email}");
-                // need a change of controller to get token
+
+                var responseBody = signInResponse.Body.ToString() ?? "{}";
+
+                var tokenDataContract = JsonSerializer.Deserialize<TokenDataContract>(responseBody.ToString());
+
+                ArgumentNullException.ThrowIfNull(tokenDataContract, nameof(tokenDataContract));
+
+                await HttpClient.SetTokenToLocalStorageAndHeader(tokenDataContract);
+
+                await AuthState.GetAuthenticationStateAsync();
+
+                NavigationManager.NavigateTo($"/auth/signinup/detail/{Email}");
             }
-            else
+            catch (Exception err)
             {
-                var err = System.Text.Json.JsonSerializer.Serialize(signInResponse);
 
                 Console.WriteLine(err);
 

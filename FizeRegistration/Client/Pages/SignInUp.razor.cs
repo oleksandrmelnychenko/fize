@@ -33,7 +33,7 @@ public partial class SignInUp : ComponentBase
         if (Email == String.Empty || !EmailValidator.IsEmailValid(Email))
         {
             BadRequestEmail = true;
-            SendMessageBadMail = $"Empty mail ,{PLEASE_ENTER_CORRECT_MAIL}";
+            SendMessageBadMail = $"Empty mail, {PLEASE_ENTER_CORRECT_MAIL}";
             LoadingProcess = false;
             return;
         }
@@ -56,7 +56,7 @@ public partial class SignInUp : ComponentBase
             Console.WriteLine(err);
 
             BadRequestEmail = true;
-            SendMessageBadMail = $"incorrect input,{PLEASE_ENTER_CORRECT_MAIL}";
+            SendMessageBadMail = $"incorrect input, {PLEASE_ENTER_CORRECT_MAIL}";
 
         }
         LoadingProcess = false;
