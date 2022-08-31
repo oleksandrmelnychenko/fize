@@ -86,7 +86,8 @@ public class UserIdentityService : IUserIdentityService
                   ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
                       {
                             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                            new Claim(ClaimTypes.Expiration, expiry.Ticks.ToString())
+                            new Claim(ClaimTypes.Expiration, expiry.Ticks.ToString()),
+                            new Claim(ClaimTypes.Role, "User")
                       }
                   );
 
