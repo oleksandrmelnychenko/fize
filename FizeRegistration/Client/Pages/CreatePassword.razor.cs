@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace FizeRegistration.Client.Pages;
 
-public partial class CreatePasswords : ComponentBase
+public partial class CreatePassword : ComponentBase
 {
     [Inject] NavigationManager NavigationManager { get; set; }
 
