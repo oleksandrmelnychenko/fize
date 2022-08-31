@@ -1,7 +1,7 @@
 ﻿using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
 
-namespace FizeRegistration.Client.Pages
+namespace FizeRegistration.Client.Components.ParthOfTheSite
 {
     public partial class RightWhiteBoxSignIn
     {

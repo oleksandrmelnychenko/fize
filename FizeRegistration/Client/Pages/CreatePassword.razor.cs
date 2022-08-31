@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Shared.Entities.Identity;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace FizeRegistration.Client.Pages;
 
-public partial class CreatePassword : ComponentBase
+public partial class CreatePasswords : ComponentBase
 {
     [Inject] NavigationManager NavigationManager { get; set; }
 
@@ -42,7 +42,7 @@ public partial class CreatePassword : ComponentBase
 
         if (Password != ConfirmPassword || !isPasswordMatch)
         {
-           
+
             SendMessageBadMail = "Password != ConfirmPassword || !isPasswordMatch";
             LoadingProcess = false;
             BadRequestEmail = true;
@@ -57,10 +57,10 @@ public partial class CreatePassword : ComponentBase
         {
             Console.WriteLine("Signed Up");
             SuccessfulPassword = true;
-            
-           // var userAccount = sendConfirmationResponse.Body as UserAccount;
 
-           //if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+            // var userAccount = sendConfirmationResponse.Body as UserAccount;
+
+            //if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
 
             // need a change of controller to get token 
         }
