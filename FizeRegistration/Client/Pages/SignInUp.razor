@@ -1,6 +1,7 @@
 ﻿
 @page "/auth"
 @page "/auth/signinup"
+@using FizeRegistration.Client.Components.PartOfTheSite
 <div class="basicBox" style="margin-top:7%;margin-bottom: 7%;">
 
     @if (LoadingProcess)
@@ -8,7 +9,7 @@
         <LoadingBar></LoadingBar>
     }
     <div class="leftSideOfRegistration">
-        <LeftBlackBoxSendEmail></LeftBlackBoxSendEmail>
+        <BlockSendEmail></BlockSendEmail>
     </div>
     <div class="rightSideOfRegistration">
         <div class="DivLocation">
@@ -16,11 +17,11 @@
         </div>
         @if (LogIn)
         {
-            <RightWhiteBoxSignIn></RightWhiteBoxSignIn>
+            <BlockSignIn></BlockSignIn>
         }
         else if (SendMail)
         {
-            <RightWhiteBoxSuccessfulMail></RightWhiteBoxSuccessfulMail>
+            <BlockSuccesfulMail></BlockSuccesfulMail>
         }
         else
         {

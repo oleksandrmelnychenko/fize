@@ -1,9 +1,9 @@
 ﻿using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
 
-namespace FizeRegistration.Client.Pages
+namespace FizeRegistration.Client.Components.PartOfTheSite
 {
-    public partial class RightWhiteBoxSignIn
+    public partial class BlockSignIn
     {
         [Inject] NavigationManager NavigationManager { get; set; }
         private string SendMessageBadMail;

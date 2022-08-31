@@ -47,6 +47,7 @@ public partial class CreatePassword : ComponentBase
         if (!isPasswordMatch)
         {
 
+
             SendMessageBadMail = "!isPasswordMatch";
             LoadingProcess = false;
             BadRequestEmail = true;
@@ -57,6 +58,7 @@ public partial class CreatePassword : ComponentBase
         {
 
             SendMessageBadMail = "Password != ConfirmPassword";
+            
             LoadingProcess = false;
             BadRequestEmail = true;
             return;

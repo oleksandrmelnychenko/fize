@@ -6,6 +6,7 @@ using FizeRegistration.Client.Helpers;
 using Blazored.LocalStorage;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Client.Services.HttpService;
+using MyApp;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,7 +22,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
-
+builder.Services.AddSingleton<Navigation>();
 
 
 await builder.Build().RunAsync();
