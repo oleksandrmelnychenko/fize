@@ -1,8 +1,10 @@
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Shared.Entities.Identity;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace FizeRegistration.Client.Pages;
@@ -12,6 +14,8 @@ public partial class CreatePassword : ComponentBase
     [Inject] NavigationManager NavigationManager { get; set; }
 
     [Inject] IFizeHttpService HttpClient { get; set; }
+
+    [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
 
     private string Password;
 
@@ -40,10 +44,19 @@ public partial class CreatePassword : ComponentBase
         }
         bool isPasswordMatch = _regexPattern.IsMatch(Password);
 
-        if (Password != ConfirmPassword || !isPasswordMatch)
+        if (!isPasswordMatch)
         {
-           
-            SendMessageBadMail = "Password != ConfirmPassword || !isPasswordMatch";
+
+            SendMessageBadMail = "!isPasswordMatch";
+            LoadingProcess = false;
+            BadRequestEmail = true;
+            return;
+        }
+
+        if (Password != ConfirmPassword)
+        {
+
+            SendMessageBadMail = "Password != ConfirmPassword";
             LoadingProcess = false;
             BadRequestEmail = true;
             return;
@@ -57,10 +70,10 @@ public partial class CreatePassword : ComponentBase
         {
             Console.WriteLine("Signed Up");
             SuccessfulPassword = true;
-            
-           // var userAccount = sendConfirmationResponse.Body as UserAccount;
 
-           //if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
+            // var userAccount = sendConfirmationResponse.Body as UserAccount;
+
+            //if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
 
             // need a change of controller to get token 
         }
@@ -89,6 +102,27 @@ public partial class CreatePassword : ComponentBase
             };
 
             await HttpClient.SetTokenToLocalStorageAndHeader(AccessToken);
+
+            var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+
+            var isAuthenticated = user?.Identity?.IsAuthenticated ?? false;
+
+            var isUnconfirmedRoleInClaims = user?.IsInRole("UnconfirmedUser") ?? false;
+
+            if (!isAuthenticated || !isUnconfirmedRoleInClaims)
+            {
+                NavigateToPageWithError();
+            }
+        }
+        else
+        {
+            NavigateToPageWithError();
+        }
+
+        void NavigateToPageWithError()
+        {
+            /* need to add page with error */
+            NavigationManager.NavigateTo("/", true);
         }
     }
 }
