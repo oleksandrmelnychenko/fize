@@ -37,7 +37,7 @@ public class MailSenderService : IMailSenderService
 
                 mssObj.From = new MailAddress(_senderUserName);
 
-                mssObj.Subject = "TextApp sign up confirm";
+                mssObj.Subject = "Fize sign up confirm";
 
                 var confirmUrl = baseUrl + "createpassword?#access_token=" + tokenData.Token;
 
