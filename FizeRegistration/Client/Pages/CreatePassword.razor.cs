@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 ﻿using System.ComponentModel.DataAnnotations;
-=======
 using System.Security.Claims;
->>>>>>> 7e984de7aed4aa1327c0ededcf642059c6f29f22
 using System.Text.RegularExpressions;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
@@ -19,12 +16,10 @@ public partial class CreatePassword : ComponentBase
 
     [Inject] IFizeHttpService HttpClient { get; set; }
 
-<<<<<<< HEAD
-=======
+
     [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
 
     private string Password;
->>>>>>> 7e984de7aed4aa1327c0ededcf642059c6f29f22
 
     [Required(ErrorMessage = "This field is required.")]
     public string NewPassword { get; set; }
@@ -58,11 +53,9 @@ public partial class CreatePassword : ComponentBase
         }
         bool isPasswordMatch = _regexPattern.IsMatch(NewPassword);
 
-<<<<<<< HEAD
         if (NewPassword != ConfirmPassword || !isPasswordMatch)
-=======
+
         if (!isPasswordMatch)
->>>>>>> 7e984de7aed4aa1327c0ededcf642059c6f29f22
         {
 
 

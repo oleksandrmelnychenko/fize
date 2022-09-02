@@ -53,11 +53,11 @@ namespace FizeRegistration.Client.Pages
         private string _linkImage { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
         [Inject] ContainEmail SendEmail { get; set; }
-        protected override Task OnInitializedAsync()
+        protected async override Task OnInitializedAsync()
         {
             var result = SendEmail.GetData();
             Email = result.Result;
-            return base.OnInitializedAsync();   
+           
         }
         public async Task DiscardChanges()
         {
