@@ -1,0 +1,48 @@
+﻿@page "/auth/signinup"
+@inject IFizeHttpService HttpClient
+@inject ContainEmail SendEmail
+@using FizeRegistration.Client.Components.PartOfTheSite
+@using FizeRegistration.Client.Services.HttpService.Contracts
+@using FizeRegistration.Shared.DataEmail
+<div class="basicBox" style="margin-top:7%;margin-bottom: 7%;">
+
+    @if (LoadingProcess)
+    {
+        <LoadingBar></LoadingBar>
+    }
+    <div class="leftSideOfRegistration">
+        <BasicInformationFize></BasicInformationFize>
+    </div>
+    <div class="rightSideOfRegistration">
+        <div class="DivLocation">
+            <FizeImage></FizeImage>
+        </div>
+
+        @*@if (SendMail)
+        {
+            <BlockSuccesfulMail></BlockSuccesfulMail>
+        }
+        else
+        {*@
+
+            <div class="DivLocation">
+                <div>
+                    <div class="RightHeadWordsBox">Welcome there!</div>
+                    <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">Please Sign in User</div>
+                    <div>
+                        <LabeSignIn TextOverLabel="Email" @bind-PositionId="Email">
+                        </LabeSignIn>
+                        <LabeSignIn TypeWord="password" TextOverLabel="Password" @bind-PositionId="Password">
+                        </LabeSignIn>
+                        @if (BadRequestEmail)
+                        {
+                            <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
+
+                        }
+                        <button class="buttonSendEmail" @onclick="Login">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        @*}*@
+    </div>
+</div>

@@ -1,12 +1,11 @@
 ﻿using FizeRegistration.Client.Helpers.Validation;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
+using FizeRegistration.Shared.DataEmail;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace FizeRegistration.Client.Pages
 {
@@ -48,11 +47,18 @@ namespace FizeRegistration.Client.Pages
 
     public partial class DetaliRegistration
     {
-        [Parameter] public string Email { get; set; }
+        public string Email { get; set; }
 
         AgencyInformation AgencyInformation = new AgencyInformation();
-
+        private string _linkImage { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
+        [Inject] ContainEmail SendEmail { get; set; }
+        protected override Task OnInitializedAsync()
+        {
+            var result = SendEmail.GetData();
+            Email = result.Result;
+            return base.OnInitializedAsync();   
+        }
         public async Task DiscardChanges()
         {
             AgencyInformation.AgencyName = null;
@@ -72,7 +78,6 @@ namespace FizeRegistration.Client.Pages
             StreamContent filePictire = new StreamContent(AgencyInformation.Picture.OpenReadStream());
             var formDataLogo = new MultipartFormDataContent();
 
-            fileLogo = new StreamContent(AgencyInformation.Logo.OpenReadStream());
             formDataLogo.Add(fileLogo, "fileLogo", Guid.NewGuid().ToString());
 
             formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
@@ -106,14 +111,51 @@ namespace FizeRegistration.Client.Pages
             }
 
         }
-        private void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
+        private async void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
-            AgencyInformation.Logo = e.File;
+            var file = AgencyInformation.Logo = e.File;
+          
+            //string pathLogo = Path.Combine("/Image", file.Name);
+            //using (var stream = new FileStream(pathLogo, FileMode.Create))
+            //{
+            //    //await fileLogo.CopyToAsync(stream);
+            //    await AgencyInformation.Logo.OpenReadStream().CopyToAsync(stream);
+
+            //}
         }
-        private void OnLinkPictureFilesChange(InputFileChangeEventArgs e)
+        private async void OnLinkPictureFilesChange(InputFileChangeEventArgs e)
         {
-            AgencyInformation.Picture = e.File;
+           AgencyInformation.Picture = e.File;
+            var formDataLogo = new MultipartFormDataContent();
+            StreamContent fileLogo = new StreamContent(AgencyInformation.Picture.OpenReadStream());
+            formDataLogo.Add(fileLogo, "filePictire", Guid.NewGuid().ToString());
+          var biba =  await HttpClient.SendLocalImage(formDataLogo);
+            _linkImage = biba.Message;
+
         }
+       
+        
+    }
+    public static class DataURLServices
+    {
+        public static string ToDataUrl(this MemoryStream data, string format)
+        {
+            var span = new Span<byte>(data.GetBuffer()).Slice(0, (int)data.Length);
+            return $"data:{format};base64,{Convert.ToBase64String(span)}";
+        }
+
+        public static byte[] ToBytes(string url)
+        {
+            var commaPos = url.IndexOf(',');
+            if (commaPos >= 0)
+            {
+                var base64 = url.Substring(commaPos + 1);
+                return Convert.FromBase64String(base64);
+            }
+            return null;
+        }
+
+
     }
 
 }

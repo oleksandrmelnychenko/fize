@@ -28,5 +28,6 @@ public sealed class IdentitySegments
     public const string NEW_AGENCY = "new/details";
 
     public const string NEW_FILES = "new/files";
+    public const string LOCAL_IMAGE = "local/image";
 }
 

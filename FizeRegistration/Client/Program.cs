@@ -7,6 +7,7 @@ using Blazored.LocalStorage;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Client.Services.HttpService;
 using MyApp;
+using FizeRegistration.Shared.DataEmail;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -23,6 +24,7 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddSingleton<Navigation>();
+builder.Services.AddSingleton<ContainEmail>();
 
 
 await builder.Build().RunAsync();

@@ -17,11 +17,15 @@ using Microsoft.Extensions.Primitives;
 using FizeRegistration.Shared.ResponseBuilder.Contracts;
 using FizeRegistration.Shared.ResponseBuilder;
 using FizeRegistration.Common.Helpers;
+using FizeRegistration.Shared.DataEmail;
 
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigManager.SetAppSettingsProperties(builder.Configuration);
 NoltFolderManager.InitializeFolderManager(builder.Environment.ContentRootPath);
+
+
+
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 
@@ -31,7 +35,6 @@ builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 builder.Services.AddScoped<IMailSenderFactory, MailSenderFactory>();
 builder.Services.AddScoped<IIdentityRepositoriesFactory, IdentityRepositoriesFactory>();
 builder.Services.AddScoped<IAgencyRepositoriesFactory, AgencyRepositoryFactory>();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

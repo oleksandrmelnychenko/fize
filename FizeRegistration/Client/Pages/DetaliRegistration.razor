@@ -1,4 +1,4 @@
-﻿@page "/auth/signinup/Detail/{Email}"
+﻿@page "/app/agency/new"
 @using Microsoft.AspNetCore.Http
 
 
@@ -16,6 +16,7 @@
                     <CircleAgency StepText="Step 2" SubtitleText="Tour"></CircleAgency>
                     <div class="lineAgency"></div>
                     <CircleAgency StepText="Step 3" SubtitleText="Collect Dec Pages"></CircleAgency>
+
                 </div>
                 <ButtonContactUs></ButtonContactUs>
             </div>
@@ -30,12 +31,12 @@
                         <div style="margin-left: 115px;margin-right: 35px; display:grid">
                             <label for="agencyname">Agency Name </label>
                             <InputText id="agencyname" @bind-Value="@AgencyInformation.AgencyName" class="LabelAgency" placeholder="Enter your agency name"></InputText>
-                            <ValidationMessage For="@(() => AgencyInformation.AgencyName)"/>
+                            <ValidationMessage For="@(() => AgencyInformation.AgencyName)" />
                         </div>
                         <div style="display:grid">
                             <label for="website">WebSite </label>
                             <InputText id="website" @bind-Value="@AgencyInformation.WebSite" class="LabelAgency" placeholder="Enter your company website"></InputText>
-                            <ValidationMessage For="@(() => AgencyInformation.WebSite)"/>
+                            <ValidationMessage For="@(() => AgencyInformation.WebSite)" />
                         </div>
                     </div>
                     <div style="display:flex ">
@@ -47,7 +48,7 @@
                             <label class="TextAgency">Logo</label>
                             <div style="display:flex;">
                                 <input style="width: 220px; border-right: none;" class="LabelAgency" placeholder="Drag & drop it here or upload" />
-                                <InputFile class="custom-file-input" OnChange="OnLinkLogoFilesChange"/>
+                                <InputFile class="custom-file-input" OnChange="OnLinkLogoFilesChange" />
                             </div>
                             <ValidationMessage For="@(() => AgencyInformation.Logo)" />
                         </div>
@@ -57,8 +58,10 @@
                     <div style="border-bottom: 1px solid #00000012; margin-right: 180px; margin-top: 25px; font-weight: 800;  font-size: 15pt; margin-bottom: 20px;">Let`s set up your profile</div>
                     <div style="font-size: 10pt;  font-weight: 800; margin-bottom: 8px;">Picture</div>
                     <div style="display:flex">
-                        <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"></div>
-                        <InputFile class="custom-file-upload" OnChange="OnLinkPictureFilesChange" style="align-self: center;margin-left: 10px;" />
+                        <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012;"> 
+                            <img src="@_linkImage" runat="server" />
+                        </div>
+                        <InputFile class="custom-file-upload" OnChange="OnLinkPictureFilesChange" style="align-self: center;margin-left: 10px;"/>
                     </div>
                 </div>
                 <div>
@@ -67,24 +70,24 @@
                         <div style="display: grid;margin-left: 115px;margin-right: 35px; margin-top:15px">
                             <label for="firstname">First Name </label>
                             <InputText Id="firstname" @bind-Value="@AgencyInformation.FirstName" class="LabelAgency" placeholder="Enter your first namer"></InputText>
-                            <ValidationMessage For="@(() => AgencyInformation.FirstName)"/>
+                            <ValidationMessage For="@(() => AgencyInformation.FirstName)" />
                         </div>
                         <div style="display: grid;margin-top:15px">
                             <label for="lastname">Last Name </label>
                             <InputText Id="lastname" @bind-Value="@AgencyInformation.LastName" class="LabelAgency" placeholder="Enter your last name"></InputText>
-                            <ValidationMessage For="@(() => AgencyInformation.LastName)"/>
+                            <ValidationMessage For="@(() => AgencyInformation.LastName)" />
                         </div>
                     </div>
                     <div style="display:flex">
                         <div style="display: grid;margin-left: 115px; margin-top: 15px;margin-right: 35px; ">
                             <label for="link">Link </label>
                             <InputText Id="link" @bind-Value="@AgencyInformation.Link" class="LabelAgency" placeholder="Enter link here"></InputText>
-                            <ValidationMessage For="@(() => AgencyInformation.Link)"/>
+                            <ValidationMessage For="@(() => AgencyInformation.Link)" />
                         </div>
                         <div style="display: grid;margin-top: 15px;">
                             <label for="phonenumbers">PhoneNumbers </label>
                             <InputText Id="phonenumbers" @bind-Value="@AgencyInformation.PhoneNumbers" class="LabelAgency" placeholder="Enter a valid phone number"></InputText>
-                            <ValidationMessage For="@(() => AgencyInformation.PhoneNumbers)"/>
+                            <ValidationMessage For="@(() => AgencyInformation.PhoneNumbers)" />
                         </div>
                     </div>
                 </div>
@@ -94,10 +97,13 @@
                     <button type="submit" style="float: right; margin-right: 180px; height: 40px;  width: 140px; background: black; color: white; font-weight: 800;">Continue</button>
                 </div>
             </div>
-        </EditForm>
+        </EditForm> 
     }
     else
     {
-       <SuccessefulBlock></SuccessefulBlock> 
+        <SuccessefulBlock></SuccessefulBlock>
     }
 </div>
+@code{
+     
+}

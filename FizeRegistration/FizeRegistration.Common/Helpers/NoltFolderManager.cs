@@ -13,12 +13,15 @@ namespace FizeRegistration.Common.Helpers
 
         private static string _imagelFiles = "ImageFiles";
 
+        private static string _localFiles = "LocalImage";
+
 
         public static void InitializeFolderManager(string serverPath)
         {
             _serverPath = serverPath;
 
             CreateImageFilesFolderIfNotExists();
+            CreateLocalFilesFolderIfNotExists();
         }
 
    
@@ -32,5 +35,15 @@ namespace FizeRegistration.Common.Helpers
 
         public static string GetImageFilesFolderPath() => Path.Combine(_serverPath, _imagelFiles);
 
+        private static void CreateLocalFilesFolderIfNotExists()
+        {
+            if (!Directory.Exists(Path.Combine(_serverPath, _localFiles)))
+            {
+                Directory.CreateDirectory(Path.Combine(_serverPath, _localFiles));
+            }
+        }
+
+        public static string GetLocalFilesFolderPath() => Path.Combine(_serverPath, _localFiles);
     }
+   
 }

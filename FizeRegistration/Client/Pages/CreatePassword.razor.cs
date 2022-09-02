@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Shared.Entities.Identity;
@@ -13,9 +14,15 @@ public partial class CreatePassword : ComponentBase
 
     [Inject] IFizeHttpService HttpClient { get; set; }
 
-    private string Password;
 
-    private string ConfirmPassword;
+    [Required(ErrorMessage = "This field is required.")]
+    public string NewPassword { get; set; }
+
+    [Required(ErrorMessage = "This field is required.")]
+    [Compare(nameof(NewPassword), ErrorMessage = "Passwords don't match.")]
+    public string ConfirmPassword { get; set; }
+   
+
     private string SendMessageBadMail;
 
     private bool SuccessfulPassword;
@@ -31,16 +38,16 @@ public partial class CreatePassword : ComponentBase
     {
 
         LoadingProcess = true;
-        if (Password == null)
+        if (NewPassword == null)
         {
             SendMessageBadMail = "Password Empty";
             LoadingProcess = false;
             BadRequestEmail = true;
             return;
         }
-        bool isPasswordMatch = _regexPattern.IsMatch(Password);
+        bool isPasswordMatch = _regexPattern.IsMatch(NewPassword);
 
-        if (Password != ConfirmPassword || !isPasswordMatch)
+        if (NewPassword != ConfirmPassword || !isPasswordMatch)
         {
 
             SendMessageBadMail = "Password != ConfirmPassword || !isPasswordMatch";
@@ -49,7 +56,7 @@ public partial class CreatePassword : ComponentBase
             return;
         }
 
-        var sendConfirmationResponse = await HttpClient.SendConfirmation(Password);
+        var sendConfirmationResponse = await HttpClient.SendConfirmation(NewPassword);
 
         int statusCode = (int)sendConfirmationResponse.StatusCode;
 

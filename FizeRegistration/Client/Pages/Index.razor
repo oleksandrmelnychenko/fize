@@ -3,21 +3,10 @@
 
 @inject NavigationManager NavigationManager
 
-@*<DetaliRegistration></DetaliRegistration>*@
+
 @code{
     protected override async Task OnInitializedAsync()
     {
-        //var authState = await Auth.GetAuthenticationStateAsync();
-
-        //var user = authState.User;
-
-        //var isAuthenticated = user.Identity.IsAuthenticated;
-
-        //if(isAuthenticated)
-        //{
-            
-        //}
-
          NavigationManager.NavigateTo("/auth");
     }
 

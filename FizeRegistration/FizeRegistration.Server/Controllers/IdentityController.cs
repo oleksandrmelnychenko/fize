@@ -18,7 +18,7 @@ namespace FizeRegistration.Server.Controllers;
 public class IdentityController : WebApiControllerBase
 {
     private readonly IUserIdentityService _userIdentityService;
-
+   
     public IdentityController(IUserIdentityService userIdentityService,
          IResponseFactory responseFactory) : base(responseFactory)
     {
@@ -82,12 +82,12 @@ public class IdentityController : WebApiControllerBase
         {
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
-    } 
+    }
 
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.NEW_FILES)]
-    public async Task<IActionResult> NewFiles( [FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
+    public async Task<IActionResult> NewFiles([FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
     {
         try
         {
@@ -104,13 +104,13 @@ public class IdentityController : WebApiControllerBase
                 using (var stream = new FileStream(pathPictire, FileMode.Create))
                 {
                     await filePictire.CopyToAsync(stream);
-                } 
+                }
                 using (var stream = new FileStream(pathLogo, FileMode.Create))
                 {
                     await fileLogo.CopyToAsync(stream);
                 }
             }
-            return Ok(SuccessResponseBody(new { Message = "Files Send"}));
+            return Ok(SuccessResponseBody(new { Message = "Files Send" }));
         }
         catch (InvalidIdentityException exc)
         {
@@ -120,6 +120,44 @@ public class IdentityController : WebApiControllerBase
         {
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
+    }
+
+
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.LOCAL_IMAGE)]
+    public async Task<IActionResult> NewLocalFile([FromForm] IFormFile filePictire)
+    {
+        try
+        {
+           
+            string fileName = Path.GetFileName(filePictire.FileName);
+
+
+            string pathPictire = string.Empty;
+            if (filePictire != null)
+            {
+                string exention = ".png";
+                pathPictire = Path.Combine(NoltFolderManager.GetLocalFilesFolderPath(), filePictire.FileName + exention);
+
+                using (var stream = new FileStream(pathPictire, FileMode.Create))
+                {
+                    await filePictire.CopyToAsync(stream);
+                }
+
+            }
+            return Ok(SuccessResponseBody($"{pathPictire}"));
+
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+
     }
 
     [HttpPost]
