@@ -1,0 +1,11 @@
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@code {
+    [Parameter] public string RedirectUrl { get; set; } = "/app/agency/new";
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Navigation.NavigateTo(RedirectUrl);
+    }
+}

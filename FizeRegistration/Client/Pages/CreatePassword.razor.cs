@@ -53,7 +53,6 @@ public partial class CreatePassword : ComponentBase
         }
         bool isPasswordMatch = _regexPattern.IsMatch(NewPassword);
 
-        if (NewPassword != ConfirmPassword || !isPasswordMatch)
 
         if (!isPasswordMatch)
         {
@@ -65,13 +64,16 @@ public partial class CreatePassword : ComponentBase
             return;
         }
 
-        if (Password != ConfirmPassword)
+        Console.WriteLine(NewPassword == ConfirmPassword);
+
+        if (NewPassword != ConfirmPassword)
         {
 
             SendMessageBadMail = "Password != ConfirmPassword";
             
             LoadingProcess = false;
             BadRequestEmail = true;
+
             return;
         }
 
@@ -96,7 +98,9 @@ public partial class CreatePassword : ComponentBase
 
             Console.WriteLine(err);
             LoadingProcess = false;
-            SendMessageBadMail = "An errorneous response from server";
+
+            BadRequestEmail = true;
+            SendMessageBadMail = sendConfirmationResponse.Message;
             //throw new Exception("An errorneous response from server");
             // need to show an alert etc
         }

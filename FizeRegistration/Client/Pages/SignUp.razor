@@ -1,51 +1,65 @@
-﻿
-@page "/auth"
-@using FizeRegistration.Client.Components.PartOfTheSite
-<div class="basicBox" style="margin-top:7%;margin-bottom: 7%;">
+﻿@page "/auth"
+@page "/auth/signup"
 
-    @if (LoadingProcess)
-    {
-        <LoadingBar></LoadingBar>
-    }
-    <div class="leftSideOfRegistration">
-        <BasicInformationFize></BasicInformationFize>
-    </div>
-    <div class="rightSideOfRegistration">
-        <div class="DivLocation">
-            <FizeImage></FizeImage>
-        </div>
-       
-        @if (SendMail)
-        {
-            <BlockSuccesfulMail></BlockSuccesfulMail>
-        }
-        else
-        {
-            <div class="DivLocation">
-                <div>
-                    <div class="RightHeadWordsBox">Sign up with Fize</div>
-                    <div class="RightBoxText" style=" margin-top: 20px;">Try Fize risk free,no credit card required</div>
-                    <LabelSendEmail TextOverLabel="Work email adress" @bind-Email="Email"></LabelSendEmail>
-                    @if (BadRequestEmail)
-                    {
-                        <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
-                    }
-                    <div class="RightBoxText" style="  margin-top: 5px; ">Only work emails are allowed to register</div>
-                    <div style="display:flex">
-                        <button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
-                    </div>
-                    <div class="RightBoxText"
-                     style=" width: 200px; text-align: -webkit-center; margin-left: 85px; font-size: 9pt; line-height: 13pt;">
-                        By
-                        clicking 'Start for free' you agree to our Terms and Privacy Policy
-                    </div>
-                    <div style="display:flex; margin-top: 80px; margin-right: 170px;">
-                        <div class="TextHaveAccount">Have an account?</div>
-                        <a class="TextSignIn" @onclick="SignInAsync">Sign In ></a>
-                        <div></div>
-                    </div>
-                </div>
+@using FizeRegistration.Client.Components.PartOfTheSite
+@using Microsoft.AspNetCore.Components.Authorization
+@using FizeRegistration.Client.Components.Authentication
+
+<AuthorizeView>
+    <NotAuthorized>
+        <div class="basicBox" style="margin-top:7%;margin-bottom: 7%;">
+
+            @if (LoadingProcess)
+            {
+                <LoadingBar></LoadingBar>
+            }
+            <div class="leftSideOfRegistration">
+                <BasicInformationFize></BasicInformationFize>
             </div>
-        }
-    </div>
-</div>
+            <div class="rightSideOfRegistration">
+                <div class="DivLocation">
+                    <FizeImage></FizeImage>
+                </div>
+
+                @if (SendMail)
+                {
+                    <BlockSuccesfulMail Message="Please check your Email to proceed with signing up!" IsButton=@(false)>
+                    </BlockSuccesfulMail>
+                }
+                else
+                {
+                    <div class="DivLocation">
+                        <div>
+                            <div class="RightHeadWordsBox">Sign up with Fize</div>
+                            <div class="RightBoxText" style=" margin-top: 20px;">Try Fize risk free,no credit card required
+                            </div>
+                            <LabelSendEmail TextOverLabel="Work email adress" @bind-Email="Email"></LabelSendEmail>
+                            @if (BadRequestEmail)
+                            {
+                                <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
+                            }
+                            <div class="RightBoxText" style="  margin-top: 5px; ">Only work emails are allowed to register
+                            </div>
+                            <div style="display:flex">
+                                <button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
+                            </div>
+                            <div class="RightBoxText"
+                            style=" width: 200px; text-align: -webkit-center; margin-left: 85px; font-size: 9pt; line-height: 13pt;">
+                                By
+                                clicking 'Start for free' you agree to our Terms and Privacy Policy
+                            </div>
+                            <div style="display:flex; margin-top: 80px; margin-right: 170px;">
+                                <div class="TextHaveAccount">Have an account?</div>
+                                <a class="TextSignIn" @onclick="SignInAsync">Sign In ></a>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </NotAuthorized>
+    <Authorized>
+        <RedirectTo RedirectUrl="/app/agency/new" />
+    </Authorized>
+</AuthorizeView>

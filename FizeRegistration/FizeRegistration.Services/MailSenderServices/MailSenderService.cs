@@ -39,7 +39,7 @@ public class MailSenderService : IMailSenderService
 
                 mssObj.Subject = "Fize sign up confirm";
 
-                var confirmUrl = baseUrl + "/auth/signup/email/confirmation?#access_token=" + tokenData.Token;
+                var confirmUrl = baseUrl + "auth/signup/email/confirmation?#access_token=" + tokenData.Token;
 
                 var confirmButton = "<a target=\"_blank\" href=\"" + confirmUrl + "\">link</a>";
 
