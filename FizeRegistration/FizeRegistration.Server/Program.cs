@@ -37,7 +37,7 @@ builder.Services.AddScoped<IIdentityRepositoriesFactory, IdentityRepositoriesFac
 builder.Services.AddScoped<IAgencyRepositoriesFactory, AgencyRepositoryFactory>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 
 SymmetricSecurityKey signingKey = AuthOptions.GetSymmetricSecurityKey(ConfigManager.AppSettings.TokenSecret);

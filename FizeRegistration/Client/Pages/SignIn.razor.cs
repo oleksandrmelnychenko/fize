@@ -23,6 +23,12 @@ namespace FizeRegistration.Client.Pages
 
         private string Password { get; set; }
 
+
+        private void SignUpAsync()
+        {
+
+            NavigationManager.NavigateTo("/auth/signup");
+        }
         public async Task Login()
         {
             try

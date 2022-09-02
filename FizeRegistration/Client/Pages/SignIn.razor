@@ -24,18 +24,20 @@
                 </div>
 
                 @*@if (SendMail)
-                    {
-                    <BlockSuccesfulMail></BlockSuccesfulMail>
-                    }
-                    else
-                    {*@
+                {
+                <BlockSuccesfulMail></BlockSuccesfulMail>
+                }
+                else
+                {*@
 
                 <div class="DivLocation">
                     <div>
                         <div class="RightHeadWordsBox">Welcome there!</div>
-                        <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">Please
+                        <div class="RightBoxText" style=" margin-top: 20px; font-size: 12.2pt; height: 11px;">
+                            Please
                             Sign in
-                            User</div>
+                            User
+                        </div>
                         <div>
                             <LabeSignIn TextOverLabel="Email" @bind-PositionId="Email">
                             </LabeSignIn>
@@ -47,6 +49,11 @@
 
                             }
                             <button class="buttonSendEmail" @onclick="Login">Sign In</button>
+                            <div style="display:flex; margin-top: 30px; margin-right: 170px;">
+                                <div class="TextHaveAccount">Not have account?</div>
+                                <a class="TextSignIn"  style="width:92px;" @onclick ="SignUpAsync">Sign Up ></a>
+                                <div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
