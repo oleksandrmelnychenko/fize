@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 ﻿@page "/app/agency/new"
+=======
+﻿@page "/auth/signinup/detail/{Email}"
+@using Microsoft.AspNetCore.Authorization
+>>>>>>> 7e984de7aed4aa1327c0ededcf642059c6f29f22
 @using Microsoft.AspNetCore.Http
+
+@attribute [Authorize(Roles = "User")]
 
 
 <div class="basicBox" style="background:white;height: 800px; width:1150px">

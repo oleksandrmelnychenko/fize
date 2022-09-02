@@ -169,9 +169,9 @@ public class IdentityController : WebApiControllerBase
         {
             if (authenticateDataContract == null) throw new ArgumentNullException("AuthenticationDataContract");
 
-            UserAccount user = await _userIdentityService.SignInAsync(authenticateDataContract);
+            TokenDataContract tokenDataContract = await _userIdentityService.SignInAsync(authenticateDataContract);
 
-            return Ok(SuccessResponseBody(user));
+            return Ok(SuccessResponseBody(tokenDataContract));
         }
         catch (InvalidIdentityException exc)
         {

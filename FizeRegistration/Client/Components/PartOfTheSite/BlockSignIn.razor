@@ -2,7 +2,6 @@
 @using FizeRegistration.Client.Services.HttpService.Contracts
 @using FizeRegistration.Shared.DataContracts
 
-@inject IFizeHttpService HttpClient
 
 <div class="DivLocation">
     <div>
@@ -16,7 +15,6 @@
             @if (BadRequestEmail)
             {
                 <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
-
             }
             <button class="buttonSendEmail" @onclick="Login">Sign In</button>
         </div>

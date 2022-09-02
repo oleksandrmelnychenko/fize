@@ -18,6 +18,7 @@ public class AuthStateProvider : AuthenticationStateProvider
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         TokenDataContract? tokenResponse = null;
+
         try
         {
             tokenResponse = await _localStorage.GetItemAsync<TokenDataContract>("token");
@@ -33,14 +34,20 @@ public class AuthStateProvider : AuthenticationStateProvider
         {
             try
             {
-                if (tokenResponse.ExpiresAt > DateTime.UtcNow)
+                var tempIdentity = new ClaimsIdentity(ParseClaimsFromJwt(tokenResponse.Token), "jwt");
+
+                var expirationTicks = long.Parse(tempIdentity.FindFirst(ClaimTypes.Expiration)?.Value ?? "0");
+
+                DateTime expiration = new DateTime(expirationTicks);
+
+                if (expiration > DateTime.UtcNow)
                 {
-                    identity = new ClaimsIdentity(ParseClaimsFromJwt(tokenResponse.Token), "jwt");
+                    identity = tempIdentity;
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e);
             }
         }
 
