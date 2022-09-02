@@ -10,7 +10,7 @@ public class IdentityValidationMessages
 
     public const string EMAIL_INVALID = "Email is not valid";
 
-    public const string EMAIL_NOT_AVAILABLE = "Email is not available";
+    public const string EMAIL_NOT_AVAILABLE = "The email is not available. An account with this email already exists";
 
     public const string TOKEN_INVALID = "Invalid token";
 

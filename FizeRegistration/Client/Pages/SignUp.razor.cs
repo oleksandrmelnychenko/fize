@@ -24,7 +24,7 @@ namespace FizeRegistration.Client.Pages
         private void SignInAsync()
         {
             LogIn = true;
-            navigate.NavigateTo("/auth/signinup");
+            navigate.NavigateTo("/auth/signin");
         }
 
         private async Task SendEmailPost()
@@ -56,7 +56,7 @@ namespace FizeRegistration.Client.Pages
                 Console.WriteLine(err);
 
                 BadRequestEmail = true;
-                SendMessageBadMail = $"incorrect input,{PLEASE_ENTER_CORRECT_MAIL}";
+                SendMessageBadMail = sendEmailResponse?.Message ?? "An error occured. Please, try another time";
 
             }
             LoadingProcess = false;

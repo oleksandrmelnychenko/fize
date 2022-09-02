@@ -5,21 +5,28 @@
             <div class="CenterImg">
                 <img style="margin-top: 16px;" src="/ScreenShots/MailIcon.png" />
             </div>
-            <div class="smallText" style="font-size: 10pt; color: black; font-weight: 600;  margin-top: 22px;">@Message</div>
-            <button class="buttonContactUs" @onclick="RedirectSignIn">Sign In</button>
+
+            <div class="smallText" style="font-size: 10pt; height:45px; color: black; font-weight: 600;  margin-top: 22px;">@Message
+            </div>
+            @if (IsButton)
+            {
+                <button class="buttonContactUs" @onclick="RedirectSignIn">Sign In</button>
+            }
         </div>
-        
+
     </div>
-    
-    
+
+
 </div>
 
-@code{
+@code {
     [Parameter] public bool IsButton { get; set; } = false;
     [Parameter] public string Message { get; set; } = "Successfully made your account. Check your email";
-    [Inject] private NavigationManager Navigate{ get; set; }
+
+    [Inject] private NavigationManager Navigate { get; set; }
+
     private void RedirectSignIn()
     {
-        Navigate.NavigateTo("/auth/signinup");
+        Navigate.NavigateTo("/auth/signin");
     }
 }

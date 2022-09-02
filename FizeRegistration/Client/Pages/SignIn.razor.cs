@@ -1,13 +1,19 @@
-﻿using FizeRegistration.Client.Helpers.Validation;
+﻿using System.Text.Json;
+using FizeRegistration.Client.Helpers.Validation;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FizeRegistration.Client.Pages
 {
     public partial class SignIn : ComponentBase
     {
         [Inject] NavigationManager NavigationManager { get; set; }
+
+        [Inject] IFizeHttpService HttpClient { get; set; }
+
+        [Inject] AuthenticationStateProvider AuthState { get; set; }
         private string SendMessageBadMail;
 
         //private bool SuccessfulPassword;
@@ -19,49 +25,67 @@ namespace FizeRegistration.Client.Pages
 
         public async Task Login()
         {
-
-            LoadingProcess = true;
-            if (String.IsNullOrWhiteSpace(Password))
+            try
             {
-                Console.WriteLine("Empty password");
-                SendMessageBadMail = "Empty password";
-                LoadingProcess = false;
-                BadRequestEmail = true;
-                return;
-            }
+                LoadingProcess = true;
 
-            var authenticationDataContract = new AuthenticationDataContract
-            {
-                Email = Email,
-                Password = Password
-            };
+                if (String.IsNullOrWhiteSpace(Password))
+                {
+                    Console.WriteLine("Empty password");
+                    SendMessageBadMail = "Empty password";
+                    LoadingProcess = false;
+                    BadRequestEmail = true;
+                    return;
+                }
 
-            var signInResponse = await HttpClient.SignInAsync(authenticationDataContract);
+                var authenticationDataContract = new AuthenticationDataContract
+                {
+                    Email = Email,
+                    Password = Password
+                };
 
-            int statusCode = (int)signInResponse.StatusCode;
+                var signInResponse = await HttpClient.SignInAsync(authenticationDataContract);
 
-            if (statusCode >= 200 && statusCode < 300)
-            {
+                int statusCode = (int)signInResponse.StatusCode;
+
+                if (statusCode < 200 || statusCode >= 299)
+                {
+                    SendMessageBadMail = signInResponse?.Message ?? "An error occured. Please, try another time";
+
+                    throw new Exception("status code = " + statusCode);
+                }
+
+
                 Console.WriteLine("Signed In");
+
                 SendMessageBadMail = "Signed In";
+
                 LoadingProcess = false;
-                SendEmail.SetData(Email);
+
+                var responseBody = signInResponse.Body.ToString() ?? "{}";
+
+                var tokenDataContract = JsonSerializer.Deserialize<TokenDataContract>(responseBody.ToString());
+
+                ArgumentNullException.ThrowIfNull(tokenDataContract, nameof(tokenDataContract));
+
+                await HttpClient.SetTokenToLocalStorageAndHeader(tokenDataContract);
+
+                await AuthState.GetAuthenticationStateAsync();
+
                 NavigationManager.NavigateTo($"/app/agency/new");
-                // need a change of controller to get token
             }
-            else
+            catch (Exception err)
             {
-                var err = System.Text.Json.JsonSerializer.Serialize(signInResponse);
 
                 Console.WriteLine(err);
 
-                throw new Exception("An errorneous response from server");
-                SendMessageBadMail = "An errorneous response from server";
+                // SendMessageBadMail = signInResponse?.Message ?? "An error occured. Please, try another time";
                 LoadingProcess = false;
                 BadRequestEmail = true;
 
                 // need to show an alert etc
             }
         }
+
     }
 }

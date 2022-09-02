@@ -4,6 +4,6 @@
 @code {
     protected override void OnInitialized()
     {
-        Navigation.NavigateTo($"?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        Navigation.NavigateTo($"auth/signin?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
     }
 }
