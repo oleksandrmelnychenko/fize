@@ -114,7 +114,7 @@ namespace FizeRegistration.Client.Pages
         private async void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
             var file = AgencyInformation.Logo = e.File;
-          
+            string biba = AgencyInformation.Color;
             //string pathLogo = Path.Combine("/Image", file.Name);
             //using (var stream = new FileStream(pathLogo, FileMode.Create))
             //{

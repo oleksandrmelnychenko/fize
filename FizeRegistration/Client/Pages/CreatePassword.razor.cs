@@ -10,24 +10,26 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace FizeRegistration.Client.Pages;
 
+
+
+public class ConfirmPassword
+{
+    [Required(ErrorMessage = "This field is required.")]
+    [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "password does not match")]
+    public string NewPassword { get; set; }
+
+    [Required(ErrorMessage = "This field is required.")]
+    [Compare(nameof(NewPassword), ErrorMessage = "Passwords don't match.")]
+    public string ConfirmPasswords { get; set; }
+}
 public partial class CreatePassword : ComponentBase
 {
     [Inject] NavigationManager NavigationManager { get; set; }
 
     [Inject] IFizeHttpService HttpClient { get; set; }
 
-
+    private ConfirmPassword password = new ConfirmPassword();
     [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
-
-    private string Password;
-
-    [Required(ErrorMessage = "This field is required.")]
-    public string NewPassword { get; set; }
-
-    [Required(ErrorMessage = "This field is required.")]
-    [Compare(nameof(NewPassword), ErrorMessage = "Passwords don't match.")]
-    public string ConfirmPassword { get; set; }
-   
 
     private string SendMessageBadMail;
 
@@ -42,42 +44,7 @@ public partial class CreatePassword : ComponentBase
 
     public async Task SendConfirmation()
     {
-
-        LoadingProcess = true;
-        if (NewPassword == null)
-        {
-            SendMessageBadMail = "Password Empty";
-            LoadingProcess = false;
-            BadRequestEmail = true;
-            return;
-        }
-        bool isPasswordMatch = _regexPattern.IsMatch(NewPassword);
-
-
-        if (!isPasswordMatch)
-        {
-
-
-            SendMessageBadMail = "!isPasswordMatch";
-            LoadingProcess = false;
-            BadRequestEmail = true;
-            return;
-        }
-
-        Console.WriteLine(NewPassword == ConfirmPassword);
-
-        if (NewPassword != ConfirmPassword)
-        {
-
-            SendMessageBadMail = "Password != ConfirmPassword";
-            
-            LoadingProcess = false;
-            BadRequestEmail = true;
-
-            return;
-        }
-
-        var sendConfirmationResponse = await HttpClient.SendConfirmation(NewPassword);
+        var sendConfirmationResponse = await HttpClient.SendConfirmation(password.NewPassword);
 
         int statusCode = (int)sendConfirmationResponse.StatusCode;
 
