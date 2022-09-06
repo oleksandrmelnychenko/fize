@@ -45,10 +45,10 @@
                             </LabeSignIn>
                             @if (BadRequestEmail)
                             {
-                                <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
+                                <div class="RightBoxText"  style="color:red; height: 0px;font-size: 10pt;">@SendMessageBadMail</div>
 
                             }
-                            <button class="buttonSendEmail" @onclick="Login">Sign In</button>
+                            <button style="margin-top: 35px;" class="buttonSendEmail" @onclick="Login">Sign In</button>
                             <div style="display:flex; margin-top: 30px; margin-right: 170px;">
                                 <div class="TextHaveAccount">Not have account?</div>
                                 <a class="TextSignIn"  style="width:92px;" @onclick ="SignUpAsync">Sign Up ></a>

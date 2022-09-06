@@ -212,7 +212,8 @@
     width: 290px;
     height: 41px;
     border: 2px solid #00000012;
-    font-size:12pt;
+    font-size: 10pt;
+    outline: 1px;
 }
 .TextAgency {
     font-size: 11pt;
@@ -245,9 +246,8 @@
         color: black;
         display: inline-block;
         /*background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);*/
-        border: 1px solid #999;
         border-radius: 3px;
-        padding: 5px 8px;
+       
         outline: none;
         white-space: nowrap;
         -webkit-user-select: none;
@@ -256,11 +256,11 @@
         font-weight: 700;
         font-size: 10pt;
         width: 70px;
-        height: 41px;
+        height: 30px;
         font-size: 10pt;
         text-align: center;
-        padding: 9px 11px;
-        border: 2px solid #00000012;
+        padding: 4px 11px;
+        border: 1px solid black;
         font-weight: 600;
     }
 
@@ -309,7 +309,7 @@
         font-size: 10pt;
         text-align: center;
        
-        border: 2px solid #00000012;
+        border: 1px solid black;
         font-weight: 600;
     }
 
@@ -325,3 +325,22 @@
             background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
         }
 
+
+
+.input-icons i {
+    position: absolute;
+}
+
+.input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.icon {
+    padding: 14px;
+    min-width: 40px;
+}
+
+.input-field {
+    padding: 10px;
+}

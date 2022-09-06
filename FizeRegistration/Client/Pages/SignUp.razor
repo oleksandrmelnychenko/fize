@@ -36,9 +36,9 @@
                             <LabelSendEmail TextOverLabel="Work email adress" @bind-Email="Email"></LabelSendEmail>
                             @if (BadRequestEmail)
                             {
-                                <div class="RightBoxText" style="color:red">@SendMessageBadMail</div>
+                                <div class="RightBoxText" style="height: 0px;font-size: 10pt;color:red">@SendMessageBadMail</div>
                             }
-                            <div class="RightBoxText" style="  margin-top: 5px; ">Only work emails are allowed to register
+                            <div class="RightBoxText" style="  margin-top: 15px; ">Only work emails are allowed to register
                             </div>
                             <div style="display:flex">
                                 <button class="buttonSendEmail" @onclick="SendEmailPost">Start For Free</button>
