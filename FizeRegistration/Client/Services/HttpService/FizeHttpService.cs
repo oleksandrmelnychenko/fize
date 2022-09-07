@@ -17,7 +17,6 @@ public sealed class HttpUrls
     public const string SIGN_IN = "/api/v1/identity/signin";
     public const string SEND_AGENCY = "/api/v1/identity/new/details";
     public const string SEND_AGENCY_FILE = "/api/v1/identity/new/files";
-    public const string LOCAL_IMAGE = "/api/v1/identity/local/image";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -118,19 +117,6 @@ public class FizeHttpService : IFizeHttpService
 
             return errorResponse;
         }
-    }
-    public async Task<IWebResponse> SendLocalImage(MultipartFormDataContent model)
-    {
-        var response = await _httpClient.PostAsync(HttpUrls.LOCAL_IMAGE, model);
-        string responseBody = await response.Content.ReadAsStringAsync();
-
-        var responseString = JsonConvert.DeserializeObject<SuccessResponse>(responseBody);
-        return new SuccessResponse
-        {
-            Body = new Object(),
-            Message = $"{responseString.Body}",
-            StatusCode = System.Net.HttpStatusCode.Created
-        }; ;
     }
     public async Task<IWebResponse> SendFile(MultipartFormDataContent model)
     {

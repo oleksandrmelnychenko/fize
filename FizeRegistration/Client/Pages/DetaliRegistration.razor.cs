@@ -3,6 +3,7 @@ using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Shared.DataEmail;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +31,7 @@ namespace FizeRegistration.Client.Pages
         public string Link { get; set; }
 
         [Required]
-        [StringLength(15, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
+        [StringLength(15, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 4)]
         public string FirstName { get; set; }
 
         [Required]
@@ -53,10 +54,18 @@ namespace FizeRegistration.Client.Pages
         private string _linkImage { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
         [Inject] ContainEmail SendEmail { get; set; }
+
+        [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
+
+        private bool isLoading;
+        private List<IBrowserFile> loadedFiles = new();
+        private int maxAllowedFiles = 3;
+
+        private string extensionname = "default";
+        private string base64data = "";
         protected async override Task OnInitializedAsync()
         {
-            var result = SendEmail.GetData();
-            Email = result.Result;
+            var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
            
         }
         public async Task DiscardChanges()
@@ -95,12 +104,12 @@ namespace FizeRegistration.Client.Pages
                 Link = AgencyInformation.Link,
                 PhoneNumber = AgencyInformation.PhoneNumbers,
                 WebSite = AgencyInformation.WebSite,
-                Email = Email,
+                Email = "irabalicka77@gmail.com",
             };
 
             var jsonAgency = JsonConvert.SerializeObject(AgencyDataContract);
             var stringContentAgency = new StringContent(jsonAgency);
-            formDataLogo.Add(stringContentAgency, "DetailsData");
+            formDataLogo.Add(stringContentAgency, "agencyData");
 
             var sendConfirmationResponse = await HttpClient.SendFile(formDataLogo);
             int statusCode = (int)sendConfirmationResponse.StatusCode;
@@ -113,27 +122,56 @@ namespace FizeRegistration.Client.Pages
         }
         private async void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
-            var file = AgencyInformation.Logo = e.File;
-            string biba = AgencyInformation.Color;
-            //string pathLogo = Path.Combine("/Image", file.Name);
-            //using (var stream = new FileStream(pathLogo, FileMode.Create))
-            //{
-            //    //await fileLogo.CopyToAsync(stream);
-            //    await AgencyInformation.Logo.OpenReadStream().CopyToAsync(stream);
+          AgencyInformation.Logo = e.File;
+            //var zalupa = AgencyInformation.Logo.Name;
 
-            //}
+
         }
-        private async void OnLinkPictureFilesChange(InputFileChangeEventArgs e)
+        private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
         {
-           AgencyInformation.Picture = e.File;
-            var formDataLogo = new MultipartFormDataContent();
-            StreamContent fileLogo = new StreamContent(AgencyInformation.Picture.OpenReadStream());
-            formDataLogo.Add(fileLogo, "filePictire", Guid.NewGuid().ToString());
-          var biba =  await HttpClient.SendLocalImage(formDataLogo);
-            _linkImage = biba.Message;
+            loadedFiles.Clear();
+            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+            {
+                try
+                {
+                    loadedFiles.Add(file);
+
+                   
+                    extensionname = Path.GetExtension(file.Name);
+
+                    var imagefiletypes = new List<string>() {
+                    ".png",".jpg",".jpeg"
+                };
+                    if (imagefiletypes.Contains(extensionname))
+                    {
+
+                       
+                        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
+                        var buf = new byte[resizedFile.Size]; 
+                        using (var stream = resizedFile.OpenReadStream())
+                        {
+                            await stream.ReadAsync(buf); 
+                        }
+                        base64data = "data:image/png;base64," + Convert.ToBase64String(buf); 
+
+                       
+                        
+                        AgencyInformation.Picture = e.File;
+                        isLoading = true;
+                    }
+                    else
+                    {
+                       
+                    };
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+           
 
         }
-       
+        
         
     }
     public static class DataURLServices

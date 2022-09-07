@@ -12,7 +12,7 @@
 <div class="input-icons" style="display: flex;">
   <i class="fa fa-pen"></i>
     <InputText Id="firstname" @bind-Value="@ColorId" class="LabelAgency input-field"
-               placeholder="Enter your first namer" style="text-indent: 20px; width: 240px;"></InputText>
+               placeholder="Enter or choose HEX" style=" width: 240px;"></InputText>
     <ValidationMessage For="@(() => ColorId)" style="height: 0px;font-size: 10pt;" />
         <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
         <input style="width: 50px; margin-top: 3px;height: 30px; border: none;" type="color" value="ColorId" @oninput="OnColorIdChanged">

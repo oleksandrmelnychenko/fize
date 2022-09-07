@@ -121,45 +121,6 @@ public class IdentityController : WebApiControllerBase
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
     }
-
-
-    [HttpPost]
-    [AllowAnonymous]
-    [AssignActionRoute(IdentitySegments.LOCAL_IMAGE)]
-    public async Task<IActionResult> NewLocalFile([FromForm] IFormFile filePictire)
-    {
-        try
-        {
-           
-            string fileName = Path.GetFileName(filePictire.FileName);
-
-
-            string pathPictire = string.Empty;
-            if (filePictire != null)
-            {
-                string exention = ".png";
-                pathPictire = Path.Combine(NoltFolderManager.GetLocalFilesFolderPath(), filePictire.FileName + exention);
-
-                using (var stream = new FileStream(pathPictire, FileMode.Create))
-                {
-                    await filePictire.CopyToAsync(stream);
-                }
-
-            }
-            return Ok(SuccessResponseBody($"{pathPictire}"));
-
-        }
-        catch (InvalidIdentityException exc)
-        {
-            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
-        }
-        catch (Exception exc)
-        {
-            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
-        }
-
-    }
-
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.SIGN_IN)]
@@ -172,7 +133,7 @@ public class IdentityController : WebApiControllerBase
             TokenDataContract tokenDataContract = await _userIdentityService.SignInAsync(authenticateDataContract);
 
             return Ok(SuccessResponseBody(tokenDataContract));
-        }
+        } 
         catch (InvalidIdentityException exc)
         {
             return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
