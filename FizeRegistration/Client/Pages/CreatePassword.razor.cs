@@ -51,6 +51,8 @@ public partial class CreatePassword : ComponentBase
         if (statusCode >= 200 && statusCode < 300)
         {
             Console.WriteLine("Signed Up");
+
+            await HttpClient.SetTokenToLocalStorageAndHeader(new TokenDataContract());
             SuccessfulPassword = true;
 
             // var userAccount = sendConfirmationResponse.Body as UserAccount;
