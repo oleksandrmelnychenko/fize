@@ -6,6 +6,12 @@ namespace FizeRegistration.Domain.Entities.Identity;
 
 public class Agencion
 {
+    public Agencion()
+    {
+
+    }
+
+    
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }

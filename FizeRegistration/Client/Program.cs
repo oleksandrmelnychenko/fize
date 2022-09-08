@@ -21,7 +21,7 @@ builder.Services.AddHttpClient<IFizeHttpService, FizeHttpService>(client =>
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
-
+builder.Services.AddAntDesign();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
 builder.Services.AddSingleton<Navigation>();
 builder.Services.AddSingleton<ContainEmail>();

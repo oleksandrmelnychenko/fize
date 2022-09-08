@@ -4,6 +4,7 @@ using System.Linq;
 using FizeRegistration.Domain.Repositories.Identity.Contracts;
 using Dapper;
 using FizeRegistration.Domain.Entities.Identity;
+using FizeRegistration.Shared.DataContracts;
 
 namespace FizeRegistration.Domain.Repositories.Identity;
 
@@ -133,7 +134,7 @@ public class IdentityRepository : IIdentityRepository
             new { Id = userId, IsExpired = isExpired }
         );
 
-    
+
 }
 public class AgencyRepository : IAgencyRepository
 {
@@ -171,5 +172,11 @@ public class AgencyRepository : IAgencyRepository
             "WHERE Id = @Id",
             new { UserIdentityId = UserIdentitiesId, Id = AgencionId });
     }
+
+    public List<AgencyDataContract> GetAgency() =>
+      _connection.Query<AgencyDataContract>("SELECT" +
+            " * FROM [dbo].[Agencion]").ToList();
+     
+
 }
 

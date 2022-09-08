@@ -1,4 +1,5 @@
 ﻿using FizeRegistration.Domain.Entities.Identity;
+using FizeRegistration.Shared.DataContracts;
 
 namespace FizeRegistration.Domain.Repositories.Identity.Contracts;
 
@@ -8,4 +9,5 @@ public interface IAgencyRepository
 
     void UpdateAgencyId(long AgencionId, long UserIdentitiesId);
 
+    List<AgencyDataContract> GetAgency();
 }

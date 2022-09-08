@@ -4,6 +4,25 @@ namespace FizeRegistration.Shared.DataContracts;
 
 public sealed class AgencyDataContract
 {
+    public AgencyDataContract()
+    {
+
+    }
+    public AgencyDataContract(AgencyDataContract agencion)
+    {
+        Id = agencion.Id;
+        UserIdentityId = agencion.UserIdentityId;
+        Color = agencion.Color;
+        AgencyName = agencion.AgencyName;
+        WebSite = agencion.WebSite;
+        LinkLogo = agencion.LinkLogo;
+        LinkPictureUser = agencion.LinkPictureUser;
+        LastName = agencion.LastName;
+        Link = agencion.Link;
+        FirstName = agencion.FirstName;
+        PhoneNumber = agencion.PhoneNumber;
+    }
+    public string Id { get; set; }
     public string UserIdentityId { get; set; }
     public string Color { get; set; }
     public string AgencyName { get; set; }
@@ -11,7 +30,7 @@ public sealed class AgencyDataContract
     public string LastName { get; set; }
     public string Link { get; set; }
     public string LinkLogo { get; set; }
-    public string LinkPicture { get; set; }
+    public string LinkPictureUser { get; set; }
     public string FirstName { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }

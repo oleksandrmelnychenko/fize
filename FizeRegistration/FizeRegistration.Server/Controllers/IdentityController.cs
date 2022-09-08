@@ -84,6 +84,17 @@ public class IdentityController : WebApiControllerBase
         }
     }
 
+
+    [HttpGet]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.GET_AGENCY)]
+    public async Task<IActionResult> GetAgency()
+    {
+        var result = await _userIdentityService.GetAgency();
+        return Ok(result);
+    }
+
+
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.NEW_FILES)]
@@ -97,7 +108,7 @@ public class IdentityController : WebApiControllerBase
                 string exention = ".png";
                 string pathPictire = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), filePictire.FileName + exention);
                 string pathLogo = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), fileLogo.FileName + exention);
-                agencyDataContract.LinkPicture = pathPictire;
+                agencyDataContract.LinkPictureUser = pathPictire;
                 agencyDataContract.LinkLogo = pathLogo;
                 await _userIdentityService.NewAgency(agencyDataContract);
 

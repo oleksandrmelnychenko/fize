@@ -255,6 +255,18 @@ public class UserIdentityService : IUserIdentityService
         }
     });
 
+    public Task<List<AgencyDataContract>> GetAgency() =>
+     Task.Run(() =>
+     {
+         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+         {
+             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             var ListAgency = AgencyRepository.GetAgency();
+            
+             return ListAgency;
+         }
+     });
+
     public Task NewAgency(AgencyDataContract agencyDataContract) =>
      Task.Run(() =>
      {
@@ -273,7 +285,7 @@ public class UserIdentityService : IUserIdentityService
                  Link = agencyDataContract.Link,
                  PhoneNumber = agencyDataContract.PhoneNumber,
                  LinkLogo = agencyDataContract.LinkLogo,
-                 LinkPictureUser = agencyDataContract.LinkPicture,
+                 LinkPictureUser = agencyDataContract.LinkPictureUser,
                  WebSite = agencyDataContract.WebSite,
              };
              var User = identityRepository.GetUserByEmail(agencyDataContract.Email);

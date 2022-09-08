@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FizeRegistration.Domain.Entities.Identity;
 using FizeRegistration.Shared.DataContracts;
@@ -18,4 +19,5 @@ public interface IUserIdentityService
     Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl);
 
     Task NewAgency(AgencyDataContract agencyDataContract);
+    Task<List<AgencyDataContract>> GetAgency();
 }

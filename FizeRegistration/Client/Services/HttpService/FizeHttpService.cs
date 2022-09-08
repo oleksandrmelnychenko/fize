@@ -17,6 +17,7 @@ public sealed class HttpUrls
     public const string SIGN_IN = "/api/v1/identity/signin";
     public const string SEND_AGENCY = "/api/v1/identity/new/details";
     public const string SEND_AGENCY_FILE = "/api/v1/identity/new/files";
+    public const string GET_AGENCY = "/api/v1/identity/get/agency";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -33,7 +34,25 @@ public class FizeHttpService : IFizeHttpService
     {
         return _httpClient?.BaseAddress;
     }
+    public async Task<IWebResponse> GetAgency()
+    {
 
+        var response = await _httpClient.GetStringAsync(HttpUrls.GET_AGENCY);
+        //response.EnsureSuccessStatusCode();
+        //var result = response.Content.ReadAsStringAsync();
+        ////if (agencion is not null)
+        ////{
+        //List<AgencyDataContract> contributors = JsonConvert.DeserializeObject<List<AgencyDataContract>>(response);
+
+        return new SuccessResponse
+        {
+            Body = new Object(),
+            Message = response,
+            StatusCode = System.Net.HttpStatusCode.Created
+        };
+        //}
+        //return response;
+    }
     public async Task SetTokenToLocalStorageAndHeader(TokenDataContract tokenData)
     {
         await _localStorage.SetItemAsync<TokenDataContract>("token", tokenData);
@@ -120,8 +139,8 @@ public class FizeHttpService : IFizeHttpService
     }
     public async Task<IWebResponse> SendFile(MultipartFormDataContent model)
     {
-         await _httpClient.PostAsync(HttpUrls.SEND_AGENCY_FILE, model);
-        return  new SuccessResponse
+        await _httpClient.PostAsync(HttpUrls.SEND_AGENCY_FILE, model);
+        return new SuccessResponse
         {
             Body = new Object(),
             Message = "SuccessResponse",

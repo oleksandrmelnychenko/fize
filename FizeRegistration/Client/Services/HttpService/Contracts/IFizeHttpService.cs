@@ -15,9 +15,10 @@ public interface IFizeHttpService
 
     Task<IWebResponse> SendFile(MultipartFormDataContent file);
     
-
     Task<IWebResponse> SendConfirmation(string password);
 
     Task<IWebResponse> SignInAsync(AuthenticationDataContract authenticationDataContract);
+
+    Task<IWebResponse> GetAgency();
 
 }
