@@ -1,14 +1,4 @@
-﻿@*<label style="display:flex">
-    <i class="fa fa-hashtag icon"></i>
-    <InputText id="website" @bind-Value="@ColorId" class="LabelAgency"
-               placeholder="Enter your company website"></InputText>
-    <ValidationMessage For="@(() => ColorId)" class="glyphicon glyphicon-remove" style="height: 0px;font-size: 10pt;" />
-     <input class="LabelAgency" style="width: 240px; border-right: none;" placeholder="Enter or choose HEX" name="color" @oninput="OnColorIdChanged" value="@ColorId" />
-    <div style="height: 41px; border: 2px solid #00000012; border-left: none;">
-        <input style="width: 50px; margin-top: 3px;height: 30px; border: none;" type="color" value="ColorId" @oninput="OnColorIdChanged">
-    </div>
-</label>*@
-
+﻿
 <div class="input-icons" style="display: flex;">
   <i class="fa fa-pen"></i>
     <InputText Id="firstname" @bind-Value="@ColorId" class="LabelAgency input-field"
@@ -21,14 +11,12 @@
 
 
 @code {
-    [Parameter]
-    public string TextOverLabel { get; set; }
+    [Parameter] public string TextOverLabel { get; set; }
 
     [Parameter] public string ColorId { get; set; }
 
     [Parameter] public EventCallback<string> ColorIdChanged { get; set; }
 
-    [Parameter] public string TypeWord { get; set; } = "text";
 
     private Task OnColorIdChanged(ChangeEventArgs e)
     {

@@ -19,10 +19,9 @@ namespace FizeRegistration.Client.Pages
             AgencyInformation = JsonConvert.DeserializeObject<List<AgencyDataContract>>(stringAgency);
 
         }
-        public async Task vivod()
+        private void Delete(int id)
         {
-            
-           
+
         }
     }
 }

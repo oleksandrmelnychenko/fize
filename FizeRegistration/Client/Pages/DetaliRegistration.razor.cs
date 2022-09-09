@@ -82,6 +82,7 @@ namespace FizeRegistration.Client.Pages
         public async Task CheckAgency()
         {
                 navigate.NavigateTo("/app/agency/table");
+
         }
         private bool SuccessfulAgency;
 

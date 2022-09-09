@@ -94,8 +94,46 @@ public class IdentityController : WebApiControllerBase
         return Ok(result);
     }
 
-
     [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.NEW_FILES)]
+    public async Task<IActionResult> ChangeAgency([FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
+    {
+        try
+        {
+            if (filePictire != null && fileLogo != null && agencyData != null)
+            {
+                var agencyDataContract = JsonConvert.DeserializeObject<AgencyDataContract>(agencyData);
+                string exention = ".png";
+                string pathPictire = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), filePictire.FileName + exention);
+                string pathLogo = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), fileLogo.FileName + exention);
+                agencyDataContract.LinkPictureUser = pathPictire;
+                agencyDataContract.LinkLogo = pathLogo;
+                await _userIdentityService.ChangeAgency(agencyDataContract);
+
+                using (var stream = new FileStream(pathPictire, FileMode.Create))
+                {
+                    await filePictire.CopyToAsync(stream);
+                }
+                using (var stream = new FileStream(pathLogo, FileMode.Create))
+                {
+                    await fileLogo.CopyToAsync(stream);
+                }
+            }
+            return Ok(SuccessResponseBody(new { Message = "Files Send" }));
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+
+
+        [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.NEW_FILES)]
     public async Task<IActionResult> NewFiles([FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)

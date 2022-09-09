@@ -151,6 +151,23 @@ public class AgencyRepository : IAgencyRepository
              "(Color,AgencyName,LinkLogo,LinkPictureUser,WebSite,LastName,Link,FirstName,PhoneNumber) " +
              "VALUES " +
              "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
+            "WHERE Id = @Id",
+             new
+             {
+                 Id = Agency.Id,
+                 Color = Agency.Color,
+                 AgencyName = Agency.AgencyName,
+                 WebSite = Agency.WebSite,
+                 LinkLogo = Agency.LinkLogo,
+                 LinkPictureUser = Agency.LinkPictureUser,
+                 LastName = Agency.LastName,
+                 Link = Agency.Link,
+                 FirstName = Agency.FirstName,
+                 PhoneNumber = Agency.PhoneNumber,
+             }).Single();
+    public long ChangeAgency(Agencion Agency) =>
+        _connection.Query<long>("UPDATE INTO [Agencion] Set" +
+             "Color =@Color,AgencyName=@AgencyName,LinkLogo=@LinkLogo,LinkPictureUser = @LinkPictureUser,WebSite=@WebSite,LastName=@LastName,Link=@Link,FirstName=@FirstName,PhoneNumber =@PhoneNumber " +
              "SELECT SCOPE_IDENTITY()",
              new
              {
@@ -164,7 +181,6 @@ public class AgencyRepository : IAgencyRepository
                  FirstName = Agency.FirstName,
                  PhoneNumber = Agency.PhoneNumber,
              }).Single();
-
     public void UpdateAgencyId(long AgencionId, long UserIdentitiesId)
     {
         _connection.Execute(
@@ -176,7 +192,7 @@ public class AgencyRepository : IAgencyRepository
     public List<AgencyDataContract> GetAgency() =>
       _connection.Query<AgencyDataContract>("SELECT" +
             " * FROM [dbo].[Agencion]").ToList();
-     
 
+    
 }
 

@@ -1,10 +1,10 @@
-﻿
-    <label class="TextAgency" for="agencyname">@TextOverLabel</label> @*Agency Name  Enter your agency name*@
-    <InputText id="agencyname" @bind-Value="@TextValidate" class="LabelAgency input-field"
-               placeholder="@PlaceHolder" @oninput="OnTextValidateChanged"></InputText>
+﻿<i class="@NameIcons"></i> @*fa fa-globe icon      Enter your company website*@
+<InputText id="website" @bind-Value="@TextValidate" class="LabelAgency input-field"
+           placeholder="@PlaceHolder" style="text-indent: 30px;" @oninput="OnTextValidateChanged"></InputText>
+
 
 @code{
-    [Parameter] public string TextOverLabel { get; set; }
+    [Parameter] public string NameIcons { get; set; }
 
     [Parameter] public string PlaceHolder { get; set; }
 

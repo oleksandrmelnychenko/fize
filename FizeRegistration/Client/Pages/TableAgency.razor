@@ -1,6 +1,8 @@
 ﻿@page "/app/agency/table"
    @using AntDesign
 @using FizeRegistration.Shared.DataContracts
+@using System.ComponentModel
+@using AntDesign.TableModels
 @if (AgencyInformation.Count() == 0)
 {
     <div>Loading</div>
@@ -9,13 +11,22 @@ else
 {
     <div class="basicBox" style="background:white;height: 800px; width:1150px">
         <Table HidePagination="true"  @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
-    <PropertyColumn Style="width: 165px" Property="c=>c.Id" Sortable/>
+    <PropertyColumn  Style="width: 165px" Property="c=>c.Id" Sortable/>
     <PropertyColumn Style="width: 165px"Title="Default sort" Property="c=>c.AgencyName"/>
     <PropertyColumn Style="width: 165px" Title="Custom comparer" Property="c=>c.Color"/>
-    <PropertyColumn Style="width: 165px" Title="Custom comparer" Property="c=>c.FirstName"/>
+    <PropertyColumn  Style="width: 165px" Title="Custom comparer" Property="c=>c.FirstName"/>
     <PropertyColumn Style="width: 165px" Title="DayName" Property="c=>c.LastName"/>
         <PropertyColumn Style="width: 165px" Title="Link" Property="c=>c.Link"/>
     <PropertyColumn Style="width: 165px" Title="WebSite" Property="c=>c.WebSite"/>
+        <ActionColumn>
+    <Space>
+      <SpaceItem><Button Danger OnClick="()=>Delete(int.Parse(context.Id))">Delete</Button></SpaceItem>
+    </Space>
+  </ActionColumn>
 </Table>
    </div>
+
+    @code{
+  
+   }
 }

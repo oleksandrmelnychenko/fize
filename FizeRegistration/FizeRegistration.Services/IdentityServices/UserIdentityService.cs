@@ -267,6 +267,34 @@ public class UserIdentityService : IUserIdentityService
          }
      });
 
+
+    public Task ChangeAgency(AgencyDataContract agencyDataContract) =>
+     Task.Run(() =>
+     {
+         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+         {
+             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
+
+             Agencion agency = new Agencion
+             {
+
+                 AgencyName = agencyDataContract.AgencyName,
+                 FirstName = agencyDataContract.FirstName,
+                 Color = agencyDataContract.Color,
+                 LastName = agencyDataContract.LastName,
+                 Link = agencyDataContract.Link,
+                 PhoneNumber = agencyDataContract.PhoneNumber,
+                 LinkLogo = agencyDataContract.LinkLogo,
+                 LinkPictureUser = agencyDataContract.LinkPictureUser,
+                 WebSite = agencyDataContract.WebSite,
+             };
+             var User = identityRepository.GetUserByEmail(agencyDataContract.Email);
+             long IdAgency = AgencyRepository.AddAgency(agency);
+             AgencyRepository.UpdateAgencyId(IdAgency, User.Id);
+         }
+     });
+
     public Task NewAgency(AgencyDataContract agencyDataContract) =>
      Task.Run(() =>
      {
