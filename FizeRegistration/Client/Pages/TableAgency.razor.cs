@@ -1,4 +1,5 @@
-﻿using FizeRegistration.Client.Services.HttpService.Contracts;
+﻿using AntDesign;
+using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ namespace FizeRegistration.Client.Pages
     {
         [Inject] IFizeHttpService HttpClient { get; set; }
         public List<AgencyDataContract> AgencyInformation { get; set; } = new List<AgencyDataContract>();
+        ITable table;
         protected override async Task OnInitializedAsync()
         {
 

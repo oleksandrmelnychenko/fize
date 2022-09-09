@@ -53,6 +53,7 @@ namespace FizeRegistration.Client.Pages
 
         AgencyInformation AgencyInformation = new AgencyInformation();
         private string _linkImage { get; set; }
+        [Inject] NavigationManager navigate { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
         [Inject] ContainEmail SendEmail { get; set; }
 
@@ -78,15 +79,9 @@ namespace FizeRegistration.Client.Pages
 
             Email = a.ToString();
         }
-        public async Task DiscardChanges()
+        public async Task CheckAgency()
         {
-            AgencyInformation.AgencyName = null;
-            AgencyInformation.FirstName = null;
-            AgencyInformation.LastName = null;
-            AgencyInformation.PhoneNumbers = null;
-            AgencyInformation.Link = null;
-            AgencyInformation.Color = null;
-            StateHasChanged();
+                navigate.NavigateTo("/app/agency/table");
         }
         private bool SuccessfulAgency;
 
