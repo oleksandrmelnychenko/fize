@@ -20,7 +20,7 @@ else
     <PropertyColumn Style="width: 165px" Title="WebSite" Property="c=>c.WebSite"/>
         <ActionColumn>
     <Space>
-      <SpaceItem><Button Danger OnClick="()=>Delete(int.Parse(context.Id))">Delete</Button></SpaceItem>
+      <SpaceItem><Button Danger OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
     </Space>
   </ActionColumn>
 </Table>

@@ -10,9 +10,10 @@ using System.Security.Claims;
 
 namespace FizeRegistration.Client.Pages
 {
-
-    public partial class DetaliRegistration
+    public partial class ChangeAgency
     {
+        [Parameter] public string Id { get; set; }
+
         public string Email { get; set; }
 
         AgencyInformation AgencyInformation = new AgencyInformation();
@@ -31,15 +32,22 @@ namespace FizeRegistration.Client.Pages
         private string base64data = "";
         protected async override Task OnInitializedAsync()
         {
-            //if (Id != null)
-            //{
-            //    var formDataLogo = new MultipartFormDataContent();
-            //    var fileLogo = new StringContent(Id);
-            //    formDataLogo.Add(fileLogo, "agencyId");
-            //    var sendConfirmationResponse = await HttpClient.GetAgencyById(formDataLogo);
-            //    var stringAgency = sendConfirmationResponse.Message;
-            //    var agencyDataContracts = JsonConvert.DeserializeObject<AgencyDataContract>(stringAgency);
-            //}
+            if (Id != null)
+            {
+                var formDataLogo = new MultipartFormDataContent();
+                var fileLogo = new StringContent(Id);
+                formDataLogo.Add(fileLogo, "agencyId");
+                var sendConfirmationResponse = await HttpClient.GetAgencyById(formDataLogo);
+                var stringAgency = sendConfirmationResponse.Message;
+                var agencyDataContracts = JsonConvert.DeserializeObject<AgencyDataContract>(stringAgency);
+                AgencyInformation.WebSite = agencyDataContracts.WebSite;
+                AgencyInformation.Link = agencyDataContracts.Link;
+                AgencyInformation.PhoneNumbers = agencyDataContracts.PhoneNumber;
+                AgencyInformation.LastName = agencyDataContracts.LastName;
+                AgencyInformation.FirstName = agencyDataContracts.FirstName;
+                AgencyInformation.AgencyName = agencyDataContracts.AgencyName;
+                AgencyInformation.Color = agencyDataContracts.Color;
+            }
             var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
 
             var a = user.Claims.First(c => c.Type == ClaimTypes.Email);
@@ -50,11 +58,11 @@ namespace FizeRegistration.Client.Pages
                 await AuthStateProvider.GetAuthenticationStateAsync();
             }
 
-            Email = a.Value.ToString();
+            Email = a.ToString();
         }
         public async Task CheckAgency()
         {
-                navigate.NavigateTo("/app/agency/table");
+            navigate.NavigateTo("/app/agency/table");
 
         }
         private bool SuccessfulAgency;
@@ -151,28 +159,5 @@ namespace FizeRegistration.Client.Pages
 
         }
 
-
     }
-    public static class DataURLServices
-    {
-        public static string ToDataUrl(this MemoryStream data, string format)
-        {
-            var span = new Span<byte>(data.GetBuffer()).Slice(0, (int)data.Length);
-            return $"data:{format};base64,{Convert.ToBase64String(span)}";
-        }
-
-        public static byte[] ToBytes(string url)
-        {
-            var commaPos = url.IndexOf(',');
-            if (commaPos >= 0)
-            {
-                var base64 = url.Substring(commaPos + 1);
-                return Convert.FromBase64String(base64);
-            }
-            return null;
-        }
-
-
-    }
-
 }

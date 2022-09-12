@@ -150,11 +150,10 @@ public class AgencyRepository : IAgencyRepository
         _connection.Query<long>("INSERT INTO [Agencion] " +
              "(Color,AgencyName,LinkLogo,LinkPictureUser,WebSite,LastName,Link,FirstName,PhoneNumber) " +
              "VALUES " +
-             "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
-            "WHERE Id = @Id",
+             "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) "+
+             "SELECT SCOPE_IDENTITY()",
              new
              {
-                 Id = Agency.Id,
                  Color = Agency.Color,
                  AgencyName = Agency.AgencyName,
                  WebSite = Agency.WebSite,
@@ -193,6 +192,12 @@ public class AgencyRepository : IAgencyRepository
       _connection.Query<AgencyDataContract>("SELECT" +
             " * FROM [dbo].[Agencion]").ToList();
 
-    
+    public AgencyDataContract GetAgencyByID(string Id)
+    {
+       return _connection.Query<AgencyDataContract>(
+             "SELECT * FROM Agencion " +
+             "WHERE Id = @Id",
+             new { Id = Id }).SingleOrDefault();
+    }
 }
 

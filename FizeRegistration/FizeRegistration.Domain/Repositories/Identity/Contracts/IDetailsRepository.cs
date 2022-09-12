@@ -12,4 +12,6 @@ public interface IAgencyRepository
     void UpdateAgencyId(long AgencionId, long UserIdentitiesId);
 
     List<AgencyDataContract> GetAgency();
+    AgencyDataContract GetAgencyByID(string Id);
+
 }

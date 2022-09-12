@@ -96,7 +96,15 @@ public class IdentityController : WebApiControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [AssignActionRoute(IdentitySegments.NEW_FILES)]
+    [AssignActionRoute(IdentitySegments.GET_AGENCY_BY_ID)]
+    public async Task<IActionResult> GetAgencyById([FromForm] string agencyId)
+    {
+        var result = await _userIdentityService.GetAgencyById(agencyId);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> ChangeAgency([FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
     {
         try
@@ -133,7 +141,7 @@ public class IdentityController : WebApiControllerBase
     }
 
 
-        [HttpPost]
+    [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.NEW_FILES)]
     public async Task<IActionResult> NewFiles([FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
@@ -149,7 +157,6 @@ public class IdentityController : WebApiControllerBase
                 agencyDataContract.LinkPictureUser = pathPictire;
                 agencyDataContract.LinkLogo = pathLogo;
                 await _userIdentityService.NewAgency(agencyDataContract);
-
                 using (var stream = new FileStream(pathPictire, FileMode.Create))
                 {
                     await filePictire.CopyToAsync(stream);

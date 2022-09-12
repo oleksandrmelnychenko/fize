@@ -22,4 +22,6 @@ public interface IUserIdentityService
 
     Task ChangeAgency(AgencyDataContract agencyDataContract);
     Task<List<AgencyDataContract>> GetAgency();
+
+    Task<AgencyDataContract> GetAgencyById(string Id);
 }

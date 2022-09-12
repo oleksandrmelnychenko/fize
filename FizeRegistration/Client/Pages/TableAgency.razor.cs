@@ -9,6 +9,7 @@ namespace FizeRegistration.Client.Pages
     public partial class TableAgency
     {
         [Inject] IFizeHttpService HttpClient { get; set; }
+        [Inject] NavigationManager Navigate { get; set; }
         public List<AgencyDataContract> AgencyInformation { get; set; } = new List<AgencyDataContract>();
         ITable table;
         protected override async Task OnInitializedAsync()
@@ -19,9 +20,9 @@ namespace FizeRegistration.Client.Pages
             AgencyInformation = JsonConvert.DeserializeObject<List<AgencyDataContract>>(stringAgency);
 
         }
-        private void Delete(int id)
+        private void Update(int id)
         {
-
+            Navigate.NavigateTo($"/app/agency/change/{id}");
         }
     }
 }

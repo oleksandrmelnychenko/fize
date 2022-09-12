@@ -18,6 +18,7 @@ using FizeRegistration.Shared.ResponseBuilder.Contracts;
 using FizeRegistration.Shared.ResponseBuilder;
 using FizeRegistration.Common.Helpers;
 using FizeRegistration.Shared.DataEmail;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -102,6 +103,12 @@ app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//           Path.Combine(builder.Environment.ContentRootPath, "StaticFiles")),
+//    RequestPath = "/ImageFile"
+//});
 
 app.UseRouting();
 

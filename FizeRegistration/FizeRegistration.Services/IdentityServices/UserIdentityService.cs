@@ -260,10 +260,22 @@ public class UserIdentityService : IUserIdentityService
      {
          using (IDbConnection connection = _connectionFactory.NewSqlConnection())
          {
-             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
-             var ListAgency = AgencyRepository.GetAgency();
+             IAgencyRepository agencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             var listAgency = agencyRepository.GetAgency();
             
-             return ListAgency;
+             return listAgency;
+         }
+     });
+    public Task<AgencyDataContract> GetAgencyById(string Id)
+    =>
+     Task.Run(() =>
+     {
+         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+         {
+             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             var agency = AgencyRepository.GetAgencyByID(Id);
+
+             return agency;
          }
      });
 
@@ -273,7 +285,7 @@ public class UserIdentityService : IUserIdentityService
      {
          using (IDbConnection connection = _connectionFactory.NewSqlConnection())
          {
-             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             IAgencyRepository agencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
              IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
              Agencion agency = new Agencion
@@ -289,9 +301,9 @@ public class UserIdentityService : IUserIdentityService
                  LinkPictureUser = agencyDataContract.LinkPictureUser,
                  WebSite = agencyDataContract.WebSite,
              };
-             var User = identityRepository.GetUserByEmail(agencyDataContract.Email);
-             long IdAgency = AgencyRepository.AddAgency(agency);
-             AgencyRepository.UpdateAgencyId(IdAgency, User.Id);
+             var user = identityRepository.GetUserByEmail(agencyDataContract.Email);
+             long idAgency = agencyRepository.AddAgency(agency);
+             agencyRepository.UpdateAgencyId(idAgency, user.Id);
          }
      });
 
@@ -300,7 +312,7 @@ public class UserIdentityService : IUserIdentityService
      {
          using (IDbConnection connection = _connectionFactory.NewSqlConnection())
          {
-             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             IAgencyRepository agencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
              IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
 
              Agencion agency = new Agencion
@@ -316,9 +328,9 @@ public class UserIdentityService : IUserIdentityService
                  LinkPictureUser = agencyDataContract.LinkPictureUser,
                  WebSite = agencyDataContract.WebSite,
              };
-             var User = identityRepository.GetUserByEmail(agencyDataContract.Email);
-             long IdAgency = AgencyRepository.AddAgency(agency);
-             AgencyRepository.UpdateAgencyId(IdAgency, User.Id);
+             var user = identityRepository.GetUserByEmail(agencyDataContract.Email);
+             long idAgency = agencyRepository.AddAgency(agency);
+             agencyRepository.UpdateAgencyId(idAgency, user.Id);
          }
      });
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>
