@@ -11,7 +11,9 @@ namespace FizeRegistration.Common.Helpers
     {
         private static string _serverPath;
 
-        private static string _imagelFiles = "wwwroot\\images";
+        private static string _staticFolder = "wwwroot\\";
+
+        private static string _imagelFiles = "images";
 
         public static void InitializeFolderManager(string serverPath)
         {
@@ -28,7 +30,11 @@ namespace FizeRegistration.Common.Helpers
             }
         }
 
-        public static string GetImageFilesFolderPath() => Path.Combine(_serverPath, _imagelFiles);
+        public static string GetFilesFolderPath() => Path.Combine(_serverPath, _staticFolder);
+
+        //public static string GetStaticFolder() => _staticFolder;
+
+        public static string GetStaticImageFolder() => _imagelFiles;
     }
    
 }

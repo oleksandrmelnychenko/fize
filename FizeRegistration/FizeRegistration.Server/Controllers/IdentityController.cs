@@ -11,6 +11,7 @@ using System.Security.Claims;
 using FizeRegistration.Shared.DataContracts;
 using FizeRegistration.Common.Helpers;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace FizeRegistration.Server.Controllers;
 
@@ -18,7 +19,7 @@ namespace FizeRegistration.Server.Controllers;
 public class IdentityController : WebApiControllerBase
 {
     private readonly IUserIdentityService _userIdentityService;
-   
+    
     public IdentityController(IUserIdentityService userIdentityService,
          IResponseFactory responseFactory) : base(responseFactory)
     {
@@ -105,29 +106,41 @@ public class IdentityController : WebApiControllerBase
 
     [HttpPost]
     [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.CHANGE_AGENCY)]
     public async Task<IActionResult> ChangeAgency([FromForm] IFormFile fileLogo, [FromForm] IFormFile filePictire, [FromForm] string agencyData)
     {
         try
         {
-            if (filePictire != null && fileLogo != null && agencyData != null)
-            {
-                var agencyDataContract = JsonConvert.DeserializeObject<AgencyDataContract>(agencyData);
-                string exention = ".png";
-                string pathPictire = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), filePictire.FileName + exention);
-                string pathLogo = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), fileLogo.FileName + exention);
-                agencyDataContract.LinkPictureUser = pathPictire;
-                agencyDataContract.LinkLogo = pathLogo;
-                await _userIdentityService.ChangeAgency(agencyDataContract);
+            AgencyDataContract? agencyDataContract = JsonConvert.DeserializeObject<AgencyDataContract>(agencyData);
+            string exention = ".png";
 
-                using (var stream = new FileStream(pathPictire, FileMode.Create))
-                {
-                    await filePictire.CopyToAsync(stream);
-                }
+            if (fileLogo != null)
+            {
+                string pathLogo = Path.Combine(NoltFolderManager.GetFilesFolderPath(), NoltFolderManager.GetStaticImageFolder(), fileLogo.FileName + exention);
+                agencyDataContract.LinkLogo = Path.Combine(NoltFolderManager.GetStaticImageFolder(), fileLogo.FileName + exention);
+
                 using (var stream = new FileStream(pathLogo, FileMode.Create))
                 {
                     await fileLogo.CopyToAsync(stream);
                 }
             }
+
+            if (filePictire != null)
+            {
+                string pathPictire = Path.Combine(NoltFolderManager.GetFilesFolderPath(), NoltFolderManager.GetStaticImageFolder(), filePictire.FileName + exention);
+                agencyDataContract.LinkPictureUser = Path.Combine(NoltFolderManager.GetStaticImageFolder(), filePictire.FileName + exention);
+
+                using (var stream = new FileStream(pathPictire, FileMode.Create))
+                {
+                    await filePictire.CopyToAsync(stream);
+                }
+            }
+            if (agencyData != null)
+            {
+                await _userIdentityService.ChangeAgency(agencyDataContract);
+
+            }
+
             return Ok(SuccessResponseBody(new { Message = "Files Send" }));
         }
         catch (InvalidIdentityException exc)
@@ -152,10 +165,10 @@ public class IdentityController : WebApiControllerBase
             {
                 var agencyDataContract = JsonConvert.DeserializeObject<AgencyDataContract>(agencyData);
                 string exention = ".png";
-                string pathPictire = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), filePictire.FileName + exention);
-                string pathLogo = Path.Combine(NoltFolderManager.GetImageFilesFolderPath(), fileLogo.FileName + exention);
-                agencyDataContract.LinkPictureUser = pathPictire;
-                agencyDataContract.LinkLogo = pathLogo;
+                string pathPictire = Path.Combine(NoltFolderManager.GetFilesFolderPath(), NoltFolderManager.GetStaticImageFolder(), filePictire.FileName + exention);
+                string pathLogo = Path.Combine(NoltFolderManager.GetFilesFolderPath(), NoltFolderManager.GetStaticImageFolder(), fileLogo.FileName + exention);
+                agencyDataContract.LinkPictureUser = Path.Combine(NoltFolderManager.GetStaticImageFolder(), filePictire.FileName + exention);
+                agencyDataContract.LinkLogo = Path.Combine(NoltFolderManager.GetStaticImageFolder(), fileLogo.FileName + exention);
                 await _userIdentityService.NewAgency(agencyDataContract);
                 using (var stream = new FileStream(pathPictire, FileMode.Create))
                 {

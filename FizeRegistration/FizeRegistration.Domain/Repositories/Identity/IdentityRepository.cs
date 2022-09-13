@@ -164,12 +164,14 @@ public class AgencyRepository : IAgencyRepository
                  FirstName = Agency.FirstName,
                  PhoneNumber = Agency.PhoneNumber,
              }).Single();
-    public long ChangeAgency(Agencion Agency) =>
-        _connection.Query<long>("UPDATE INTO [Agencion] Set" +
-             "Color =@Color,AgencyName=@AgencyName,LinkLogo=@LinkLogo,LinkPictureUser = @LinkPictureUser,WebSite=@WebSite,LastName=@LastName,Link=@Link,FirstName=@FirstName,PhoneNumber =@PhoneNumber " +
-             "SELECT SCOPE_IDENTITY()",
+
+    public void ChangeAgency(Agencion Agency) =>
+        _connection.Execute("UPDATE [Agencion] " +
+            "Set Color =@Color,AgencyName=@AgencyName,LinkLogo=@LinkLogo,LinkPictureUser = @LinkPictureUser,WebSite=@WebSite,LastName=@LastName,Link=@Link,FirstName=@FirstName,PhoneNumber =@PhoneNumber " +
+             "WHERE Id = @Id",
              new
              {
+                 Id = Agency.Id,
                  Color = Agency.Color,
                  AgencyName = Agency.AgencyName,
                  WebSite = Agency.WebSite,
@@ -179,7 +181,8 @@ public class AgencyRepository : IAgencyRepository
                  Link = Agency.Link,
                  FirstName = Agency.FirstName,
                  PhoneNumber = Agency.PhoneNumber,
-             }).Single();
+             });
+
     public void UpdateAgencyId(long AgencionId, long UserIdentitiesId)
     {
         _connection.Execute(

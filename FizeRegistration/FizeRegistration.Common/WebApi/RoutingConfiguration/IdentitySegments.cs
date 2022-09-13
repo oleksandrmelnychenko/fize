@@ -32,5 +32,7 @@ public sealed class IdentitySegments
     public const string GET_AGENCY = "get/agency";
 
     public const string GET_AGENCY_BY_ID = "agency/by/id";
+
+    public const string CHANGE_AGENCY = "change/agency";
 }
 

@@ -19,6 +19,7 @@ public sealed class HttpUrls
     public const string SEND_AGENCY_FILE = "/api/v1/identity/new/files";
     public const string GET_AGENCY = "/api/v1/identity/get/agency";
     public const string GET_AGENCY_BY_ID = "/api/v1/identity/agency/by/id";
+    public const string CHANGE_AGENCY = "/api/v1/identity/change/agency";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -154,6 +155,16 @@ public class FizeHttpService : IFizeHttpService
     public async Task<IWebResponse> SendFile(MultipartFormDataContent model)
     {
         await _httpClient.PostAsync(HttpUrls.SEND_AGENCY_FILE, model);
+        return new SuccessResponse
+        {
+            Body = new Object(),
+            Message = "SuccessResponse",
+            StatusCode = System.Net.HttpStatusCode.Created
+        }; ;
+    }
+    public async Task<IWebResponse> ChangeAgency(MultipartFormDataContent model)
+    {
+        await _httpClient.PostAsync(HttpUrls.CHANGE_AGENCY, model);
         return new SuccessResponse
         {
             Body = new Object(),

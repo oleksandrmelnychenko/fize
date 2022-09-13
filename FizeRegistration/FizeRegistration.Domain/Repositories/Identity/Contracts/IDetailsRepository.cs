@@ -7,7 +7,7 @@ public interface IAgencyRepository
 {
     long AddAgency(Agencion details);
 
-    long ChangeAgency(Agencion details);
+    void ChangeAgency(Agencion Agency);
 
     void UpdateAgencyId(long AgencionId, long UserIdentitiesId);
 

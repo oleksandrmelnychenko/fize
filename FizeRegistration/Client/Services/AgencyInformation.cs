@@ -33,10 +33,10 @@ namespace FizeRegistration.Client.Services
         [RegularExpression(@"^([\+]?33[-]?|[0])?[1-9][0-9]{8}$", ErrorMessage = "Characters are not allowed")]
         public string PhoneNumbers { get; set; }
 
-        [Required]
+        
         [MaxFileSize(3 * 1024 * 1024)]
         public IBrowserFile Logo { get; set; }
-        [Required]
+       
         [MaxFileSize(3 * 1024 * 1024)]
         public IBrowserFile Picture { get; set; }
     }

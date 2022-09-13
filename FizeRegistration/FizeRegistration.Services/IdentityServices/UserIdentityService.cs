@@ -290,7 +290,7 @@ public class UserIdentityService : IUserIdentityService
 
              Agencion agency = new Agencion
              {
-
+                 Id = long.Parse(agencyDataContract.Id),
                  AgencyName = agencyDataContract.AgencyName,
                  FirstName = agencyDataContract.FirstName,
                  Color = agencyDataContract.Color,
@@ -302,8 +302,8 @@ public class UserIdentityService : IUserIdentityService
                  WebSite = agencyDataContract.WebSite,
              };
              var user = identityRepository.GetUserByEmail(agencyDataContract.Email);
-             long idAgency = agencyRepository.AddAgency(agency);
-             agencyRepository.UpdateAgencyId(idAgency, user.Id);
+              agencyRepository.ChangeAgency(agency);
+            
          }
      });
 

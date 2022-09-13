@@ -6,6 +6,16 @@
                 <img style="margin-top: 16px;" src="/ScreenShots/MailIcon.png" />
             </div>
             <div class="smallText" style="font-size: 10pt; color: black; font-weight: 600;  margin-top: 22px;">Successful</div>
+            <button @onclick="NavigateAgency" class="buttonContactUs">Look Agency</button>
         </div>
     </div>
 </div>
+
+@code{
+    [Inject]  private NavigationManager navigation{ get; set; }
+
+    private void NavigateAgency()
+    {
+        navigation.NavigateTo("/app/agency/table");
+    }
+}

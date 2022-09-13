@@ -16,20 +16,31 @@ namespace FizeRegistration.Client.Pages
 
         public string Email { get; set; }
 
-        AgencyInformation AgencyInformation = new AgencyInformation();
+        private AgencyInformation _agencyInformation = new AgencyInformation();
+
+        private AgencyDataContract? _agencyDataContracts { get; set; }
         private string _linkImage { get; set; }
         [Inject] NavigationManager navigate { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
         [Inject] ContainEmail SendEmail { get; set; }
+        private string _urlPicture;
+        private string _urlLogo;
 
         [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
 
         private bool isLoading;
-        private List<IBrowserFile> loadedFiles = new();
+        private bool isLoadingLogo;
+        private List<IBrowserFile> loadedPicture = new();
+        private List<IBrowserFile> loadedLogo = new();
+
         private int maxAllowedFiles = 3;
 
         private string extensionname = "default";
-        private string base64data = "";
+        private string extensionnames = "default";
+
+        private string base64PictureData = "";
+        private string base64LogoData = "";
+
         protected async override Task OnInitializedAsync()
         {
             if (Id != null)
@@ -39,14 +50,16 @@ namespace FizeRegistration.Client.Pages
                 formDataLogo.Add(fileLogo, "agencyId");
                 var sendConfirmationResponse = await HttpClient.GetAgencyById(formDataLogo);
                 var stringAgency = sendConfirmationResponse.Message;
-                var agencyDataContracts = JsonConvert.DeserializeObject<AgencyDataContract>(stringAgency);
-                AgencyInformation.WebSite = agencyDataContracts.WebSite;
-                AgencyInformation.Link = agencyDataContracts.Link;
-                AgencyInformation.PhoneNumbers = agencyDataContracts.PhoneNumber;
-                AgencyInformation.LastName = agencyDataContracts.LastName;
-                AgencyInformation.FirstName = agencyDataContracts.FirstName;
-                AgencyInformation.AgencyName = agencyDataContracts.AgencyName;
-                AgencyInformation.Color = agencyDataContracts.Color;
+                 _agencyDataContracts = JsonConvert.DeserializeObject<AgencyDataContract>(stringAgency);
+                _agencyInformation.WebSite = _agencyDataContracts.WebSite;
+                _agencyInformation.Link = _agencyDataContracts.Link;
+                _agencyInformation.PhoneNumbers = _agencyDataContracts.PhoneNumber;
+                _agencyInformation.LastName = _agencyDataContracts.LastName;
+                _agencyInformation.FirstName = _agencyDataContracts.FirstName;
+                _agencyInformation.AgencyName = _agencyDataContracts.AgencyName;
+                _agencyInformation.Color = _agencyDataContracts.Color;
+                _urlPicture = _agencyDataContracts.LinkPictureUser;
+                _urlLogo = _agencyDataContracts.LinkLogo;
             }
             var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
 
@@ -69,36 +82,43 @@ namespace FizeRegistration.Client.Pages
 
         public async Task ContinueNext()
         {
-
-            StreamContent fileLogo = new StreamContent(AgencyInformation.Logo.OpenReadStream());
-            StreamContent filePictire = new StreamContent(AgencyInformation.Picture.OpenReadStream());
             var formDataLogo = new MultipartFormDataContent();
-
-            formDataLogo.Add(fileLogo, "fileLogo", Guid.NewGuid().ToString());
-
-            formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
-
-
             var output = new MemoryStream();
-            await AgencyInformation.Picture.OpenReadStream().CopyToAsync(output);
+
+            if (_agencyInformation.Logo != null)
+            {
+                StreamContent fileLogo = new StreamContent(_agencyInformation.Logo.OpenReadStream());
+                formDataLogo.Add(fileLogo, "fileLogo", Guid.NewGuid().ToString());
+            }
+            if (_agencyInformation.Picture != null)
+            {
+                StreamContent filePictire = new StreamContent(_agencyInformation.Picture.OpenReadStream());
+                formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
+                await _agencyInformation.Picture.OpenReadStream().CopyToAsync(output);
+
+            }
+
 
             AgencyDataContract AgencyDataContract = new AgencyDataContract
             {
-                AgencyName = AgencyInformation.AgencyName,
-                FirstName = AgencyInformation.FirstName,
-                Color = AgencyInformation.Color,
-                LastName = AgencyInformation.LastName,
-                Link = AgencyInformation.Link,
-                PhoneNumber = AgencyInformation.PhoneNumbers,
-                WebSite = AgencyInformation.WebSite,
+                Id = _agencyDataContracts.Id,
+                AgencyName = _agencyInformation.AgencyName,
+                FirstName = _agencyInformation.FirstName,
+                Color = _agencyInformation.Color,
+                LastName = _agencyInformation.LastName,
+                Link = _agencyInformation.Link,
+                PhoneNumber = _agencyInformation.PhoneNumbers,
+                WebSite = _agencyInformation.WebSite,
                 Email = Email,
+                LinkLogo = _agencyDataContracts.LinkLogo,
+                LinkPictureUser = _agencyDataContracts.LinkPictureUser
             };
 
             var jsonAgency = JsonConvert.SerializeObject(AgencyDataContract);
             var stringContentAgency = new StringContent(jsonAgency);
             formDataLogo.Add(stringContentAgency, "agencyData");
 
-            var sendConfirmationResponse = await HttpClient.SendFile(formDataLogo);
+            var sendConfirmationResponse = await HttpClient.ChangeAgency(formDataLogo);
             int statusCode = (int)sendConfirmationResponse.StatusCode;
 
             if (statusCode >= 200 && statusCode < 300)
@@ -109,19 +129,49 @@ namespace FizeRegistration.Client.Pages
         }
         private async void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
-            AgencyInformation.Logo = e.File;
-            //var zalupa = AgencyInformation.Logo.Name;
 
+            //var zalupa = AgencyInformation.Logo.Name;
+            //loadedLogo.Clear();
+            //foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+            //{
+            //    try
+            //    {
+            //        loadedLogo.Add(file);
+
+
+            //        extensionnames = Path.GetExtension(file.Name);
+
+            //        var imagefiletypes = new List<string>() {
+            //        ".png",".jpg",".jpeg"
+            //    };
+            //        if (imagefiletypes.Contains(extensionnames))
+            //        {
+            //            var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
+            //            var buf = new byte[resizedFile.Size];
+            //            using (var stream = resizedFile.OpenReadStream())
+            //            {
+            //                await stream.ReadAsync(buf);
+            //            }
+            //            base64LogoData = "data:images/png;base64," + Convert.ToBase64String(buf);
+
+            //            isLoadingLogo = true;
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //    }
+            //}
+            _agencyInformation.Logo = e.File;
 
         }
         private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
         {
-            loadedFiles.Clear();
+            loadedPicture.Clear();
             foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
             {
                 try
                 {
-                    loadedFiles.Add(file);
+                    loadedPicture.Add(file);
 
 
                     extensionname = Path.GetExtension(file.Name);
@@ -139,12 +189,13 @@ namespace FizeRegistration.Client.Pages
                         {
                             await stream.ReadAsync(buf);
                         }
-                        base64data = "data:image/png;base64," + Convert.ToBase64String(buf);
+                        base64PictureData = "data:image/png;base64," + Convert.ToBase64String(buf);
 
 
 
-                        AgencyInformation.Picture = e.File;
+                        _agencyInformation.Picture = e.File;
                         isLoading = true;
+
                     }
                     else
                     {

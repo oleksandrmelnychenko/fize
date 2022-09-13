@@ -10,7 +10,7 @@
     @if (!SuccessfulAgency)
     {
         <LeftBoxInformation></LeftBoxInformation>
-        <EditForm Model="@AgencyInformation" OnValidSubmit="@ContinueNext">
+        <EditForm Model="@_agencyInformation" OnValidSubmit="@ContinueNext">
             <DataAnnotationsValidator />
             <div class="rightBoxAgency">
                 <div style="margin-left: 115px; border-bottom: 1px solid #00000012;;  margin-right: 180px; margin-top: 50px; font-weight: 800; font-size: 15pt; height: 40px; margin-bottom: 15px;">
@@ -19,21 +19,21 @@
                 <div>
                     <div style="display:flex">
                         <div style="margin-left: 115px;margin-right: 35px; display:grid">
-                            <LabelDetails TextOverLabel="Agency Name" PlaceHolder="Enter your agency name" @bind-TextValidate="AgencyInformation.AgencyName"></LabelDetails>
-                            <ValidationMessage For="@(() => AgencyInformation.AgencyName)" class="glyphicon glyphicon-remove" style="height: 0px;font-size: 10pt;" />
+                            <LabelDetails TextOverLabel="Agency Name" PlaceHolder="Enter your agency name" @bind-TextValidate="_agencyInformation.AgencyName"></LabelDetails>
+                            <ValidationMessage For="@(() => _agencyInformation.AgencyName)" class="glyphicon glyphicon-remove" style="height: 0px;font-size: 10pt;" />
                         </div>
                         <div>
                             <label class="TextAgency" for="website">WebSite </label>
                             <div class="input-icons">
-                               <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.WebSite" NameIcons="fa fa-globe icon" PlaceHolder="Enter your company website"></ComponentDetailsIcons>
-                                <ValidationMessage For="@(() => AgencyInformation.WebSite)" style="height: 0px;font-size: 10pt;" />
+                               <ComponentDetailsIcons @bind-TextValidate="_agencyInformation.WebSite" NameIcons="fa fa-globe icon" PlaceHolder="Enter your company website"></ComponentDetailsIcons>
+                                <ValidationMessage For="@(() => _agencyInformation.WebSite)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
                     </div>
                     <div style="display:flex "> 
                         <div style="margin-left: 115px; margin-top: 25px;margin-right: 35px;">
                             <label class="TextAgency">Brand Color</label>
-                            <LableColor @bind-ColorId="AgencyInformation.Color"></LableColor>
+                            <LableColor @bind-ColorId="_agencyInformation.Color"></LableColor>
                         </div>
                         <div style="margin-top: 25px; ">
                             <div>
@@ -46,7 +46,7 @@
                                         <InputFile class="custom-file-input" OnChange="OnLinkLogoFilesChange" style="width: 70px;" />
                                     </div>
                                 </div>
-                                <ValidationMessage For="@(() => AgencyInformation.Logo)" style="height: 0px;font-size: 10pt;" />
+                                <ValidationMessage For="@(() => _agencyInformation.Logo)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
                     </div>
@@ -59,54 +59,63 @@
                     <div style="display:flex">
                         @if (isLoading)
                         {
-                            <img src="@base64data" style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012; " />
+                            <img src="@base64PictureData" style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012; " />
                         }
                         else
                         {
-                            <div style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012; "></div>
+                            <img src="@_urlPicture" style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012; " />
                         }
+
+                        @*@if (isLoadingLogo)
+                        {
+                            <img src="@base64LogoData" style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012; " />
+                        }
+                        else
+                        {
+                            <img src="@_urlLogo" style="height: 88px; width: 88px; border-radius: 50%; border: 2px solid #00000012; " />
+                        }*@
                         <InputFile class="custom-file-upload" OnChange="OnLinkPictureFilesChange"
                                style="align-self: center;margin-left: 10px; width:70px;" multiple accept=".jpg,.jpeg,.png" />
                     </div>
                 </div>
                 <div>
-                    <div></div>
+                    <div></div> 
                     <div style="display:flex">
                         <div style="display: grid;margin-left: 115px;margin-right: 35px; margin-top:15px">
-                            <LabelDetails @bind-TextValidate="AgencyInformation.FirstName" 
+                            <LabelDetails @bind-TextValidate="_agencyInformation.FirstName" 
                                 TextOverLabel="First Name" 
                                 PlaceHolder="Enter your first name">
                             </LabelDetails>
-                            <ValidationMessage For="@(() => AgencyInformation.FirstName)" style="height: 0px;font-size: 10pt;" />
+                            <ValidationMessage For="@(() => _agencyInformation.FirstName)" style="height: 0px;font-size: 10pt;" />
                         </div>
                         <div style="display: grid;margin-top:15px">
-                            <LabelDetails @bind-TextValidate="AgencyInformation.LastName"
+                            <LabelDetails @bind-TextValidate="_agencyInformation.LastName"
                                 TextOverLabel="Last Name" 
                                 PlaceHolder="Enter your last name" >
                             </LabelDetails>
 
-                            <ValidationMessage For="@(() => AgencyInformation.LastName)" style="height: 0px;font-size: 10pt;" />
+                            <ValidationMessage For="@(() => _agencyInformation.LastName)" style="height: 0px;font-size: 10pt;" />
                         </div>
                     </div>
                     <div style="display:flex">
                         <div style="display: grid;margin-left: 115px; margin-top: 25px;margin-right: 35px; ">
                             <label class="TextAgency" for="link">Link </label>
                             <div class="input-icons">
-                                 <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.Link" 
+                                 <ComponentDetailsIcons @bind-TextValidate="_agencyInformation.Link" 
                                NameIcons="fa fa-link icon" 
                                PlaceHolder="Enter link here">
                            </ComponentDetailsIcons>
-                                <ValidationMessage For="@(() => AgencyInformation.Link)" style="height: 0px;font-size: 10pt;" />
+                                <ValidationMessage For="@(() => _agencyInformation.Link)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
                         <div style="display: grid;margin-top: 25px;">
                             <label class="TextAgency" for="phonenumbers">PhoneNumbers </label>
                             <div class="input-icons">
-                               <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.PhoneNumbers" 
+                               <ComponentDetailsIcons @bind-TextValidate="_agencyInformation.PhoneNumbers" 
                                NameIcons="fa  fa-phone icon" 
                                PlaceHolder="Enter a valid phone number">
                            </ComponentDetailsIcons>
-                                <ValidationMessage For="@(() => AgencyInformation.PhoneNumbers)" style="height: 0px;font-size: 10pt;" />
+                                <ValidationMessage For="@(() => _agencyInformation.PhoneNumbers)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
                     </div>
