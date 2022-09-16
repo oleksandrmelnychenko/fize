@@ -9,7 +9,7 @@
 
 <AuthorizeView>
     <NotAuthorized>
-        <div class="basicBox" style="margin-top:7%;margin-bottom: 7%;">
+        <div class="basicBox" style="height:650px; margin-top:7%;margin-bottom: 7%;">
 
             @if (LoadingProcess)
             {
@@ -62,6 +62,6 @@
         </div>
     </NotAuthorized>
     <Authorized>
-        <RedirectTo RedirectUrl="/app/agency/new" />
+        <RedirectTo RedirectUrl="/app/agency/all" />
     </Authorized>
 </AuthorizeView>

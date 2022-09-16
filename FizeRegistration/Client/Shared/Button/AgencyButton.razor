@@ -1,0 +1,20 @@
+﻿    @*<label class="TextAgency" for="agencyname">FIlter</label>*@ @*Agency Name  Enter your agency name*@
+   
+<input @bind="@TextValidate" @oninput="OnTextValidateChanged"  />
+@code{
+    //[Parameter] public string TextOverLabel { get; set; }
+
+    [Parameter] public string PlaceHolder { get; set; }
+
+    [Parameter] public string TextValidate { get; set; }
+
+    [Parameter] public EventCallback<string> TextValidateChanged { get; set; }
+
+    [Parameter] public string TypeWord { get; set; } = "text";
+
+    private Task OnTextValidateChanged(ChangeEventArgs e)
+    {
+        TextValidate = e.Value.ToString();
+        return TextValidateChanged.InvokeAsync(TextValidate);
+    }
+}

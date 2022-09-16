@@ -20,6 +20,7 @@ public sealed class HttpUrls
     public const string GET_AGENCY = "/api/v1/identity/get/agency";
     public const string GET_AGENCY_BY_ID = "/api/v1/identity/agency/by/id";
     public const string CHANGE_AGENCY = "/api/v1/identity/change/agency";
+    public const string FILTER_AGENCY = "/api/v1/identity/filter/agency";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -61,6 +62,19 @@ public class FizeHttpService : IFizeHttpService
         var stringresponce = await responce.Content.ReadAsStringAsync();
         var agencyDataContract =  JsonConvert.DeserializeObject<AgencyDataContract>(stringresponce);
       
+        return new SuccessResponse
+        {
+            Body = new Object(),
+            Message = stringresponce,
+            StatusCode = System.Net.HttpStatusCode.Created
+        }; ;
+    }
+    public async Task<IWebResponse> GetFilterAgency(MultipartFormDataContent model)
+    {
+        var responce = await _httpClient.PostAsync(HttpUrls.FILTER_AGENCY, model);
+        //TableFilterContract
+
+        var stringresponce = await responce.Content.ReadAsStringAsync();
         return new SuccessResponse
         {
             Body = new Object(),
@@ -172,6 +186,8 @@ public class FizeHttpService : IFizeHttpService
             StatusCode = System.Net.HttpStatusCode.Created
         }; ;
     }
+
+   
 
 
 }

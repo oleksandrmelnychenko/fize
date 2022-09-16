@@ -262,10 +262,27 @@ public class UserIdentityService : IUserIdentityService
          {
              IAgencyRepository agencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
              var listAgency = agencyRepository.GetAgency();
-            
+
              return listAgency;
          }
      });
+
+    public Task<List<AgencyDataContract>> FilterAgency(TableFilterContract filterParametry) =>
+    Task.Run(() =>
+    {
+        using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+        {
+            IAgencyRepository agencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+            IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
+            var listAgency = agencyRepository.FilterAgency(filterParametry);
+            if (filterParametry == null)
+            {
+                listAgency = agencyRepository.GetAgency();
+            }
+            return listAgency;
+        }
+    });
+
     public Task<AgencyDataContract> GetAgencyById(string Id)
     =>
      Task.Run(() =>
@@ -302,8 +319,8 @@ public class UserIdentityService : IUserIdentityService
                  WebSite = agencyDataContract.WebSite,
              };
              var user = identityRepository.GetUserByEmail(agencyDataContract.Email);
-              agencyRepository.ChangeAgency(agency);
-            
+             agencyRepository.ChangeAgency(agency);
+
          }
      });
 
@@ -330,9 +347,12 @@ public class UserIdentityService : IUserIdentityService
              };
              var user = identityRepository.GetUserByEmail(agencyDataContract.Email);
              long idAgency = agencyRepository.AddAgency(agency);
-             agencyRepository.UpdateAgencyId(idAgency, user.Id);
+             //agencyRepository.UpdateAgencyId(idAgency, user.Id);
          }
      });
+
+
+
     public Task IssueConfirmation(UserEmailDataContract userEmailDataContract, string baseUrl) =>
     Task.Run(() =>
     {

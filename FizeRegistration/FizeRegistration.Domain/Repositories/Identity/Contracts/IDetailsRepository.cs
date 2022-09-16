@@ -7,6 +7,8 @@ public interface IAgencyRepository
 {
     long AddAgency(Agencion details);
 
+    List<AgencyDataContract> FilterAgency(TableFilterContract filterParameter);
+
     void ChangeAgency(Agencion Agency);
 
     void UpdateAgencyId(long AgencionId, long UserIdentitiesId);

@@ -85,6 +85,28 @@ public class IdentityController : WebApiControllerBase
         }
     }
 
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.FILTER_AGENCY)]
+    public async Task<IActionResult> FiletAgency([FromForm] string tableFilterContract)
+    {
+        try
+        {
+            var tableFilter = JsonConvert.DeserializeObject<TableFilterContract>(tableFilterContract);
+
+            var listFlter = await _userIdentityService.FilterAgency(tableFilter);
+
+            return Ok(listFlter);
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
 
     [HttpGet]
     [AllowAnonymous]
@@ -212,4 +234,6 @@ public class IdentityController : WebApiControllerBase
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
     }
+
+   
 }

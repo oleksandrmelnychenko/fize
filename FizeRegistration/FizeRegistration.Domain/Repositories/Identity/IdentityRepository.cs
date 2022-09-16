@@ -202,5 +202,11 @@ public class AgencyRepository : IAgencyRepository
              "WHERE Id = @Id",
              new { Id = Id }).SingleOrDefault();
     }
+
+    public List<AgencyDataContract> FilterAgency(TableFilterContract filterParameter) 
+        => _connection.Query<AgencyDataContract>(
+              "SELECT * FROM [Agencion] " +
+          $"WHERE PATINDEX(N'%' + @Value + N'%',  {filterParameter.ColumnName}) <> 0 ",
+              new { Value = filterParameter.ImputText }).ToList();
 }
 

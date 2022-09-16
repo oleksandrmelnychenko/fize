@@ -15,7 +15,7 @@ public interface IFizeHttpService
 
     Task<IWebResponse> SendFile(MultipartFormDataContent file);
     Task<IWebResponse> ChangeAgency(MultipartFormDataContent model);
-
+    Task<IWebResponse> GetFilterAgency(MultipartFormDataContent model);
 
     Task<IWebResponse> SendConfirmation(string password);
 

@@ -29,17 +29,10 @@ namespace FizeRegistration.Client.Pages
 
         private string extensionname = "default";
         private string base64data = "";
+        private bool SuccessfulAgency;
+
         protected async override Task OnInitializedAsync()
         {
-            //if (Id != null)
-            //{
-            //    var formDataLogo = new MultipartFormDataContent();
-            //    var fileLogo = new StringContent(Id);
-            //    formDataLogo.Add(fileLogo, "agencyId");
-            //    var sendConfirmationResponse = await HttpClient.GetAgencyById(formDataLogo);
-            //    var stringAgency = sendConfirmationResponse.Message;
-            //    var agencyDataContracts = JsonConvert.DeserializeObject<AgencyDataContract>(stringAgency);
-            //}
             var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
 
             var a = user.Claims.First(c => c.Type == ClaimTypes.Email);
@@ -54,14 +47,11 @@ namespace FizeRegistration.Client.Pages
         }
         public async Task CheckAgency()
         {
-                navigate.NavigateTo("/app/agency/table");
-
+                navigate.NavigateTo("/app/agency/all");
         }
-        private bool SuccessfulAgency;
 
         public async Task ContinueNext()
         {
-
             StreamContent fileLogo = new StreamContent(AgencyInformation.Logo.OpenReadStream());
             StreamContent filePictire = new StreamContent(AgencyInformation.Picture.OpenReadStream());
             var formDataLogo = new MultipartFormDataContent();
@@ -69,7 +59,6 @@ namespace FizeRegistration.Client.Pages
             formDataLogo.Add(fileLogo, "fileLogo", Guid.NewGuid().ToString());
 
             formDataLogo.Add(filePictire, "filePictire", Guid.NewGuid().ToString());
-
 
             var output = new MemoryStream();
             await AgencyInformation.Picture.OpenReadStream().CopyToAsync(output);
@@ -97,14 +86,10 @@ namespace FizeRegistration.Client.Pages
             {
                 SuccessfulAgency = true;
             }
-
         }
         private async void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
             AgencyInformation.Logo = e.File;
-            //var zalupa = AgencyInformation.Logo.Name;
-
-
         }
         private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
         {
@@ -114,8 +99,6 @@ namespace FizeRegistration.Client.Pages
                 try
                 {
                     loadedFiles.Add(file);
-
-
                     extensionname = Path.GetExtension(file.Name);
 
                     var imagefiletypes = new List<string>() {
@@ -123,8 +106,6 @@ namespace FizeRegistration.Client.Pages
                 };
                     if (imagefiletypes.Contains(extensionname))
                     {
-
-
                         var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
                         var buf = new byte[resizedFile.Size];
                         using (var stream = resizedFile.OpenReadStream())
@@ -133,46 +114,14 @@ namespace FizeRegistration.Client.Pages
                         }
                         base64data = "data:image/png;base64," + Convert.ToBase64String(buf);
 
-
-
                         AgencyInformation.Picture = e.File;
                         isLoading = true;
                     }
-                    else
-                    {
-
-                    };
                 }
                 catch (Exception ex)
                 {
                 }
             }
-
-
         }
-
-
     }
-    public static class DataURLServices
-    {
-        public static string ToDataUrl(this MemoryStream data, string format)
-        {
-            var span = new Span<byte>(data.GetBuffer()).Slice(0, (int)data.Length);
-            return $"data:{format};base64,{Convert.ToBase64String(span)}";
-        }
-
-        public static byte[] ToBytes(string url)
-        {
-            var commaPos = url.IndexOf(',');
-            if (commaPos >= 0)
-            {
-                var base64 = url.Substring(commaPos + 1);
-                return Convert.FromBase64String(base64);
-            }
-            return null;
-        }
-
-
-    }
-
 }
