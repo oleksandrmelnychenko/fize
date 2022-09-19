@@ -8,93 +8,16 @@
 @using System;
 @using System.Text.Json.Serialization;
 
-@*<br />
-    <Table DataSource="AgencyInformation"  TItem="AgencyDataContract" @ref="table" Size="TableSize.Small">
-    <PropertyColumn
-            Property="c=>c.Id"
-            Sortable
-            Filterable />
 
-    <PropertyColumn
-            Property="c=>c.AgencyName"
-            SorterCompare="@((a,b)=> string.Compare(a,b))"
-            SortDirections="new[] { SortDirection.Descending }"
-            Filterable  />
-
-    <PropertyColumn
-            Property="c=>c.Color"
-            SorterCompare="@((a,b)=> string.Compare(a,b))"
-            SortDirections="new[] { SortDirection.Descending, SortDirection.Ascending }"
-            Filterable />
-
-    <PropertyColumn
-            Property="c=>c.FirstName"
-           SorterCompare="@((a,b)=> string.Compare(a,b))"
-          SortDirections="new[] { SortDirection.Descending }"
-            Filterable />
-
-    <PropertyColumn
-            Property="c=>c.LastName"
-           SorterCompare="@((a,b)=> string.Compare(a,b))"
-            SortDirections="new[] { SortDirection.Descending }"
-            Filterable />
-
-    <PropertyColumn
-            Property="c=>c.Link"
-            SorterCompare="@((a,b)=> string.Compare(a,b))"
-             SortDirections="new[] { SortDirection.Descending }"
-            Filterable />
-
-    <PropertyColumn
-            Property="c=>c.WebSite"
-            SorterCompare="@((a,b)=> string.Compare(a,b))"
-             SortDirections="new[] { SortDirection.Descending }"
-            Filterable />
-            <ActionColumn>
-                <Space>
-                    <SpaceItem><Button Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
-                </Space>
-            </ActionColumn>
-                width: 100px;
-    font-size: 10pt;
-</Table>*@
-
-@*style="background:white;height: 800px; width:1150px"*@
 <div class="basicBox" style="display: flow-root;margin-top: 2%; height:840px; background:white;">
     <div>
-        <Space>
-            <SpaceItem></SpaceItem>
-        </Space>
-        @*<input @bind="Filter" />*@
-        @*<AgencyButton PlaceHolder="Write" @bind-TextValidate="Filter"></AgencyButton>*@
-        <div style="display:flex;">
+        <div style="margin: 20px;display:flex;">
             <Button Type="@ButtonType.Primary" OnClick="()=>CreateAgency()">Add Agency</Button>
-
-
-            <div style="margin-left: auto;">
-                <div class="dropdown">
-                    <Button Style="width:150px" Type="@ButtonType.Primary">Choose Parameter</Button>
-
-                    <div class="dropdown-content">
-                        <button @onclick="()=>SetFiltre(param[0])" style="width: 100px; font-size: 10pt; border: none;">Id</button>
-                        <button @onclick="()=>SetFiltre(param[1])" style="width: 100px; font-size: 10pt; border: none;">Agency Name</button>
-                        <button @onclick="()=>SetFiltre(param[2])" style="width: 100px; font-size: 10pt; border: none;">Color</button>
-                        <button @onclick="()=>SetFiltre(param[3])" style="width: 100px; font-size: 10pt; border: none;">First Name</button>
-                        <button @onclick="()=>SetFiltre(param[4])" style="width: 100px; font-size: 10pt; border: none;">Last Name</button>
-                        <button @onclick="()=>SetFiltre(param[5])" style="width: 100px; font-size: 10pt; border: none;">Link</button>
-                        <button @onclick="()=>SetFiltre(param[6])" style="width: 100px; font-size: 10pt; border: none;">Web Site</button>
-                    </div>
-                </div>
-                @*<AgencyButton PlaceHolder="Enter your agency name" @bind-TextValidate="Filter"></AgencyButton>*@
-                <input @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
-                @*<Button Type="@ButtonType.Primary" OnClick="IsVisible">Filter @tableFilterContract.ColumnName</Button>*@
+                <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
             </div>
-
         </div>
-
-
-        <Table @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
-
+        <Table  Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
+            <Selection Key="@context.Id" Type="checkbox"/>
             <PropertyColumn Style="width: 90px" Property="c=>c.Id" Sortable />
             <PropertyColumn Style="width: 100px" Title="Agency Name" Property="c=>c.AgencyName" Filterable />
             <PropertyColumn Style="width: 92px" Title="Color" Property="c=>c.Color" />
@@ -110,16 +33,12 @@
             </ActionColumn>
         </Table>
     </div>
-</div>
 
 @code {
 
     public string Filter { get; set; }
 
-    //input @bind="@TextValidate" @oninput="OnTextValidateChanged"  />
-
-    //[Parameter] public string TextOverLabel { get; set; }
-
+   
     [Parameter] public string PlaceHolder { get; set; }
 
     [Parameter] public string TextValidate { get; set; }
@@ -130,16 +49,5 @@
 
 
 
-    //if (string.IsNullOrEmpty(Filter))
-    //    return true;
-
-    //if (forecast.FirstName.Contains(Filter, StringComparison.OrdinalIgnoreCase))
-    //    return true;
-
-    //if (forecast.LastName.Contains(Filter, StringComparison.OrdinalIgnoreCase))
-    //    return true;
-    ////if (forecast.LastName.ToString().StartsWith(Filter) || forecast.TemperatureF.ToString().StartsWith(Filter))
-    ////    return true;
-
-        //return false;
+   
 }

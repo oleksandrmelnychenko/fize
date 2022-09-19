@@ -21,6 +21,7 @@ public sealed class HttpUrls
     public const string GET_AGENCY_BY_ID = "/api/v1/identity/agency/by/id";
     public const string CHANGE_AGENCY = "/api/v1/identity/change/agency";
     public const string FILTER_AGENCY = "/api/v1/identity/filter/agency";
+    public const string DELETE_AGENCY = "/api/v1/identity/delete/agency";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -39,41 +40,46 @@ public class FizeHttpService : IFizeHttpService
     }
     public async Task<IWebResponse> GetAgency()
     {
-
         var response = await _httpClient.GetStringAsync(HttpUrls.GET_AGENCY);
-        //response.EnsureSuccessStatusCode();
-        //var result = response.Content.ReadAsStringAsync();
-        ////if (agencion is not null)
-        ////{
-        //List<AgencyDataContract> contributors = JsonConvert.DeserializeObject<List<AgencyDataContract>>(response);
-
+       
         return new SuccessResponse
         {
             Body = new Object(),
             Message = response,
             StatusCode = System.Net.HttpStatusCode.Created
         };
-        //}
-        //return response;
     }
     public async Task<IWebResponse> GetAgencyById(MultipartFormDataContent model)
     {
-        var responce = await _httpClient.PostAsync(HttpUrls.GET_AGENCY_BY_ID, model);
-        var stringresponce = await responce.Content.ReadAsStringAsync();
-        var agencyDataContract =  JsonConvert.DeserializeObject<AgencyDataContract>(stringresponce);
-      
-        return new SuccessResponse
-        {
-            Body = new Object(),
-            Message = stringresponce,
-            StatusCode = System.Net.HttpStatusCode.Created
-        }; ;
+        return await GetRequestAgency(model, HttpUrls.GET_AGENCY_BY_ID);
+
+        //var responce = await _httpClient.PostAsync(HttpUrls.GET_AGENCY_BY_ID, model);
+
+        //var stringresponce = await responce.Content.ReadAsStringAsync();
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = stringresponce,
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
     }
     public async Task<IWebResponse> GetFilterAgency(MultipartFormDataContent model)
     {
-        var responce = await _httpClient.PostAsync(HttpUrls.FILTER_AGENCY, model);
-        //TableFilterContract
+        return await GetRequestAgency(model, HttpUrls.FILTER_AGENCY);
+        //var responce = await _httpClient.PostAsync(HttpUrls.FILTER_AGENCY, model);
+      
+        //var stringresponce = await responce.Content.ReadAsStringAsync();
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = stringresponce,
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
+    }
 
+    public async Task<IWebResponse> GetRequestAgency(MultipartFormDataContent modelData, string requestUrl)
+    {
+        var responce = await _httpClient.PostAsync(requestUrl, modelData);
         var stringresponce = await responce.Content.ReadAsStringAsync();
         return new SuccessResponse
         {
@@ -82,6 +88,7 @@ public class FizeHttpService : IFizeHttpService
             StatusCode = System.Net.HttpStatusCode.Created
         }; ;
     }
+
     public async Task SetTokenToLocalStorageAndHeader(TokenDataContract tokenData)
     {
         await _localStorage.SetItemAsync<TokenDataContract>("token", tokenData);
@@ -102,7 +109,6 @@ public class FizeHttpService : IFizeHttpService
                 new AuthenticationHeaderValue("Bearer", token.Token.Replace("\"", ""));
             }
         }
-
         catch
         {
 
@@ -168,7 +174,31 @@ public class FizeHttpService : IFizeHttpService
     }
     public async Task<IWebResponse> SendFile(MultipartFormDataContent model)
     {
-        await _httpClient.PostAsync(HttpUrls.SEND_AGENCY_FILE, model);
+        return await SendRequestAgency(model, HttpUrls.SEND_AGENCY_FILE);
+
+        //await _httpClient.PostAsync(HttpUrls.SEND_AGENCY_FILE, model);
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = "SuccessResponse",
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
+    }
+    public async Task<IWebResponse> ChangeAgency(MultipartFormDataContent model)
+    {
+       return await SendRequestAgency(model,HttpUrls.CHANGE_AGENCY);
+        //await _httpClient.PostAsync(HttpUrls.CHANGE_AGENCY, model);
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = "SuccessResponse",
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
+    }
+
+    public async Task<IWebResponse> DeleteAgency(MultipartFormDataContent model)
+    {
+        await _httpClient.PostAsync(HttpUrls.DELETE_AGENCY,model);
         return new SuccessResponse
         {
             Body = new Object(),
@@ -176,9 +206,10 @@ public class FizeHttpService : IFizeHttpService
             StatusCode = System.Net.HttpStatusCode.Created
         }; ;
     }
-    public async Task<IWebResponse> ChangeAgency(MultipartFormDataContent model)
+
+    private async Task<IWebResponse> SendRequestAgency(MultipartFormDataContent modelData,string requestUrl)
     {
-        await _httpClient.PostAsync(HttpUrls.CHANGE_AGENCY, model);
+        await _httpClient.PostAsync(requestUrl, modelData);
         return new SuccessResponse
         {
             Body = new Object(),

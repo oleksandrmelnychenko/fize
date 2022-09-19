@@ -36,5 +36,7 @@ public sealed class IdentitySegments
     public const string CHANGE_AGENCY = "change/agency";
 
     public const string FILTER_AGENCY = "filter/agency";
+
+    public const string DELETE_AGENCY = "delete/agency";
 }
 

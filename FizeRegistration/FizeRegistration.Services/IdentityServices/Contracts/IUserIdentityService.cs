@@ -21,7 +21,12 @@ public interface IUserIdentityService
     Task NewAgency(AgencyDataContract agencyDataContract);
 
     Task ChangeAgency(AgencyDataContract agencyDataContract);
+
     Task<List<AgencyDataContract>> GetAgency();
+
     Task<List<AgencyDataContract>> FilterAgency(TableFilterContract filterParametry);
+
     Task<AgencyDataContract> GetAgencyById(string Id);
+
+    Task DeleteAgency(string id);
 }

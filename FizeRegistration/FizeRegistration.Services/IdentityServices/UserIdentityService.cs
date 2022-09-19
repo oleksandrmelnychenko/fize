@@ -267,6 +267,19 @@ public class UserIdentityService : IUserIdentityService
          }
      });
 
+
+    public Task DeleteAgency(string id) =>
+    Task.Run(() =>
+    {
+        using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+        {
+            IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+            AgencyRepository.DeleteAgency(id);
+
+            //return agency;
+        }
+    });
+
     public Task<List<AgencyDataContract>> FilterAgency(TableFilterContract filterParametry) =>
     Task.Run(() =>
     {
@@ -283,14 +296,14 @@ public class UserIdentityService : IUserIdentityService
         }
     });
 
-    public Task<AgencyDataContract> GetAgencyById(string Id)
+    public Task<AgencyDataContract> GetAgencyById(string id)
     =>
      Task.Run(() =>
      {
          using (IDbConnection connection = _connectionFactory.NewSqlConnection())
          {
              IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
-             var agency = AgencyRepository.GetAgencyByID(Id);
+             var agency = AgencyRepository.GetAgencyByID(id);
 
              return agency;
          }

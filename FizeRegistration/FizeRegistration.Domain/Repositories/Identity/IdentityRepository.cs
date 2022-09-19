@@ -146,67 +146,89 @@ public class AgencyRepository : IAgencyRepository
         _connection = connection;
     }
 
-    public long AddAgency(Agencion Agency) =>
+    public long AddAgency(Agencion agency) =>
         _connection.Query<long>("INSERT INTO [Agencion] " +
              "(Color,AgencyName,LinkLogo,LinkPictureUser,WebSite,LastName,Link,FirstName,PhoneNumber) " +
              "VALUES " +
-             "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) "+
+             "(@Color,@AgencyName,@LinkLogo,@LinkPictureUser,@WebSite,@LastName,@Link,@FirstName,@PhoneNumber) " +
              "SELECT SCOPE_IDENTITY()",
              new
              {
-                 Color = Agency.Color,
-                 AgencyName = Agency.AgencyName,
-                 WebSite = Agency.WebSite,
-                 LinkLogo = Agency.LinkLogo,
-                 LinkPictureUser = Agency.LinkPictureUser,
-                 LastName = Agency.LastName,
-                 Link = Agency.Link,
-                 FirstName = Agency.FirstName,
-                 PhoneNumber = Agency.PhoneNumber,
+                 Color = agency.Color,
+                 AgencyName = agency.AgencyName,
+                 WebSite = agency.WebSite,
+                 LinkLogo = agency.LinkLogo,
+                 LinkPictureUser = agency.LinkPictureUser,
+                 LastName = agency.LastName,
+                 Link = agency.Link,
+                 FirstName = agency.FirstName,
+                 PhoneNumber = agency.PhoneNumber,
              }).Single();
 
-    public void ChangeAgency(Agencion Agency) =>
+    public void ChangeAgency(Agencion agency) =>
         _connection.Execute("UPDATE [Agencion] " +
             "Set Color =@Color,AgencyName=@AgencyName,LinkLogo=@LinkLogo,LinkPictureUser = @LinkPictureUser,WebSite=@WebSite,LastName=@LastName,Link=@Link,FirstName=@FirstName,PhoneNumber =@PhoneNumber " +
              "WHERE Id = @Id",
              new
              {
-                 Id = Agency.Id,
-                 Color = Agency.Color,
-                 AgencyName = Agency.AgencyName,
-                 WebSite = Agency.WebSite,
-                 LinkLogo = Agency.LinkLogo,
-                 LinkPictureUser = Agency.LinkPictureUser,
-                 LastName = Agency.LastName,
-                 Link = Agency.Link,
-                 FirstName = Agency.FirstName,
-                 PhoneNumber = Agency.PhoneNumber,
+                 Id = agency.Id,
+                 Color = agency.Color,
+                 AgencyName = agency.AgencyName,
+                 WebSite = agency.WebSite,
+                 LinkLogo = agency.LinkLogo,
+                 LinkPictureUser = agency.LinkPictureUser,
+                 LastName = agency.LastName,
+                 Link = agency.Link,
+                 FirstName = agency.FirstName,
+                 PhoneNumber = agency.PhoneNumber,
              });
 
-    public void UpdateAgencyId(long AgencionId, long UserIdentitiesId)
+    public void UpdateAgencyId(long agencionId, long userIdentitiesId)
     {
         _connection.Execute(
             "UPDATE Agencion SET UserIdentityId = @UserIdentityId " +
             "WHERE Id = @Id",
-            new { UserIdentityId = UserIdentitiesId, Id = AgencionId });
+            new { UserIdentityId = userIdentitiesId, Id = agencionId });
     }
 
     public List<AgencyDataContract> GetAgency() =>
       _connection.Query<AgencyDataContract>("SELECT" +
             " * FROM [dbo].[Agencion]").ToList();
 
-    public AgencyDataContract GetAgencyByID(string Id)
+    public AgencyDataContract GetAgencyByID(string id)
     {
-       return _connection.Query<AgencyDataContract>(
-             "SELECT * FROM Agencion " +
-             "WHERE Id = @Id",
-             new { Id = Id }).SingleOrDefault();
+        return _connection.Query<AgencyDataContract>(
+              "SELECT * FROM Agencion " +
+              "WHERE Id = @Id",
+              new { Id = id }).SingleOrDefault();
     }
 
-    public List<AgencyDataContract> FilterAgency(TableFilterContract filterParameter) 
+    public void DeleteAgency(string id)
+    {
+        _connection.Execute("DELETE FROM Agencion " +
+            "WHERE Id = @Id ",
+            new {Id = id});
+    }
+
+    public List<AgencyDataContract> FilterAgency(TableFilterContract filterParameter)
         => _connection.Query<AgencyDataContract>(
               "SELECT * FROM [Agencion] " +
-          $"WHERE PATINDEX(N'%' + @Value + N'%',  {filterParameter.ColumnName}) <> 0 ",
+          $"WHERE PATINDEX(N'%' + @Value + N'%', PhoneNumber) <> 0 " +
+            $"OR PATINDEX(N'%' + @Value + N'%', FirstName) <> 0"+
+            $"OR PATINDEX(N'%' + @Value + N'%', Link) <> 0" +
+            $"OR PATINDEX(N'%' + @Value + N'%', LastName) <> 0" +
+            $"OR PATINDEX(N'%' + @Value + N'%', WebSite) <> 0" +
+            $"OR PATINDEX(N'%' + @Value + N'%', LinkPictureUser) <> 0" +
+            $"OR PATINDEX(N'%' + @Value + N'%', LinkLogo) <> 0"+
+            $"OR PATINDEX(N'%' + @Value + N'%', AgencyName) <> 0"+
+            $"OR PATINDEX(N'%' + @Value + N'%', Color) <> 0",
               new { Value = filterParameter.ImputText }).ToList();
+
+    public List<AgencyDataContract> FilterAgenc(TableFilterContract filterParameter)
+        => _connection.Query<AgencyDataContract>((!string.IsNullOrEmpty(filterParameter.ImputText)
+                               ? "AND (PATINDEX(N'%' + @SearchWord + N'%', [ApplicableActionLevel1].Name) > 0 OR PATINDEX(N'%' + @SearchWord + N'%', [ApplicableActionLevel2].Name) > 0 OR PATINDEX(N'%' + @SearchWord + N'%', [ApplicableActionLevel3].Name) > 0) "
+                               : string.Empty) +
+            new { SearchWord = filterParameter.ImputText }).ToList();
 }
+
 

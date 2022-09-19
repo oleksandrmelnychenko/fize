@@ -14,7 +14,9 @@ public interface IFizeHttpService
     Task<IWebResponse> SendEmailForSignUp(UserEmailDataContract userEmail);
 
     Task<IWebResponse> SendFile(MultipartFormDataContent file);
+
     Task<IWebResponse> ChangeAgency(MultipartFormDataContent model);
+
     Task<IWebResponse> GetFilterAgency(MultipartFormDataContent model);
 
     Task<IWebResponse> SendConfirmation(string password);
@@ -25,4 +27,5 @@ public interface IFizeHttpService
 
     Task<IWebResponse> GetAgencyById(MultipartFormDataContent Id);
 
+    Task<IWebResponse> DeleteAgency(MultipartFormDataContent model);
 }
