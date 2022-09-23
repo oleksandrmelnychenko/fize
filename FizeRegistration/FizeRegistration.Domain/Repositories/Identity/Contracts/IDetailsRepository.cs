@@ -17,5 +17,5 @@ public interface IAgencyRepository
 
     AgencyDataContract GetAgencyByID(string Id);
 
-    void DeleteAgency(string id);
+    List<AgencyDataContract> DeleteAgency(string id);
 }

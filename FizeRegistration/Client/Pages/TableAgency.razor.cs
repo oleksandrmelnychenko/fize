@@ -1,8 +1,11 @@
 ﻿using AntDesign;
+using AntDesign.TableModels;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace FizeRegistration.Client.Pages
 {
@@ -17,11 +20,7 @@ namespace FizeRegistration.Client.Pages
         ITable table;
         protected override async Task OnInitializedAsync()
         {
-
-            var responce = await HttpClient.GetAgency();
-            var stringAgency = responce.Message;
-            AgencyInformation = JsonConvert.DeserializeObject<List<AgencyDataContract>>(stringAgency);
-
+            await GetAgency();
         }
         private void Update(int id)
         {
@@ -31,6 +30,33 @@ namespace FizeRegistration.Client.Pages
         {
             Navigate.NavigateTo($"/app/agency/new");
 
+        }
+        private async Task GetAgency()
+        {
+            var responce = await HttpClient.GetAgency();
+            var stringAgency = responce.Message;
+            AgencyInformation = JsonConvert.DeserializeObject<List<AgencyDataContract>>(stringAgency);
+        }
+        private async Task Delete(string agencionId)
+        {
+            var formDataLogo = new MultipartFormDataContent();
+            var fileLogo = new StringContent(agencionId);
+            formDataLogo.Add(fileLogo, "agencyId");
+            await HttpClient.DeleteAgency(formDataLogo);
+            await GetAgency();
+
+        }
+        void OnRowClick(RowData<AgencyDataContract> row)
+        {
+
+            if (row.Data.IsDelete)
+                row.Data.IsDelete = false;
+            else
+            {
+                row.Data.IsDelete = true;
+                //row.Data.BackgroundColor = "background:#e6f7ff";
+
+            }
         }
 
         private async Task OnTextValidateChanged(ChangeEventArgs e)

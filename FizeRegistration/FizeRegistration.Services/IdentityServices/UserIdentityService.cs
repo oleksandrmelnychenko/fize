@@ -268,15 +268,15 @@ public class UserIdentityService : IUserIdentityService
      });
 
 
-    public Task DeleteAgency(string id) =>
+    public Task<List<AgencyDataContract>> DeleteAgency(string id) =>
     Task.Run(() =>
     {
         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
         {
             IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
-            AgencyRepository.DeleteAgency(id);
+            var listAgency = AgencyRepository.DeleteAgency(id);
 
-            //return agency;
+            return listAgency;
         }
     });
 

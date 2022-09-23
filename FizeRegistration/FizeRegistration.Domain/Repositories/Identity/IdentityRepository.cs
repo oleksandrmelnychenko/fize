@@ -203,11 +203,12 @@ public class AgencyRepository : IAgencyRepository
               new { Id = id }).SingleOrDefault();
     }
 
-    public void DeleteAgency(string id)
+    public List<AgencyDataContract> DeleteAgency(string id)
     {
         _connection.Execute("DELETE FROM Agencion " +
             "WHERE Id = @Id ",
             new {Id = id});
+        return GetAgency();
     }
 
     public List<AgencyDataContract> FilterAgency(TableFilterContract filterParameter)

@@ -38,56 +38,9 @@ public class FizeHttpService : IFizeHttpService
     {
         return _httpClient?.BaseAddress;
     }
-    public async Task<IWebResponse> GetAgency()
-    {
-        var response = await _httpClient.GetStringAsync(HttpUrls.GET_AGENCY);
-       
-        return new SuccessResponse
-        {
-            Body = new Object(),
-            Message = response,
-            StatusCode = System.Net.HttpStatusCode.Created
-        };
-    }
-    public async Task<IWebResponse> GetAgencyById(MultipartFormDataContent model)
-    {
-        return await GetRequestAgency(model, HttpUrls.GET_AGENCY_BY_ID);
+   
 
-        //var responce = await _httpClient.PostAsync(HttpUrls.GET_AGENCY_BY_ID, model);
-
-        //var stringresponce = await responce.Content.ReadAsStringAsync();
-        //return new SuccessResponse
-        //{
-        //    Body = new Object(),
-        //    Message = stringresponce,
-        //    StatusCode = System.Net.HttpStatusCode.Created
-        //}; ;
-    }
-    public async Task<IWebResponse> GetFilterAgency(MultipartFormDataContent model)
-    {
-        return await GetRequestAgency(model, HttpUrls.FILTER_AGENCY);
-        //var responce = await _httpClient.PostAsync(HttpUrls.FILTER_AGENCY, model);
-      
-        //var stringresponce = await responce.Content.ReadAsStringAsync();
-        //return new SuccessResponse
-        //{
-        //    Body = new Object(),
-        //    Message = stringresponce,
-        //    StatusCode = System.Net.HttpStatusCode.Created
-        //}; ;
-    }
-
-    public async Task<IWebResponse> GetRequestAgency(MultipartFormDataContent modelData, string requestUrl)
-    {
-        var responce = await _httpClient.PostAsync(requestUrl, modelData);
-        var stringresponce = await responce.Content.ReadAsStringAsync();
-        return new SuccessResponse
-        {
-            Body = new Object(),
-            Message = stringresponce,
-            StatusCode = System.Net.HttpStatusCode.Created
-        }; ;
-    }
+    
 
     public async Task SetTokenToLocalStorageAndHeader(TokenDataContract tokenData)
     {
@@ -198,11 +151,62 @@ public class FizeHttpService : IFizeHttpService
 
     public async Task<IWebResponse> DeleteAgency(MultipartFormDataContent model)
     {
-        await _httpClient.PostAsync(HttpUrls.DELETE_AGENCY,model);
+        return await SendRequestAgency(model, HttpUrls.DELETE_AGENCY);
+        //var responce =  await _httpClient.PostAsync(HttpUrls.DELETE_AGENCY,model);
+        //var stringresponce = await responce.Content.ReadAsStringAsync();
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = stringresponce,
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
+    }
+    public async Task<IWebResponse> GetAgency()
+    {
+        var response = await _httpClient.GetStringAsync(HttpUrls.GET_AGENCY);
+
         return new SuccessResponse
         {
             Body = new Object(),
-            Message = "SuccessResponse",
+            Message = response,
+            StatusCode = System.Net.HttpStatusCode.Created
+        };
+    }
+    public async Task<IWebResponse> GetAgencyById(MultipartFormDataContent model)
+    {
+        return await GetRequestAgency(model, HttpUrls.GET_AGENCY_BY_ID);
+
+        //var responce = await _httpClient.PostAsync(HttpUrls.GET_AGENCY_BY_ID, model);
+
+        //var stringresponce = await responce.Content.ReadAsStringAsync();
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = stringresponce,
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
+    }
+    public async Task<IWebResponse> GetFilterAgency(MultipartFormDataContent model)
+    {
+        return await GetRequestAgency(model, HttpUrls.FILTER_AGENCY);
+        //var responce = await _httpClient.PostAsync(HttpUrls.FILTER_AGENCY, model);
+
+        //var stringresponce = await responce.Content.ReadAsStringAsync();
+        //return new SuccessResponse
+        //{
+        //    Body = new Object(),
+        //    Message = stringresponce,
+        //    StatusCode = System.Net.HttpStatusCode.Created
+        //}; ;
+    }
+    public async Task<IWebResponse> GetRequestAgency(MultipartFormDataContent modelData, string requestUrl)
+    {
+        var responce = await _httpClient.PostAsync(requestUrl, modelData);
+        var stringresponce = await responce.Content.ReadAsStringAsync();
+        return new SuccessResponse
+        {
+            Body = new Object(),
+            Message = stringresponce,
             StatusCode = System.Net.HttpStatusCode.Created
         }; ;
     }

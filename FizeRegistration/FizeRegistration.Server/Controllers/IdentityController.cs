@@ -108,14 +108,14 @@ public class IdentityController : WebApiControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpPost]
     [AllowAnonymous]
-    [AssignActionRoute(IdentitySegments.DELETE_USER)]
+    [AssignActionRoute(IdentitySegments.DELETE_AGENCY)]
     public async Task<IActionResult> DeleteAgency([FromForm] string agencyId)
     {
-        await _userIdentityService.DeleteAgency(agencyId);
-        return Ok();
-    }
+        var result = await _userIdentityService.DeleteAgency(agencyId);
+        return Ok(result);
+    } 
 
 
     [HttpGet]

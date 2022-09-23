@@ -13,32 +13,42 @@
     <div>
         <div style="margin: 20px;display:flex;">
             <Button Type="@ButtonType.Primary" OnClick="()=>CreateAgency()">Add Agency</Button>
-                <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
-            </div>
+            <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
         </div>
-        <Table  Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
-            <Selection Key="@context.Id" Type="checkbox"/>
-            <PropertyColumn Style="width: 90px" Property="c=>c.Id" Sortable />
-            <PropertyColumn Style="width: 100px" Title="Agency Name" Property="c=>c.AgencyName" Filterable />
-            <PropertyColumn Style="width: 92px" Title="Color" Property="c=>c.Color" />
-            <PropertyColumn Style="width: 105px" Title="First Name" Property="c=>c.FirstName" />
-            <PropertyColumn Style="width: 105px" Title="Last Name" Property="c=>c.LastName" />
-            <PropertyColumn Style="width: 250px" Title="Link" Property="c=>c.Link" />
-            <PropertyColumn Style="width: 180px" Title="Web Site" Property="c=>c.WebSite" />
-
-            <ActionColumn>
-                <Space>
-                    <SpaceItem><Button Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
-                </Space>
-            </ActionColumn>
-        </Table>
     </div>
+    <Table OnRowClick="OnRowClick" Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
+
+        <PropertyColumn Style="width: 90px;" Property="c=>c.Id" Sortable />
+        <PropertyColumn Style="width: 100px" Title="Agency Name" Property="c=>c.AgencyName" Filterable />
+        <PropertyColumn Style="width: 92px" Title="Color" Property="c=>c.Color" />
+        <PropertyColumn Style="width: 105px" Title="First Name" Property="c=>c.FirstName" />
+        <PropertyColumn Style="width: 105px" Title="Last Name" Property="c=>c.LastName" />
+        <PropertyColumn Style="width: 250px" Title="Link" Property="c=>c.Link" />
+        <PropertyColumn Style="width: 180px" Title="Web Site" Property="c=>c.WebSite" />
+
+        <ActionColumn>
+            @if (context.IsDelete)
+            {
+                 <Space>
+                    <SpaceItem><Button Style="width:77px;"  Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>
+                </Space>
+            }
+            else
+            {
+                <Space>
+                    <SpaceItem><Button Style="width:77px;" Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
+                </Space>
+            }
+
+        </ActionColumn>
+    </Table>
+</div>
 
 @code {
 
     public string Filter { get; set; }
 
-   
+
     [Parameter] public string PlaceHolder { get; set; }
 
     [Parameter] public string TextValidate { get; set; }
@@ -48,6 +58,6 @@
     [Parameter] public string TypeWord { get; set; } = "text";
 
 
-
    
+
 }

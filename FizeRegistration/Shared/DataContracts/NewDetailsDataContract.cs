@@ -34,6 +34,10 @@ public sealed class AgencyDataContract
     public string FirstName { get; set; }
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
+
+    public bool IsDelete { get; set; }
+
+    //public string BackgroundColor { get; set; }
 }
 public sealed class NewFileContract
 {
