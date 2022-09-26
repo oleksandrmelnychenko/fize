@@ -22,6 +22,7 @@ public sealed class HttpUrls
     public const string CHANGE_AGENCY = "/api/v1/identity/change/agency";
     public const string FILTER_AGENCY = "/api/v1/identity/filter/agency";
     public const string DELETE_AGENCY = "/api/v1/identity/delete/agency";
+    public const string DELETE_LIST_AGENCY = "/api/v1/identity/delete/list/agency";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -222,7 +223,9 @@ public class FizeHttpService : IFizeHttpService
         }; ;
     }
 
-   
+    public async Task<IWebResponse> DeleteListAgency(MultipartFormDataContent model)
+    {
+        return await GetRequestAgency(model, HttpUrls.DELETE_LIST_AGENCY);
 
-
+    }
 }

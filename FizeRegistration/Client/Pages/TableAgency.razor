@@ -13,6 +13,20 @@
     <div>
         <div style="margin: 20px;display:flex;">
             <Button Type="@ButtonType.Primary" OnClick="()=>CreateAgency()">Add Agency</Button>
+             <h5 style="margin:auto;">
+        @if (AgencyInformation != null)
+        {
+            @foreach (var agency in AgencyInformation)
+            {
+                @if (agency.IsDelete)
+                        {
+                <Tag @key="agency">@agency.AgencyName</Tag>
+                            
+                        }
+            }
+            <Button Danger Size="small" OnClick="@(e => DeleteListAgency())">Delete</Button>
+        }
+    </h5>
             <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
         </div>
     </div>
@@ -57,7 +71,5 @@
 
     [Parameter] public string TypeWord { get; set; } = "text";
 
-
-   
-
+    
 }

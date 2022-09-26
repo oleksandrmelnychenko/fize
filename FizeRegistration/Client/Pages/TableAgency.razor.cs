@@ -46,6 +46,17 @@ namespace FizeRegistration.Client.Pages
             await GetAgency();
 
         }
+
+        public async Task DeleteListAgency()
+        {
+            var listDeleteAgencion =  AgencyInformation.Where(e => e.IsDelete).ToList();
+            var formDataLogo = new MultipartFormDataContent();
+            var tableFilter = JsonConvert.SerializeObject(listDeleteAgencion);
+            var fileLogo = new StringContent(tableFilter);
+            formDataLogo.Add(fileLogo, "deleteList");
+            await HttpClient.DeleteListAgency(formDataLogo);
+            await GetAgency();
+        }
         void OnRowClick(RowData<AgencyDataContract> row)
         {
 

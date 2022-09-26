@@ -113,9 +113,44 @@ public class IdentityController : WebApiControllerBase
     [AssignActionRoute(IdentitySegments.DELETE_AGENCY)]
     public async Task<IActionResult> DeleteAgency([FromForm] string agencyId)
     {
-        var result = await _userIdentityService.DeleteAgency(agencyId);
-        return Ok(result);
-    } 
+        try
+        {
+            var result = await _userIdentityService.DeleteAgency(agencyId);
+            return Ok(result);
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+
+
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.DELETE_LIST_AGENCY)]
+    public async Task<IActionResult> DeleteListAgency([FromForm] string deleteList)
+    {
+       
+        try
+        {
+            List<AgencyDataContract?> agencyListDataContract = JsonConvert.DeserializeObject<List<AgencyDataContract?>>(deleteList);
+            await _userIdentityService.DeleteListAgency(agencyListDataContract);
+
+            return Ok(SuccessResponseBody(new { Message = "Files Delete" }));
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
 
 
     [HttpGet]
@@ -123,8 +158,20 @@ public class IdentityController : WebApiControllerBase
     [AssignActionRoute(IdentitySegments.GET_AGENCY)]
     public async Task<IActionResult> GetAgency()
     {
-        var result = await _userIdentityService.GetAgency();
-        return Ok(result);
+       
+        try
+        {
+            var result = await _userIdentityService.GetAgency();
+            return Ok(result);
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
     }
 
     [HttpPost]
@@ -132,8 +179,20 @@ public class IdentityController : WebApiControllerBase
     [AssignActionRoute(IdentitySegments.GET_AGENCY_BY_ID)]
     public async Task<IActionResult> GetAgencyById([FromForm] string agencyId)
     {
-        var result = await _userIdentityService.GetAgencyById(agencyId);
-        return Ok(result);
+        
+        try
+        {
+            var result = await _userIdentityService.GetAgencyById(agencyId);
+            return Ok(result);
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
     }
 
     [HttpPost]

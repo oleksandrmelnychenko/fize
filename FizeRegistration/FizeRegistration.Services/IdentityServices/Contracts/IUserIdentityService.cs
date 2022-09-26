@@ -29,4 +29,7 @@ public interface IUserIdentityService
     Task<AgencyDataContract> GetAgencyById(string Id);
 
     Task<List<AgencyDataContract>> DeleteAgency(string id);
+
+    Task DeleteListAgency(List<AgencyDataContract> listAgency);
+
 }

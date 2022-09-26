@@ -267,7 +267,21 @@ public class UserIdentityService : IUserIdentityService
          }
      });
 
+    public Task DeleteListAgency(List<AgencyDataContract> listAgency) =>
+    Task.Run(() =>
+    {
+        using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+        {
+            IAgencyRepository AgencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
 
+            foreach (var agencion in listAgency)
+            {
+                AgencyRepository.DeleteAgency(agencion.Id);
+            }
+
+           
+        }
+    });
     public Task<List<AgencyDataContract>> DeleteAgency(string id) =>
     Task.Run(() =>
     {
@@ -437,4 +451,6 @@ public class UserIdentityService : IUserIdentityService
 
         return false;
     }
+
+   
 }
