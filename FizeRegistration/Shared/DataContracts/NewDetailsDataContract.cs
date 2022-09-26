@@ -37,7 +37,7 @@ public sealed class AgencyDataContract
 
     public bool IsDelete { get; set; }
 
-    //public string BackgroundColor { get; set; }
+    public string BackgroundColor { get; set; }
 }
 public sealed class NewFileContract
 {

@@ -9,7 +9,7 @@
 @using System.Text.Json.Serialization;
 
 
-<div class="basicBox" style="display: flow-root;margin-top: 2%; height:840px; background:white;">
+<div class="basicBox" style="display: flow-root;margin-top: 2%; height:810px; background:white;">
     <div>
         <div style="margin: 20px;display:flex;">
             <Button Type="@ButtonType.Primary" OnClick="()=>CreateAgency()">Add Agency</Button>
@@ -30,27 +30,26 @@
             <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
         </div>
     </div>
-    <Table OnRowClick="OnRowClick" Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
+    <Table  OnRowClick="OnRowClick" Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
+        <PropertyColumn Style="@context.BackgroundColor" Property="c=>c.Id" Sortable />
+        <PropertyColumn Style="@context.BackgroundColor" Title="Agency Name" Property="c=>c.AgencyName" Filterable />
+        <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color" />
+        <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName" />
+        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName" />
+        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link" />
+        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite" />
 
-        <PropertyColumn Style="width: 90px;" Property="c=>c.Id" Sortable />
-        <PropertyColumn Style="width: 100px" Title="Agency Name" Property="c=>c.AgencyName" Filterable />
-        <PropertyColumn Style="width: 92px" Title="Color" Property="c=>c.Color" />
-        <PropertyColumn Style="width: 105px" Title="First Name" Property="c=>c.FirstName" />
-        <PropertyColumn Style="width: 105px" Title="Last Name" Property="c=>c.LastName" />
-        <PropertyColumn Style="width: 250px" Title="Link" Property="c=>c.Link" />
-        <PropertyColumn Style="width: 180px" Title="Web Site" Property="c=>c.WebSite" />
-
-        <ActionColumn>
+        <ActionColumn Style="@context.BackgroundColor">
             @if (context.IsDelete)
             {
                  <Space>
-                    <SpaceItem><Button Style="width:77px;"  Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>
+                    <SpaceItem><Button Style="@context.BackgroundColor"  Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>
                 </Space>
             }
             else
             {
-                <Space>
-                    <SpaceItem><Button Style="width:77px;" Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
+                <Space >
+                    <SpaceItem><Button  Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
                 </Space>
             }
 

@@ -61,11 +61,14 @@ namespace FizeRegistration.Client.Pages
         {
 
             if (row.Data.IsDelete)
+            {
                 row.Data.IsDelete = false;
+                row.Data.BackgroundColor = null;
+            }
             else
             {
                 row.Data.IsDelete = true;
-                //row.Data.BackgroundColor = "background:#e6f7ff";
+                row.Data.BackgroundColor = "background:#e6f7ff";
 
             }
         }
