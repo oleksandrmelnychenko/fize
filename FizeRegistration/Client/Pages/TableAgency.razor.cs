@@ -11,7 +11,7 @@ namespace FizeRegistration.Client.Pages
 {
     public partial class TableAgency
     {
-
+        [Parameter] public string AgencyNameValidate { get; set; }
         [Inject] private IFizeHttpService HttpClient { get; set; }
         [Inject] private NavigationManager Navigate { get; set; }
         public List<AgencyDataContract> AgencyInformation { get; set; } = new List<AgencyDataContract>();
@@ -31,6 +31,19 @@ namespace FizeRegistration.Client.Pages
             Navigate.NavigateTo($"/app/agency/new");
 
         }
+        void stopEdit()
+        {
+            var editedData = AgencyInformation.FirstOrDefault(x => x.Id == editId);
+            if (AgencyNameValidate != null)
+            {
+                AgencyChangeNames.Add(AgencyNameValidate);
+                AgencyNameValidate = null;
+            }
+
+            //Console.WriteLine(JsonSerializer.Serialize(editedData));
+            editId = null;
+        }
+
         private async Task GetAgency()
         {
             var responce = await HttpClient.GetAgency();
@@ -57,23 +70,51 @@ namespace FizeRegistration.Client.Pages
             await HttpClient.DeleteListAgency(formDataLogo);
             await GetAgency();
         }
-        void OnRowClick(RowData<AgencyDataContract> row)
+
+        void OnClick(string agencyName,AgencyDataContract agency)
+        {
+             //_vievAgencyTable = agencyName;
+            agency.AgencyName = agencyName;
+        }
+
+        void OnBlur()
         {
 
-            if (row.Data.IsDelete)
+        }
+
+            void OnRowClick(AgencyDataContract row)
+        {
+
+            if (row.IsDelete)
             {
-                row.Data.IsDelete = false;
-                row.Data.BackgroundColor = null;
+                row.IsDelete = false;
+                row.BackgroundColor = null;
             }
             else
             {
-                row.Data.IsDelete = true;
-                row.Data.BackgroundColor = "background:#e6f7ff";
+                row.IsDelete = true;
+                row.BackgroundColor = "background:#e6f7ff";
 
             }
         }
 
-        private async Task OnTextValidateChanged(ChangeEventArgs e)
+
+        void startEdit(string id, string agencyName)
+        {
+            editId = id;
+            if (!AgencyChangeNames.Any())
+            {
+                AgencyChangeNames.Add(agencyName);
+            }
+            
+        }
+
+        private async Task OnAgencyNameValidateChanged(ChangeEventArgs e)
+        {
+            AgencyNameValidate = e.Value.ToString();
+        }
+
+            private async Task OnTextValidateChanged(ChangeEventArgs e)
         {
             TextValidate = e.Value.ToString();
             if (!string.IsNullOrEmpty(TextValidate))

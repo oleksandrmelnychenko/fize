@@ -12,44 +12,72 @@
 <div class="basicBox" style="display: flow-root;margin-top: 2%; height:810px; background:white;">
     <div>
         <div style="margin: 20px;display:flex;">
+
             <Button Type="@ButtonType.Primary" OnClick="()=>CreateAgency()">Add Agency</Button>
-             <h5 style="margin:auto;">
-        @if (AgencyInformation != null)
-        {
-            @foreach (var agency in AgencyInformation)
-            {
-                @if (agency.IsDelete)
+            <h5 style="margin:auto;">
+                @if (AgencyInformation != null)
+                {
+                    @foreach (var agency in AgencyInformation)
+                    {
+                        @if (agency.IsDelete)
                         {
-                <Tag @key="agency">@agency.AgencyName</Tag>
-                            
+                            <Tag @key="agency">@agency.AgencyName</Tag>
+
                         }
-            }
-            <Button Danger Size="small" OnClick="@(e => DeleteListAgency())">Delete</Button>
-        }
-    </h5>
+                    }
+                    <Button Danger Size="small" OnClick="@(e => DeleteListAgency())">Delete</Button>
+                }
+            </h5>
             <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
         </div>
     </div>
-    <Table  OnRowClick="OnRowClick" Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
-        <PropertyColumn Style="@context.BackgroundColor" Property="c=>c.Id" Sortable />
-        <PropertyColumn Style="@context.BackgroundColor" Title="Agency Name" Property="c=>c.AgencyName" Filterable />
-        <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color" />
-        <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName" />
-        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName" />
-        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link" />
-        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite" />
+    <Table Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
+        <PropertyColumn Style="@context.BackgroundColor" Property="c=>c.Id" Sortable><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Id</div></PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Agency Name" Property="c=>c.AgencyName" Sortable>
 
+            @if (editId == context.Id)
+            {
+                <Input Type="text" @oninput="OnAgencyNameValidateChanged" @bind-Value="context.AgencyName" OnBlur="stopEdit" AutoFocus />
+            }
+            else
+            {
+                <Dropdown BoundaryAdjustMode="@TriggerBoundaryAdjustMode.InView">
+                    <Overlay>
+                        <Menu>
+                            @foreach (var agencyName in AgencyChangeNames)
+                            {
+                                <MenuItem>
+                                    <div  @onclick="()=>OnClick(agencyName,context)" target="_blank" rel="noopener noreferrer">
+                                            @agencyName
+                                    </div>
+                                </MenuItem>
+                            }
+                        </Menu>
+                    </Overlay>
+                    <ChildContent>
+                    <div class="editable-cell-value-wrap" style="padding-right:24px" @onblur="()=>OnBlur()" @onclick="()=>startEdit(context.Id,context.AgencyName)">
+                            @context.AgencyName
+                        </div>
+                    </ChildContent>
+                </Dropdown>
+            }
+        </PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Color</div></PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.FirstName</div></PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.LastName</div></PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Link</div></PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.WebSite</div></PropertyColumn>
         <ActionColumn Style="@context.BackgroundColor">
             @if (context.IsDelete)
             {
-                 <Space>
-                    <SpaceItem><Button Style="@context.BackgroundColor"  Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>
+                <Space>
+                    <SpaceItem><Button Style="@context.BackgroundColor" Danger OnClick="()=>Delete(context.Id)">Delete</Button></SpaceItem>
                 </Space>
             }
             else
             {
-                <Space >
-                    <SpaceItem><Button  Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
+                <Space>
+                    <SpaceItem><Button Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
                 </Space>
             }
 
@@ -60,15 +88,26 @@
 @code {
 
     public string Filter { get; set; }
-
+    string editId;
 
     [Parameter] public string PlaceHolder { get; set; }
 
     [Parameter] public string TextValidate { get; set; }
 
+    private string _vievAgencyTable;
+
     [Parameter] public EventCallback<string> TextValidateChanged { get; set; }
+
+    [Parameter] public EventCallback<string> AgencyNameValidateChanged { get; set; }
+
 
     [Parameter] public string TypeWord { get; set; } = "text";
 
-    
+    public List<string> AgencyChangeNames { get; set; } = new List<string>();
+
+
+
+   
+
+
 }

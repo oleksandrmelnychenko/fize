@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using AntDesign
 @using FizeRegistration.Client.Helpers
+@using System.ComponentModel
 @inherits AntDomComponentBase
 @inject NavigationManager NavigationManager
 
@@ -11,82 +12,213 @@
     }
 
 }
-@*<div>
-    <RadioGroup @bind-Value="selectionType">
-        <Radio Value="@("checkbox")">Checkbox</Radio>
-        <Radio Value="@("radio")">radio</Radio>
-    </RadioGroup>
-
-    <h5>
-        selections: 
-        @if (selectedRows != null)
-        {
-            @foreach (var selected in selectedRows)
-            {
-                <Tag @key="selected" Closable OnClose="e=>RemoveSelection(selected.Name)">@selected.Name</Tag>
-            }
-            <Button Danger Size="small" OnClick="@(e => { table.SetSelection(null); })">Clear</Button>
-        }
-    </h5>
-
-    <Table @ref="table" DataSource="@data" @bind-SelectedRows="selectedRows" >
-        <Selection Key="@context.Name" Type="checkbox"   />
-        <PropertyColumn Property="c=>c.Name">
-            <a>@context.Name</a>
-        </PropertyColumn>
-        <PropertyColumn Property="c=>c.Age" />
-        <PropertyColumn Property="c=>c.Address" />
-    </Table>
-</div>
-
-
-@code {
-
-    ITable table;
-
-    class Column
-    {
-        public string Name { get; set; }
-
-        public int Age { get; set; }
-
-        public string Address { get; set; }
+@*<Divider Orientation="left">Div</Divider>
+<Space Direction="@DirectionVHType.Vertical" Style="width: 100%">
+	<SpaceItem>
+		<Space Size=@(("8", "16")) Wrap>
+			<SpaceItem>
+                <DropdownButton OnClick='e => { Console.WriteLine("Click on left button."); }'>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        Dropdown
+                    </ChildContent>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton Icon="user" Type="@((ButtonType.Dashed, ButtonType.Dashed))">
+                    <Overlay>        
+                        @_overlayMenu
+                    </Overlay>    
+                    <ChildContent>
+                        Dropdown
+                    </ChildContent>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton OnClick='e => { Console.WriteLine("Click on left button."); }' Type="@((ButtonType.Primary, ButtonType.Default))">
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        Primary
+                    </ChildContent>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton OnClick='e => { Console.WriteLine("Click on left button."); }' Danger>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        Danger
+                    </ChildContent>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem Class="site-button-ghost-wrapper">
+                <DropdownButton OnClick='e => { Console.WriteLine("Click on left button."); }' Ghost>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        Ghost
+                    </ChildContent>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton OnClick='e => { Console.WriteLine("Click on left button."); }' Disabled>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        Dropdown
+                    </ChildContent>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton ButtonsRender="ButtonsRender" Loading>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        <Tooltip Title="@("tooltip")">
+                            <Unbound>
+                                <span @ref="@context.Current">With ToolTip</span>
+                            </Unbound>
+                        </Tooltip>
+                    </ChildContent>
+                </DropdownButton>    
+			</SpaceItem>
+			<SpaceItem>
+                <Dropdown Trigger="@(new Trigger[] { Trigger.Click })" OnClick='e => { Console.WriteLine("Dropdown button clicked."); }'>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <ChildContent>
+                        <Button>Button <Icon Type="down" /></Button>
+                    </ChildContent>
+                </Dropdown>
+		</SpaceItem>
+		</Space>
+	</SpaceItem>
+</Space>
+<Divider Orientation="left">Unbound</Divider>
+<Space Direction="@DirectionVHType.Vertical" Style="width: 100%">
+	<SpaceItem>
+		<Space Size=@(("8", "16")) Wrap>
+			<SpaceItem>
+                <DropdownButton ButtonsStyle="@("background-color: #91d5ff;")" OnClick='e => { Console.WriteLine("Click on left button."); }'>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <Unbound>
+                        Dropdown
+                    </Unbound>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton Icon="user" ButtonsStyle="@(("background-color:#91d5ff;", "background-color: #fff0f6;"))">
+                    <Overlay>        
+                        @_overlayMenu
+                    </Overlay>    
+                    <Unbound>
+                        Dropdown
+                    </Unbound>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton OnClick='e => { Console.WriteLine("Click on left button."); }' Disabled>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <Unbound>
+                        Dropdown
+                    </Unbound>
+                </DropdownButton>
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton ButtonsRender="ButtonsRender" Loading ButtonsClass="@("demo-dropdown-button1")">
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <Unbound>
+                        <Tooltip Title="@("tooltip")">
+                            <Unbound Context="tooltip">
+                                <span @ref="@tooltip.Current">With ToolTip</span>
+                            </Unbound>
+                        </Tooltip>
+                    </Unbound>
+                </DropdownButton>    
+			</SpaceItem>
+			<SpaceItem>
+                <DropdownButton ButtonsRender="ButtonsRender" ButtonsClass="@(("demo-dropdown-button1", "demo-dropdown-button2"))">
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <Unbound>
+                        <Tooltip Title="@("tooltip")">
+                            <Unbound Context="tooltip">
+                                <span @ref="@tooltip.Current">ButtonsRender</span>
+                            </Unbound>
+                        </Tooltip>
+                    </Unbound>
+                </DropdownButton>    
+			</SpaceItem>
+			<SpaceItem>
+                <Dropdown Trigger="@(new Trigger[] { Trigger.Click })" OnClick='e => { Console.WriteLine("Dropdown button clicked."); }'>
+                    <Overlay>
+                        @_overlayMenu
+                    </Overlay>
+                    <Unbound>
+                        <Button RefBack=@context>Button <Icon Type="down" /></Button>
+                    </Unbound>
+                </Dropdown>
+		</SpaceItem>
+		</Space>
+	</SpaceItem>
+</Space>
+<style>
+    .site-button-ghost-wrapper {
+        background: rgb(190, 200, 200);
+        padding: 26px 16px 16px;
     }
 
-    Column[] data =
-    {
-        new Column()
-        {
-            Name = "John Brown",
-            Age = 32,
-            Address = "New York No. 1 Lake Park",
-        },
-        new Column()
-        {
-            Name = "Jim Green",
-            Age = 42,
-            Address = "London No. 1 Lake Park",
-        },
-        new Column()
-        {
-            Name = "Joe Black",
-            Age = 32,
-            Address = "Sidney No. 1 Lake Park",
-        },
-        new Column()
-        {
-            Name = "Disabled User",
-            Age = 99,
-            Address = "Sidney No. 1 Lake Park",
-        }
-    };
+	.demo-dropdown-button1, .demo-dropdown-button1:hover {
+		background: #f6ffed;
+	}
+	
+	.demo-dropdown-button2, .demo-dropdown-button2:hover {
+		background: #b7eb8f;
+	}
+</style>
+@code
+{
+private RenderFragment _overlayMenu =@<Menu>
+    <MenuItem>
+        <a target="_blank" rel="noopener noreferrer" >
+            1st menu item
+        </a>
+    </MenuItem>
+    <MenuItem>
+        <a target="_blank" rel="noopener noreferrer">
+            2nd menu item
+        </a>
+    </MenuItem>
+    <MenuItem>
+        <a target="_blank" rel="noopener noreferrer">
+            3rd menu item
+        </a>
+    </MenuItem>
+</Menu>; 
 
-    IEnumerable<Column> selectedRows;
-    string selectionType = "checkbox";
+private RenderFragment ButtonsRender(RenderFragment leftButton, RenderFragment rightButton)
+{
+return @<Template>
+    <span>@leftButton</span>
+    @rightButton
+</Template>;
+}
 
-    public void RemoveSelection(string key)
-    {
-        var selected = selectedRows.Where(x => x.Name != key).ToList();
-        table.SetSelection(selected.Select(x => x.Name).ToArray());
-    }
+
 }*@
