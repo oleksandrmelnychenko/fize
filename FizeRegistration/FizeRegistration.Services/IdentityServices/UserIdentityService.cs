@@ -351,6 +351,19 @@ public class UserIdentityService : IUserIdentityService
          }
      });
 
+    public Task ChangeValueTable(ChangeValueTableContract tableContract) =>
+     Task.Run(() =>
+     {
+         using (IDbConnection connection = _connectionFactory.NewSqlConnection())
+         {
+             IAgencyRepository agencyRepository = _agencyRepositoriesFactory.NewAgencyRepository(connection);
+             IIdentityRepository identityRepository = _identityRepositoriesFactory.NewIdentityRepository(connection);
+
+             
+            agencyRepository.ChangeValueTable(tableContract.Id,tableContract.ColumnName,tableContract.ValueInTable);
+             //agencyRepository.UpdateAgencyId(idAgency, user.Id);
+         }
+     });
     public Task NewAgency(AgencyDataContract agencyDataContract) =>
      Task.Run(() =>
      {

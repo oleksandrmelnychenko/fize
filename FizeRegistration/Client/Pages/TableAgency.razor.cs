@@ -31,18 +31,6 @@ namespace FizeRegistration.Client.Pages
             Navigate.NavigateTo($"/app/agency/new");
 
         }
-        void stopEdit()
-        {
-            var editedData = AgencyInformation.FirstOrDefault(x => x.Id == editId);
-            if (AgencyNameValidate != null)
-            {
-                AgencyChangeNames.Add(AgencyNameValidate);
-                AgencyNameValidate = null;
-            }
-
-            //Console.WriteLine(JsonSerializer.Serialize(editedData));
-            editId = null;
-        }
 
         private async Task GetAgency()
         {
@@ -62,7 +50,7 @@ namespace FizeRegistration.Client.Pages
 
         public async Task DeleteListAgency()
         {
-            var listDeleteAgencion =  AgencyInformation.Where(e => e.IsDelete).ToList();
+            var listDeleteAgencion = AgencyInformation.Where(e => e.IsDelete).ToList();
             var formDataLogo = new MultipartFormDataContent();
             var tableFilter = JsonConvert.SerializeObject(listDeleteAgencion);
             var fileLogo = new StringContent(tableFilter);
@@ -71,18 +59,7 @@ namespace FizeRegistration.Client.Pages
             await GetAgency();
         }
 
-        void OnClick(string agencyName,AgencyDataContract agency)
-        {
-             //_vievAgencyTable = agencyName;
-            agency.AgencyName = agencyName;
-        }
-
-        void OnBlur()
-        {
-
-        }
-
-            void OnRowClick(AgencyDataContract row)
+        void OnRowClick(AgencyDataContract row)
         {
 
             if (row.IsDelete)
@@ -98,23 +75,7 @@ namespace FizeRegistration.Client.Pages
             }
         }
 
-
-        void startEdit(string id, string agencyName)
-        {
-            editId = id;
-            if (!AgencyChangeNames.Any())
-            {
-                AgencyChangeNames.Add(agencyName);
-            }
-            
-        }
-
-        private async Task OnAgencyNameValidateChanged(ChangeEventArgs e)
-        {
-            AgencyNameValidate = e.Value.ToString();
-        }
-
-            private async Task OnTextValidateChanged(ChangeEventArgs e)
+        private async Task OnTextValidateChanged(ChangeEventArgs e)
         {
             TextValidate = e.Value.ToString();
             if (!string.IsNullOrEmpty(TextValidate))

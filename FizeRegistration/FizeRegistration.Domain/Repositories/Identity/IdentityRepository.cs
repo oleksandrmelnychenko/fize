@@ -190,7 +190,14 @@ public class AgencyRepository : IAgencyRepository
             "WHERE Id = @Id",
             new { UserIdentityId = userIdentitiesId, Id = agencionId });
     }
-
+    public void ChangeValueTable(string id, string columnName, string value)
+    {
+        _connection.Execute(
+             "UPDATE [Agencion] " +
+            $"Set {columnName} =@Value "+
+             "WHERE Id = @Id",
+              new { Value = value, Id = id });
+    }
     public List<AgencyDataContract> GetAgency() =>
       _connection.Query<AgencyDataContract>("SELECT" +
             " * FROM [dbo].[Agencion]").ToList();
@@ -230,6 +237,8 @@ public class AgencyRepository : IAgencyRepository
                                ? "AND (PATINDEX(N'%' + @SearchWord + N'%', [ApplicableActionLevel1].Name) > 0 OR PATINDEX(N'%' + @SearchWord + N'%', [ApplicableActionLevel2].Name) > 0 OR PATINDEX(N'%' + @SearchWord + N'%', [ApplicableActionLevel3].Name) > 0) "
                                : string.Empty) +
             new { SearchWord = filterParameter.ImputText }).ToList();
+
+    
 }
 
 

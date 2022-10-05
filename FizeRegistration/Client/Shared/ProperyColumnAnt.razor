@@ -1,0 +1,34 @@
+﻿@using AntDesign
+@using AntDesign.TableModels
+@using FizeRegistration.Shared.DataContracts
+
+    @if (editId == Id)
+    {
+        <Input Type="text" @oninput="OnColumnNameChanged" @bind-Value="ColumnName" Style="width:108px;" OnBlur="stopEdit" AutoFocus />
+    }
+    else
+    {
+
+        <Dropdown BoundaryAdjustMode="@TriggerBoundaryAdjustMode.InView">
+            <Overlay>
+                <Menu>
+                    @foreach (var agencyName in AgencyChangeNames)
+                    {
+                        <MenuItem OnClick="()=>OnClick(agencyName)">
+                            @agencyName
+                        </MenuItem>
+                    }
+                </Menu>
+            </Overlay>
+            <ChildContent>
+                <div class="editable-cell-value-wrap" style="padding-right:24px" @onclick="()=>startEdit(Id,ColumnName)">
+                    @ColumnName
+                </div>
+            </ChildContent>
+        </Dropdown>
+    }
+   
+@code 
+{
+    
+}

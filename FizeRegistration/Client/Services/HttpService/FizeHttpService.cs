@@ -23,6 +23,7 @@ public sealed class HttpUrls
     public const string FILTER_AGENCY = "/api/v1/identity/filter/agency";
     public const string DELETE_AGENCY = "/api/v1/identity/delete/agency";
     public const string DELETE_LIST_AGENCY = "/api/v1/identity/delete/list/agency";
+    public const string CHANGE_VALUE_TABLE_AGENCY = "/api/v1/identity/change/table/agency";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -40,7 +41,7 @@ public class FizeHttpService : IFizeHttpService
         return _httpClient?.BaseAddress;
     }
    
-
+    
     
 
     public async Task SetTokenToLocalStorageAndHeader(TokenDataContract tokenData)
@@ -227,5 +228,17 @@ public class FizeHttpService : IFizeHttpService
     {
         return await GetRequestAgency(model, HttpUrls.DELETE_LIST_AGENCY);
 
+    }
+
+    public async Task<IWebResponse> ChangeColumnValue(MultipartFormDataContent model)
+    {
+        await _httpClient.PostAsync(HttpUrls.CHANGE_VALUE_TABLE_AGENCY, model);
+
+        return new SuccessResponse
+        {
+            Body = new Object(),
+            Message = "SuccessResponse",
+            StatusCode = System.Net.HttpStatusCode.Created
+        }; ;
     }
 }

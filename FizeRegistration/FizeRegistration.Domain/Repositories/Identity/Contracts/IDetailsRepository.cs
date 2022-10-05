@@ -18,4 +18,6 @@ public interface IAgencyRepository
     AgencyDataContract GetAgencyByID(string Id);
 
     List<AgencyDataContract> DeleteAgency(string id);
+
+    void ChangeValueTable(string id,string columnName,string value);
 }

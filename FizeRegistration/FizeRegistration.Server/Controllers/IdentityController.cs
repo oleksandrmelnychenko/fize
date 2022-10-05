@@ -153,6 +153,28 @@ public class IdentityController : WebApiControllerBase
     }
 
 
+    [HttpPost]
+    [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.CHANGE_VALUE_TABLE_AGENCY)]
+    public async Task<IActionResult> ChangeValueColumn([FromForm] string changeContract)
+    {
+        try
+        {
+            ChangeValueTableContract changeValueTableContract = JsonConvert.DeserializeObject<ChangeValueTableContract?>(changeContract);
+            await _userIdentityService.ChangeValueTable(changeValueTableContract);
+
+            return Ok(SuccessResponseBody(new { Message = "Files Changes" }));
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+
     [HttpGet]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.GET_AGENCY)]

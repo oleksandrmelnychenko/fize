@@ -2,14 +2,13 @@
 @using AntDesign
 @using FizeRegistration.Shared.DataContracts
 @using System.ComponentModel
-@using AntDesign
 @using AntDesign.TableModels
 @using System.Text.Json;
 @using System;
 @using System.Text.Json.Serialization;
 
 
-<div class="basicBox" style="display: flow-root;margin-top: 2%; height:810px; background:white;">
+<div class="basicBox" style="display: flow-root;margin-top: 2%; height:810px; width: 1193px; background:white;">
     <div>
         <div style="margin: 20px;display:flex;">
 
@@ -31,42 +30,28 @@
             <input style="margin-left: auto;" @bind="TextValidate" @oninput="OnTextValidateChanged" placeholder="Filter @tableFilterContract.ColumnName ..." />
         </div>
     </div>
-    <Table Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
+    <Table RowClassName="@(_=>"editable-row")" Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
         <PropertyColumn Style="@context.BackgroundColor" Property="c=>c.Id" Sortable><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Id</div></PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Agency Name" Property="c=>c.AgencyName" Sortable>
-
-            @if (editId == context.Id)
-            {
-                <Input Type="text" @oninput="OnAgencyNameValidateChanged" @bind-Value="context.AgencyName" OnBlur="stopEdit" AutoFocus />
-            }
-            else
-            {
-                <Dropdown BoundaryAdjustMode="@TriggerBoundaryAdjustMode.InView">
-                    <Overlay>
-                        <Menu>
-                            @foreach (var agencyName in AgencyChangeNames)
-                            {
-                                <MenuItem>
-                                    <div  @onclick="()=>OnClick(agencyName,context)" target="_blank" rel="noopener noreferrer">
-                                            @agencyName
-                                    </div>
-                                </MenuItem>
-                            }
-                        </Menu>
-                    </Overlay>
-                    <ChildContent>
-                    <div class="editable-cell-value-wrap" style="padding-right:24px" @onblur="()=>OnBlur()" @onclick="()=>startEdit(context.Id,context.AgencyName)">
-                            @context.AgencyName
-                        </div>
-                    </ChildContent>
-                </Dropdown>
-            }
+            <ProperyColumnAnt  Id="@context.Id" AgencyInformation="context" @bind-ColumnName="context.AgencyName" TableName="AgencyName"></ProperyColumnAnt>
+          
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Color</div></PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.FirstName</div></PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.LastName</div></PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Link</div></PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite"><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.WebSite</div></PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName">
+            @*<div class="dataMed" @onclick="()=>OnRowClick(context)"></div>*@
+          <ProperyColumnAnt @bind-ColumnName="@context.FirstName" Id="@context.Id" AgencyInformation="context" TableName="FirstName"></ProperyColumnAnt>
+        </PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName">@*<div class="dataMed" @onclick="()=>OnRowClick(context)">@context.LastName</div>*@
+        <ProperyColumnAnt @bind-ColumnName="@context.LastName" Id="@context.Id" AgencyInformation="context" TableName="LastName"></ProperyColumnAnt>    
+        </PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link">@*<div style="width:155px" class="dataMed" @onclick="()=>OnRowClick(context)">@context.Link</div>*@
+        <ProperyColumnAnt @bind-ColumnName="@context.Link" Id="@context.Id" AgencyInformation="context" TableName="Link"></ProperyColumnAnt>    
+            
+        </PropertyColumn>
+        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite">@*<div class="dataMed" @onclick="()=>OnRowClick(context)">@context.WebSite</div>*@
+        
+             <ProperyColumnAnt @bind-ColumnName="@context.WebSite" Id="@context.Id" AgencyInformation="context" TableName="WebSite"></ProperyColumnAnt>    
+        </PropertyColumn>
         <ActionColumn Style="@context.BackgroundColor">
             @if (context.IsDelete)
             {
@@ -89,6 +74,7 @@
 
     public string Filter { get; set; }
     string editId;
+    string editFirstName;
 
     [Parameter] public string PlaceHolder { get; set; }
 
@@ -107,7 +93,7 @@
 
 
 
-   
+
 
 
 }

@@ -40,5 +40,7 @@ public sealed class IdentitySegments
     public const string DELETE_AGENCY = "delete/agency";
 
     public const string DELETE_LIST_AGENCY = "delete/list/agency";
+
+    public const string CHANGE_VALUE_TABLE_AGENCY = "change/table/agency";
 }
 

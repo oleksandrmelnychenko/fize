@@ -31,4 +31,6 @@ public interface IFizeHttpService
 
     Task<IWebResponse> DeleteListAgency(MultipartFormDataContent model);
 
+    Task<IWebResponse> ChangeColumnValue(MultipartFormDataContent model);
+
 }

@@ -32,4 +32,6 @@ public interface IUserIdentityService
 
     Task DeleteListAgency(List<AgencyDataContract> listAgency);
 
+    Task ChangeValueTable(ChangeValueTableContract tableContract);
+
 }
