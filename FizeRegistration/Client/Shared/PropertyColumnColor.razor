@@ -1,0 +1,51 @@
+﻿@if (editId == Id)
+{
+    <div class="input-icons" style="display: flex;">
+        <i class="fa fa-pen"></i>
+        <div>
+            <input style="width: 85px;height: 30px; border: none;" type="color" value="@ColumnName" @onblur="stopEdit" @oninput="OnColorIdChanged">
+        </div>
+    </div>
+     
+
+
+}
+else
+{
+
+    <div class="editable-cell-value-wrap" style="padding-right:24px" @onclick="()=>startEdit(Id,ColumnName)">
+        @ColumnName
+    </div>
+}
+
+@code {
+
+    [Parameter] public string TextOverLabel { get; set; }
+
+    [Parameter] public string ColorId { get; set; }
+
+    [Parameter] public EventCallback<string> ColorIdChanged { get; set; }
+
+    [Parameter] public string ColumnName { get; set; }
+    private string editId;
+    [Parameter] public string Id { get; set; }
+
+    
+
+    private Task OnColorIdChanged(ChangeEventArgs e)
+    {
+        ColorId = e.Value.ToString();
+        return ColorIdChanged.InvokeAsync(ColorId);
+    }
+    void startEdit(string id, string agencyName)
+    {
+        editId = id;
+
+    }
+    void stopEdit()
+    {
+        editId = null;
+    }
+
+    
+      }
