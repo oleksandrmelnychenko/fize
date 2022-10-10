@@ -14,13 +14,9 @@ namespace FizeRegistration.Client.Pages
     public partial class DetaliRegistration
     {
         public string Email { get; set; }
-
         AgencyInformation AgencyInformation = new AgencyInformation();
-        private string _linkImage { get; set; }
-        [Inject] NavigationManager navigate { get; set; }
+        [Inject] NavigationManager NavigateManager { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
-        [Inject] ContainEmail SendEmail { get; set; }
-
         [Inject] AuthenticationStateProvider AuthStateProvider { get; set; }
 
         private bool isLoading;
@@ -45,9 +41,10 @@ namespace FizeRegistration.Client.Pages
 
             Email = a.Value.ToString();
         }
+
         public async Task CheckAgency()
         {
-                navigate.NavigateTo("/app/agency/all");
+                NavigateManager.NavigateTo("/app/agency/all");
         }
 
         public async Task ContinueNext()
@@ -87,10 +84,12 @@ namespace FizeRegistration.Client.Pages
                 SuccessfulAgency = true;
             }
         }
+
         private async void OnLinkLogoFilesChange(InputFileChangeEventArgs e)
         {
             AgencyInformation.Logo = e.File;
         }
+
         private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
         {
             loadedFiles.Clear();

@@ -8,7 +8,6 @@
 <AuthorizeView>
     <NotAuthorized>
         <div class="basicBox" style="height:650px; margin-top:7%;margin-bottom: 7%;">
-
             @if (LoadingProcess)
             {
                 <LoadingBar></LoadingBar>
@@ -20,7 +19,6 @@
                 <div class="DivLocation">
                     <FizeImage></FizeImage>
                 </div>
-
                 @if (SendMail)
                 {
                     <BlockSuccesfulMail Message="Please check your Email to proceed with signing up!" IsButton=@(false)>

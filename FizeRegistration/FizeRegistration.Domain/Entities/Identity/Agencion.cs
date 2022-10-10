@@ -10,7 +10,6 @@ public class Agencion
     {
 
     }
-
     
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

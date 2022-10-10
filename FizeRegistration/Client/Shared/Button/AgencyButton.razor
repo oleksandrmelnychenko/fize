@@ -1,9 +1,5 @@
-﻿    @*<label class="TextAgency" for="agencyname">FIlter</label>*@ @*Agency Name  Enter your agency name*@
-   
-<input @bind="@TextValidate" @oninput="OnTextValidateChanged"  />
+﻿<input @bind="@TextValidate" @oninput="OnTextValidateChanged"  />
 @code{
-    //[Parameter] public string TextOverLabel { get; set; }
-
     [Parameter] public string PlaceHolder { get; set; }
 
     [Parameter] public string TextValidate { get; set; }

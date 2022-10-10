@@ -3,13 +3,11 @@
 @inject NavigationManager NavigationManager
 @inject ILocalStorageService LocalStorage
 
-
 @code {
     protected override async Task OnInitializedAsync()
     {
         await LocalStorage.RemoveItemAsync("token");
         NavigationManager.NavigateTo("/auth/signin", true);
-
         await base.OnInitializedAsync();
     }
 }

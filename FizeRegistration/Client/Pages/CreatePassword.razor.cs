@@ -37,11 +37,7 @@ public partial class CreatePassword : ComponentBase
     private bool LoadingProcess;
     private bool BadRequestEmail;
 
-    // "#?!@$%^&*-" spec symbols This regex will enforce these rules:
-    //  • At least one upper case english letter • At least one lower case english letter
-    //   • At least one digit • At least one special character • Minimum 8 in length
-    private readonly Regex _regexPattern = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
-
+  
     public async Task SendConfirmation()
     {
         var sendConfirmationResponse = await HttpClient.SendConfirmation(password.NewPassword);
@@ -54,12 +50,6 @@ public partial class CreatePassword : ComponentBase
 
             await HttpClient.SetTokenToLocalStorageAndHeader(new TokenDataContract());
             SuccessfulPassword = true;
-
-            // var userAccount = sendConfirmationResponse.Body as UserAccount;
-
-            //if (userAccount == null) ArgumentNullException.ThrowIfNull(userAccount, nameof(userAccount));
-
-            // need a change of controller to get token 
         }
         else
         {
@@ -70,12 +60,10 @@ public partial class CreatePassword : ComponentBase
 
             BadRequestEmail = true;
             SendMessageBadMail = sendConfirmationResponse.Message;
-            //throw new Exception("An errorneous response from server");
-            // need to show an alert etc
+           
         }
         LoadingProcess = false;
     }
-
 
     protected override async Task OnInitializedAsync()
     {

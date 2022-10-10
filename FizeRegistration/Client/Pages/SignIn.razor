@@ -10,7 +10,6 @@
 <AuthorizeView>
     <NotAuthorized>
         <div class="basicBox" style="height:650px; margin-top:7%;margin-bottom: 7%;">
-
             @if (LoadingProcess)
             {
                 <LoadingBar></LoadingBar>
@@ -22,14 +21,6 @@
                 <div class="DivLocation">
                     <FizeImage></FizeImage>
                 </div>
-
-                @*@if (SendMail)
-                {
-                <BlockSuccesfulMail></BlockSuccesfulMail>
-                }
-                else
-                {*@
-
                 <div class="DivLocation">
                     <div>
                         <div class="RightHeadWordsBox">Welcome there!</div>
@@ -46,7 +37,6 @@
                             @if (BadRequestEmail)
                             {
                                 <div class="RightBoxText"  style="color:red; height: 0px;font-size: 10pt;">@SendMessageBadMail</div>
-
                             }
                             <button style="margin-top: 35px;" class="buttonSendEmail" @onclick="Login">Sign In</button>
                             <div style="display:flex; margin-top: 30px; margin-right: 170px;">
@@ -57,7 +47,6 @@
                         </div>
                     </div>
                 </div>
-                @*}*@
             </div>
         </div>
     </NotAuthorized>

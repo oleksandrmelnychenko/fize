@@ -25,12 +25,12 @@
                         <div>
                             <label class="TextAgency" for="website">WebSite </label>
                             <div class="input-icons">
-                               <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.WebSite" NameIcons="fa fa-globe icon" PlaceHolder="Enter your company website"></ComponentDetailsIcons>
+                                <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.WebSite" NameIcons="fa fa-globe icon" PlaceHolder="Enter your company website"></ComponentDetailsIcons>
                                 <ValidationMessage For="@(() => AgencyInformation.WebSite)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
                     </div>
-                    <div style="display:flex "> 
+                    <div style="display:flex ">
                         <div style="margin-left: 115px; margin-top: 25px;margin-right: 35px;">
                             <label class="TextAgency">Brand Color</label>
                             <LableColor @bind-ColorId="AgencyInformation.Color"></LableColor>
@@ -73,18 +73,17 @@
                     <div></div>
                     <div style="display:flex">
                         <div style="display: grid;margin-left: 115px;margin-right: 35px; margin-top:15px">
-                            <LabelDetails @bind-TextValidate="AgencyInformation.FirstName" 
-                                TextOverLabel="First Name" 
-                                PlaceHolder="Enter your first name">
+                            <LabelDetails @bind-TextValidate="AgencyInformation.FirstName"
+                                      TextOverLabel="First Name"
+                                      PlaceHolder="Enter your first name">
                             </LabelDetails>
                             <ValidationMessage For="@(() => AgencyInformation.FirstName)" style="height: 0px;font-size: 10pt;" />
                         </div>
                         <div style="display: grid;margin-top:15px">
                             <LabelDetails @bind-TextValidate="AgencyInformation.LastName"
-                                TextOverLabel="Last Name" 
-                                PlaceHolder="Enter your last name" >
+                                      TextOverLabel="Last Name"
+                                      PlaceHolder="Enter your last name">
                             </LabelDetails>
-
                             <ValidationMessage For="@(() => AgencyInformation.LastName)" style="height: 0px;font-size: 10pt;" />
                         </div>
                     </div>
@@ -92,20 +91,20 @@
                         <div style="display: grid;margin-left: 115px; margin-top: 25px;margin-right: 35px; ">
                             <label class="TextAgency" for="link">Link </label>
                             <div class="input-icons">
-                                 <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.Link" 
-                               NameIcons="fa fa-link icon" 
-                               PlaceHolder="Enter link here">
-                           </ComponentDetailsIcons>
+                                <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.Link"
+                                                   NameIcons="fa fa-link icon"
+                                                   PlaceHolder="Enter link here">
+                                </ComponentDetailsIcons>
                                 <ValidationMessage For="@(() => AgencyInformation.Link)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
                         <div style="display: grid;margin-top: 25px;">
                             <label class="TextAgency" for="phonenumbers">PhoneNumbers </label>
                             <div class="input-icons">
-                               <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.PhoneNumbers" 
-                               NameIcons="fa  fa-phone icon" 
-                               PlaceHolder="Enter a valid phone number">
-                           </ComponentDetailsIcons>
+                                <ComponentDetailsIcons @bind-TextValidate="AgencyInformation.PhoneNumbers"
+                                                   NameIcons="fa  fa-phone icon"
+                                                   PlaceHolder="Enter a valid phone number">
+                                </ComponentDetailsIcons>
                                 <ValidationMessage For="@(() => AgencyInformation.PhoneNumbers)" style="height: 0px;font-size: 10pt;" />
                             </div>
                         </div>
@@ -131,6 +130,3 @@
         <SuccessefulBlock></SuccessefulBlock>
     }
 </div>
-@code {
-
-}

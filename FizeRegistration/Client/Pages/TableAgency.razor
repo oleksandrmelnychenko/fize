@@ -7,7 +7,6 @@
 @using System;
 @using System.Text.Json.Serialization;
 
-
 <div class="basicBox" style="display: flow-root;margin-top: 2%; height:810px;width: 1295px; background:white;">
     <div>
         <div style="margin: 20px;display:flex;">
@@ -33,43 +32,43 @@
     <Table RowClassName="@(_=>"editable-row")" Bordered="true" DefaultExpandAllRows="true" @ref="table" TItem="AgencyDataContract" DataSource="@AgencyInformation">
         <PropertyColumn Style="@context.BackgroundColor" Property="c=>c.Id" Sortable><div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Id</div></PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Agency Name" Property="c=>c.AgencyName" Sortable>
-            <ProperyColumnAnt  Id="@context.Id" AgencyInformation="context" @bind-ColumnName="context.AgencyName" TableName="AgencyName"></ProperyColumnAnt>
-          
+            <ProperyColumnAnt Id="@context.Id" AgencyInformation="context" @bind-ColumnName="context.AgencyName" TableName="AgencyName">
+            </ProperyColumnAnt>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color">
-            <PropertyColumnColor @bind-ColorId="context.Color" Id="@context.Id" ColumnName="@context.Color"></PropertyColumnColor>
-           @* <div class="dataMed" @onclick="()=>OnRowClick(context)">@context.Color</div>*@</PropertyColumn>
+            <PropertyColumnColor @bind-ColorId="context.Color" Id="@context.Id" ColumnName="@context.Color">
+            </PropertyColumnColor>
+        </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName">
-            @*<div class="dataMed" @onclick="()=>OnRowClick(context)"></div>*@
-          <ProperyColumnAnt @bind-ColumnName="@context.FirstName" Id="@context.Id" AgencyInformation="context" TableName="FirstName"></ProperyColumnAnt>
+            <ProperyColumnAnt @bind-ColumnName="@context.FirstName" Id="@context.Id" AgencyInformation="context" TableName="FirstName">
+            </ProperyColumnAnt>
         </PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName">@*<div class="dataMed" @onclick="()=>OnRowClick(context)">@context.LastName</div>*@
-        <ProperyColumnAnt @bind-ColumnName="@context.LastName" Id="@context.Id" AgencyInformation="context" TableName="LastName"></ProperyColumnAnt>    
+        <PropertyColumn Style="@context.BackgroundColor" Title="Last Name" Property="c=>c.LastName">
+            <ProperyColumnAnt @bind-ColumnName="@context.LastName" Id="@context.Id" AgencyInformation="context" TableName="LastName">
+            </ProperyColumnAnt>
         </PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link">@*<div style="width:155px" class="dataMed" @onclick="()=>OnRowClick(context)">@context.Link</div>*@
-        <ProperyColumnAnt @bind-ColumnName="@context.Link" Id="@context.Id" AgencyInformation="context" TableName="Link"></ProperyColumnAnt>    
-            
+        <PropertyColumn Style="@context.BackgroundColor" Title="Link" Property="c=>c.Link">
+            <ProperyColumnAnt @bind-ColumnName="@context.Link" Id="@context.Id" AgencyInformation="context" TableName="Link">
+            </ProperyColumnAnt>
         </PropertyColumn>
-        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite">@*<div class="dataMed" @onclick="()=>OnRowClick(context)">@context.WebSite</div>*@
-        
-             <ProperyColumnAnt @bind-ColumnName="@context.WebSite" Id="@context.Id" AgencyInformation="context" TableName="WebSite"></ProperyColumnAnt>    
+        <PropertyColumn Style="@context.BackgroundColor" Title="Web Site" Property="c=>c.WebSite">
+            <ProperyColumnAnt @bind-ColumnName="@context.WebSite" Id="@context.Id" AgencyInformation="context" TableName="WebSite">
+            </ProperyColumnAnt>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Image" Property="c=>c.LinkPictureUser">
-            @if (context.LinkPictureUser !=null)
+            @if (context.LinkPictureUser != null)
             {
                 <div class="dataMed">
-                            <InputFile  OnChange="OnLinkPictureFilesChange"
-                               style="align-self: center;margin-left: 10px; width:70px;" multiple accept=".jpg,.jpeg,.png" >
-                       </InputFile>
-                           <img src="@context.LinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
-               </div>
-                           
+                    @*  <InputFile  OnChange="OnLinkPictureFilesChange"
+                style="align-self: center;margin-left: 10px; width:70px;" multiple accept=".jpg,.jpeg,.png" >
+                </InputFile>*@
+                    <img src="@context.LinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
+                </div>
             }
             else
             {
-                            <div  style="    text-align: center; width: 88px; border: 2px solid #00000012; " >No foto</div>
+                <div style="    text-align: center; width: 88px; border: 2px solid #00000012; ">No foto</div>
             }
-
         </PropertyColumn>
         <ActionColumn Style="@context.BackgroundColor">
             @if (context.IsDelete)
@@ -88,80 +87,3 @@
         </ActionColumn>
     </Table>
 </div>
-
-@code {
-
-    public string Filter { get; set; }
-    string editId;
-    string editFirstName;
-
-    [Parameter] public string PlaceHolder { get; set; }
-
-    [Parameter] public string TextValidate { get; set; }
-
-    private string _vievAgencyTable;
-
-    [Parameter] public EventCallback<string> TextValidateChanged { get; set; }
-
-    [Parameter] public EventCallback<string> AgencyNameValidateChanged { get; set; }
-
-
-    [Parameter] public string TypeWord { get; set; } = "text";
-
-    public List<string> AgencyChangeNames { get; set; } = new List<string>();
-
-
-     private bool isLoading;
-        private List<IBrowserFile> loadedFiles = new();
-        private int maxAllowedFiles = 3;
-
-        private string extensionname = "default";
-        private string base64data = "";
-
-         private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
-        {
-            loadedFiles.Clear();
-            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
-            {
-                try
-                {
-                    loadedFiles.Add(file);
-
-
-                    extensionname = Path.GetExtension(file.Name);
-
-                    var imagefiletypes = new List<string>() {
-                    ".png",".jpg",".jpeg"
-                };
-                    if (imagefiletypes.Contains(extensionname))
-                    {
-
-
-                        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
-                        var buf = new byte[resizedFile.Size];
-                        using (var stream = resizedFile.OpenReadStream())
-                        {
-                            await stream.ReadAsync(buf);
-                        }
-                        base64data = "data:image/png;base64," + Convert.ToBase64String(buf);
-
-
-                        //сюда треба відправку на файз
-                        //_agencyInformation.Picture = e.File;
-                        isLoading = true;
-
-                    }
-                    else
-                    {
-
-                    };
-                }
-                catch (Exception ex)
-                {
-                }
-            }
-
-
-        }
-
-}

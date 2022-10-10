@@ -16,19 +16,18 @@ namespace FizeRegistration.Client.Pages
         [Inject] AuthenticationStateProvider AuthState { get; set; }
         private string SendMessageBadMail;
 
-        //private bool SuccessfulPassword;
         private bool LoadingProcess;
         private bool BadRequestEmail;
         private string Email { get; set; }
 
         private string Password { get; set; }
 
-
         private void SignUpAsync()
         {
 
             NavigationManager.NavigateTo("/auth/signup");
         }
+
         public async Task Login()
         {
             try
@@ -84,14 +83,11 @@ namespace FizeRegistration.Client.Pages
             {
 
                 Console.WriteLine(err);
-
                 // SendMessageBadMail = signInResponse?.Message ?? "An error occured. Please, try another time";
                 LoadingProcess = false;
                 BadRequestEmail = true;
-
                 // need to show an alert etc
             }
         }
-
     }
 }

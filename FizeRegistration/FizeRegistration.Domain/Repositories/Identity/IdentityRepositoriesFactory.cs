@@ -7,5 +7,4 @@ public class IdentityRepositoriesFactory : IIdentityRepositoriesFactory
 {
     public IIdentityRepository NewIdentityRepository(IDbConnection connection) =>
         new IdentityRepository(connection);
-
 }

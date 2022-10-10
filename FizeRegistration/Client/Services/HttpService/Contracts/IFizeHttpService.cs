@@ -25,7 +25,7 @@ public interface IFizeHttpService
 
     Task<IWebResponse> GetAgency();
 
-    Task<IWebResponse> GetAgencyById(MultipartFormDataContent Id);
+    Task<IWebResponse> GetAgencyById(MultipartFormDataContent id);
 
     Task<IWebResponse> DeleteAgency(MultipartFormDataContent model);
 

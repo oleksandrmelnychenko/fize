@@ -3,6 +3,7 @@ using AntDesign.TableModels;
 using FizeRegistration.Client.Services.HttpService.Contracts;
 using FizeRegistration.Shared.DataContracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
 using System.Threading;
@@ -11,13 +12,52 @@ namespace FizeRegistration.Client.Pages
 {
     public partial class TableAgency
     {
-        [Parameter] public string AgencyNameValidate { get; set; }
         [Inject] private IFizeHttpService HttpClient { get; set; }
         [Inject] private NavigationManager Navigate { get; set; }
         public List<AgencyDataContract> AgencyInformation { get; set; } = new List<AgencyDataContract>();
-
         private TableFilterContract tableFilterContract = new TableFilterContract();
-        ITable table;
+        [Parameter] public string TextValidate { get; set; }
+        public List<string> AgencyChangeNames { get; set; } = new List<string>();
+        private bool isLoading;
+        private List<IBrowserFile> loadedFiles = new();
+        private int maxAllowedFiles = 3;
+        private string extensionname = "default";
+        private string base64data = "";
+        private ITable table;
+        private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
+        {
+            loadedFiles.Clear();
+            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+            {
+                try
+                {
+                    loadedFiles.Add(file);
+
+                    extensionname = Path.GetExtension(file.Name);
+
+                    var imagefiletypes = new List<string>() {
+                    ".png",".jpg",".jpeg"
+                };
+                    if (imagefiletypes.Contains(extensionname))
+                    {
+                        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
+                        var buf = new byte[resizedFile.Size];
+                        using (var stream = resizedFile.OpenReadStream())
+                        {
+                            await stream.ReadAsync(buf);
+                        }
+                        base64data = "data:image/png;base64," + Convert.ToBase64String(buf);
+                        //сюда треба відправку на файз
+                        //_agencyInformation.Picture = e.File;
+                        isLoading = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             await GetAgency();
@@ -29,7 +69,6 @@ namespace FizeRegistration.Client.Pages
         private void CreateAgency()
         {
             Navigate.NavigateTo($"/app/agency/new");
-
         }
 
         private async Task GetAgency()
@@ -45,7 +84,6 @@ namespace FizeRegistration.Client.Pages
             formDataLogo.Add(fileLogo, "agencyId");
             await HttpClient.DeleteAgency(formDataLogo);
             await GetAgency();
-
         }
 
         public async Task DeleteListAgency()
@@ -61,7 +99,6 @@ namespace FizeRegistration.Client.Pages
 
         void OnRowClick(AgencyDataContract row)
         {
-
             if (row.IsDelete)
             {
                 row.IsDelete = false;
@@ -71,7 +108,6 @@ namespace FizeRegistration.Client.Pages
             {
                 row.IsDelete = true;
                 row.BackgroundColor = "background:#e6f7ff";
-
             }
         }
 

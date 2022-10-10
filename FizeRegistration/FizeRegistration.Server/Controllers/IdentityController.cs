@@ -128,13 +128,11 @@ public class IdentityController : WebApiControllerBase
         }
     }
 
-
     [HttpPost]
     [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.DELETE_LIST_AGENCY)]
     public async Task<IActionResult> DeleteListAgency([FromForm] string deleteList)
     {
-       
         try
         {
             List<AgencyDataContract?> agencyListDataContract = JsonConvert.DeserializeObject<List<AgencyDataContract?>>(deleteList);
@@ -151,7 +149,6 @@ public class IdentityController : WebApiControllerBase
             return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
         }
     }
-
 
     [HttpPost]
     [AllowAnonymous]
@@ -180,7 +177,6 @@ public class IdentityController : WebApiControllerBase
     [AssignActionRoute(IdentitySegments.GET_AGENCY)]
     public async Task<IActionResult> GetAgency()
     {
-       
         try
         {
             var result = await _userIdentityService.GetAgency();
@@ -201,7 +197,6 @@ public class IdentityController : WebApiControllerBase
     [AssignActionRoute(IdentitySegments.GET_AGENCY_BY_ID)]
     public async Task<IActionResult> GetAgencyById([FromForm] string agencyId)
     {
-        
         try
         {
             var result = await _userIdentityService.GetAgencyById(agencyId);
@@ -254,7 +249,7 @@ public class IdentityController : WebApiControllerBase
 
             }
 
-            return Ok(SuccessResponseBody(new { Message = "Files Send" }));
+            return Ok(SuccessResponseBody(new { Message = "Files Change" }));
         }
         catch (InvalidIdentityException exc)
         {
@@ -292,7 +287,7 @@ public class IdentityController : WebApiControllerBase
                     await fileLogo.CopyToAsync(stream);
                 }
             }
-            return Ok(SuccessResponseBody(new { Message = "Files Send" }));
+            return Ok(SuccessResponseBody(new { Message = "Files Create" }));
         }
         catch (InvalidIdentityException exc)
         {

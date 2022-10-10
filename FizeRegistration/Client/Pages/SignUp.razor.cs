@@ -7,24 +7,22 @@ namespace FizeRegistration.Client.Pages
 {
     public partial class SignUp : ComponentBase
     {
-        [Inject] NavigationManager navigate { get; set; }
+        [Inject] NavigationManager NavigateMan { get; set; }
         [Inject] IFizeHttpService HttpClient { get; set; }
 
         private string Email = String.Empty;
 
         private bool SendMail;
 
-        private bool LogIn;
-
         private bool BadRequestEmail;
         private bool LoadingProcess;
 
         private string SendMessageBadMail;
         private const string PLEASE_ENTER_CORRECT_MAIL = "please enter correct email";
+
         private void SignInAsync()
         {
-            LogIn = true;
-            navigate.NavigateTo("/auth/signin");
+            NavigateMan.NavigateTo("/auth/signin");
         }
 
         private async Task SendEmailPost()
@@ -37,12 +35,10 @@ namespace FizeRegistration.Client.Pages
                 LoadingProcess = false;
                 return;
             }
-
             var sendEmailResponse = await HttpClient.SendEmailForSignUp(new UserEmailDataContract
             {
                 Email = Email
             });
-
             int statusCode = (int)sendEmailResponse.StatusCode;
 
             if (statusCode >= 200 && statusCode < 300)
@@ -52,9 +48,7 @@ namespace FizeRegistration.Client.Pages
             else
             {
                 var err = System.Text.Json.JsonSerializer.Serialize(sendEmailResponse);
-
                 Console.WriteLine(err);
-
                 BadRequestEmail = true;
                 SendMessageBadMail = sendEmailResponse?.Message ?? "An error occured. Please, try another time";
 
