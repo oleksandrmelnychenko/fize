@@ -96,7 +96,10 @@ namespace FizeRegistration.Client.Pages
             await HttpClient.DeleteListAgency(formDataLogo);
             await GetAgency();
         }
-
+        void OnFileClick(AgencyDataContract row)
+        {
+            row.Base64Data = base64data;
+        }
         void OnRowClick(AgencyDataContract row)
         {
             if (row.IsDelete)

@@ -20,7 +20,6 @@
                         @if (agency.IsDelete)
                         {
                             <Tag @key="agency">@agency.AgencyName</Tag>
-
                         }
                     }
                     <Button Danger Size="small" OnClick="@(e => DeleteListAgency())">Delete</Button>
@@ -36,7 +35,7 @@
             </ProperyColumnAnt>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color">
-            <PropertyColumnColor @bind-ColorId="context.Color" Id="@context.Id" ColumnName="@context.Color">
+            <PropertyColumnColor @bind-ColorId="context.Color" Id="@context.Id" ColumnName="@context.Color" TableName="Color">
             </PropertyColumnColor>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName">
@@ -58,12 +57,22 @@
         <PropertyColumn Style="@context.BackgroundColor" Title="Image" Property="c=>c.LinkPictureUser">
             @if (context.LinkPictureUser != null)
             {
-                <div class="dataMed">
-                    @*  <InputFile  OnChange="OnLinkPictureFilesChange"
-                style="align-self: center;margin-left: 10px; width:70px;" multiple accept=".jpg,.jpeg,.png" >
-                </InputFile>*@
-                    <img src="@context.LinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
+                <div class="dataMed" >
+                    <InputFile class="customer-file-upload" OnChange="OnLinkPictureFilesChange" 
+                           style="align-self: center;" multiple accept=".jpg,.jpeg,.png"><div @onclick="()=>OnFileClick(context)"></div>
+                    </InputFile>
                 </div>
+
+                @if (!string.IsNullOrEmpty(context.Base64Data))
+                {
+                    <img src="@context.Base64Data" style="height: 50px; width: 50px; border-radius: 50%; " />
+
+                }
+                else
+                {
+                    <img src="@context.LinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
+
+                }
             }
             else
             {
@@ -83,7 +92,6 @@
                     <SpaceItem><Button Type="@ButtonType.Primary" OnClick="()=>Update(int.Parse(context.Id))">Update</Button></SpaceItem>
                 </Space>
             }
-
         </ActionColumn>
     </Table>
 </div>

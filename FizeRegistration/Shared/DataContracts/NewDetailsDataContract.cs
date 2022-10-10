@@ -38,6 +38,8 @@ public sealed class AgencyDataContract
     public bool IsDelete { get; set; }
 
     public string BackgroundColor { get; set; }
+
+    public string Base64Data { get; set; }
 }
 public sealed class NewFileContract
 {
