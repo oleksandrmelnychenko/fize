@@ -18,45 +18,60 @@ namespace FizeRegistration.Client.Pages
         private TableFilterContract tableFilterContract = new TableFilterContract();
         [Parameter] public string TextValidate { get; set; }
         public List<string> AgencyChangeNames { get; set; } = new List<string>();
-        private bool isLoading;
-        private List<IBrowserFile> loadedFiles = new();
-        private int maxAllowedFiles = 3;
-        private string extensionname = "default";
-        private string base64data = "";
+        //private bool isLoading;
+        //private List<IBrowserFile> loadedFiles = new();
+        //private int maxAllowedFiles = 3;
+        //private string extensionname = "default";
+        //private string base64data = "";
         private ITable table;
-        private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
-        {
-            loadedFiles.Clear();
-            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
-            {
-                try
-                {
-                    loadedFiles.Add(file);
+        //private async Task OnLinkPictureFilesChange(InputFileChangeEventArgs e)
+        //{
+        //    loadedFiles.Clear();
+        //    foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        //    {
+        //        try
+        //        {
+        //            loadedFiles.Add(file);
+        //            extensionname = Path.GetExtension(file.Name);
 
-                    extensionname = Path.GetExtension(file.Name);
+        //            var imagefiletypes = new List<string>() {
+        //            ".png",".jpg",".jpeg"
+        //        };
+        //            if (imagefiletypes.Contains(extensionname))
+        //            {
+        //                var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
+        //                var buf = new byte[resizedFile.Size];
+        //                using (var stream = resizedFile.OpenReadStream())
+        //                {
+        //                    await stream.ReadAsync(buf);
+        //                }
+        //                base64data = "data:image/png;base64," + Convert.ToBase64String(buf);
 
-                    var imagefiletypes = new List<string>() {
-                    ".png",".jpg",".jpeg"
-                };
-                    if (imagefiletypes.Contains(extensionname))
-                    {
-                        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 640, 480);
-                        var buf = new byte[resizedFile.Size];
-                        using (var stream = resizedFile.OpenReadStream())
-                        {
-                            await stream.ReadAsync(buf);
-                        }
-                        base64data = "data:image/png;base64," + Convert.ToBase64String(buf);
-                        //сюда треба відправку на файз
-                        //_agencyInformation.Picture = e.File;
-                        isLoading = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                }
-            }
-        }
+        //                ChangeValueTableContract change = new ChangeValueTableContract();
+                       
+        //                change.ColumnName = "LinkPictureUser";
+        //                //change.ValueInTable = ColumnName;
+        //                //change.Id = AgencyInformation.Id;
+        //                var formDataLogo = new MultipartFormDataContent();
+
+        //                var tableFilter = JsonConvert.SerializeObject(change);
+
+        //                var stringContentAgency = new StringContent(tableFilter);
+        //                formDataLogo.Add(stringContentAgency, "changeContract");
+        //                var responce = HttpClient.ChangeColumnValue(formDataLogo);
+
+
+        //                //HttpClient.ChangeFile();
+        //                //сюда треба відправку на файз
+        //                //_agencyInformation.Picture = e.File;
+        //                isLoading = true;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //        }
+        //    }
+        //}
 
         protected override async Task OnInitializedAsync()
         {
@@ -96,10 +111,7 @@ namespace FizeRegistration.Client.Pages
             await HttpClient.DeleteListAgency(formDataLogo);
             await GetAgency();
         }
-        void OnFileClick(AgencyDataContract row)
-        {
-            row.Base64Data = base64data;
-        }
+        
         void OnRowClick(AgencyDataContract row)
         {
             if (row.IsDelete)

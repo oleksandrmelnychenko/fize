@@ -1,0 +1,25 @@
+﻿@using FizeRegistration.Client.Services.HttpService.Contracts
+@using FizeRegistration.Shared.DataContracts
+@using Newtonsoft.Json
+@if (LinkPictureUser != null)
+{
+    <div class="dataMed">
+        <InputFile class="customer-file-upload" OnChange="OnLinkPictureFilesChange"
+               style="align-self: center;" multiple accept=".jpg,.jpeg,.png">
+            @* <div @onclick="()=>OnFileClick(context)"></div>*@
+        </InputFile>
+    </div>
+    @if (!string.IsNullOrEmpty(_newLinkPictureUser))
+    {
+        <img src="@_newLinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
+    }
+    else
+    {
+        <img src="@LinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
+    }
+}
+else
+{
+    <div style="text-align: center; width: 88px; border: 2px solid #00000012; ">No foto</div>
+}
+

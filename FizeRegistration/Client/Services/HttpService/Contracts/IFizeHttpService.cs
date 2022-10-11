@@ -33,4 +33,5 @@ public interface IFizeHttpService
 
     Task<IWebResponse> ChangeColumnValue(MultipartFormDataContent model);
 
+    Task<IWebResponse> ChangeFile(MultipartFormDataContent model);
 }

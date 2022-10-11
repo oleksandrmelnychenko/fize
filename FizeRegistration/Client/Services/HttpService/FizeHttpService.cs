@@ -24,6 +24,7 @@ public sealed class HttpUrls
     public const string DELETE_AGENCY = "/api/v1/identity/delete/agency";
     public const string DELETE_LIST_AGENCY = "/api/v1/identity/delete/list/agency";
     public const string CHANGE_VALUE_TABLE_AGENCY = "/api/v1/identity/change/table/agency";
+    public const string CHANGE_FILE = "/api/v1/identity/change/file";
 }
 
 public class FizeHttpService : IFizeHttpService
@@ -197,5 +198,18 @@ public class FizeHttpService : IFizeHttpService
             Message = "SuccessResponse",
             StatusCode = System.Net.HttpStatusCode.Created
         }; ;
+    }
+
+    public async Task<IWebResponse> ChangeFile(MultipartFormDataContent model)
+    {
+        return await GetRequestAgency(model, HttpUrls.CHANGE_FILE);
+       //var responce = await _httpClient.PostAsync(HttpUrls.CHANGE_FILE, model);
+       // var stringresponce = await responce.Content.ReadAsStringAsync();
+       // return new SuccessResponse
+       // {
+       //     Body = new Object(),
+       //     Message = stringresponce,
+       //     StatusCode = System.Net.HttpStatusCode.Created
+       // }; ;
     }
 }

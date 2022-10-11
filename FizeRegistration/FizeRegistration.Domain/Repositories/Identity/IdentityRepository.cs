@@ -201,7 +201,7 @@ public class AgencyRepository : IAgencyRepository
     public List<AgencyDataContract> GetAgency() =>
       _connection.Query<AgencyDataContract>("SELECT" +
             " * FROM [dbo].[Agencion]").ToList();
-
+     
     public AgencyDataContract GetAgencyByID(string id)
     {
         return _connection.Query<AgencyDataContract>(
@@ -215,7 +215,7 @@ public class AgencyRepository : IAgencyRepository
         _connection.Execute("DELETE FROM Agencion " +
             "WHERE Id = @Id ",
             new {Id = id});
-        return GetAgency();
+        return GetAgency(); 
     }
     public List<AgencyDataContract> FilterAgency(TableFilterContract filterParameter)
         => _connection.Query<AgencyDataContract>(

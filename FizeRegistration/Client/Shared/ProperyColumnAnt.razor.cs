@@ -12,12 +12,9 @@ namespace FizeRegistration.Client.Shared
         [Parameter] public string ColumnName { get; set; }
         [Parameter] public string TableName { get; set; }
 
-
         [Parameter] public EventCallback<string> ColumnNameChanged { get; set; }
 
         [Parameter] public string Id { get; set; }
-
-
         [Parameter] public AgencyDataContract AgencyInformation { get; set; } = new AgencyDataContract();
 
         private string editId;

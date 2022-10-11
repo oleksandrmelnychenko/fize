@@ -10,7 +10,6 @@
 <div class="basicBox" style="display: flow-root;margin-top: 2%; height:810px;width: 1295px; background:white;">
     <div>
         <div style="margin: 20px;display:flex;">
-
             <Button Type="@ButtonType.Primary" OnClick="()=>CreateAgency()">Add Agency</Button>
             <h5 style="margin:auto;">
                 @if (AgencyInformation != null)
@@ -35,7 +34,7 @@
             </ProperyColumnAnt>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Color" Property="c=>c.Color">
-            <PropertyColumnColor @bind-ColorId="context.Color" Id="@context.Id" ColumnName="@context.Color" TableName="Color">
+            <PropertyColumnColor  Id="@context.Id" ColumnName="@context.Color" TableName="Color">
             </PropertyColumnColor>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="First Name" Property="c=>c.FirstName">
@@ -55,29 +54,7 @@
             </ProperyColumnAnt>
         </PropertyColumn>
         <PropertyColumn Style="@context.BackgroundColor" Title="Image" Property="c=>c.LinkPictureUser">
-            @if (context.LinkPictureUser != null)
-            {
-                <div class="dataMed" >
-                    <InputFile class="customer-file-upload" OnChange="OnLinkPictureFilesChange" 
-                           style="align-self: center;" multiple accept=".jpg,.jpeg,.png"><div @onclick="()=>OnFileClick(context)"></div>
-                    </InputFile>
-                </div>
-
-                @if (!string.IsNullOrEmpty(context.Base64Data))
-                {
-                    <img src="@context.Base64Data" style="height: 50px; width: 50px; border-radius: 50%; " />
-
-                }
-                else
-                {
-                    <img src="@context.LinkPictureUser" style="height: 50px; width: 50px; border-radius: 50%; " />
-
-                }
-            }
-            else
-            {
-                <div style="    text-align: center; width: 88px; border: 2px solid #00000012; ">No foto</div>
-            }
+            <PropertyColumnFIle LinkPictureUser="@context.LinkPictureUser" Id="@context.Id"></PropertyColumnFIle>
         </PropertyColumn>
         <ActionColumn Style="@context.BackgroundColor">
             @if (context.IsDelete)

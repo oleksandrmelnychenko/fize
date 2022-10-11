@@ -300,6 +300,39 @@ public class IdentityController : WebApiControllerBase
     }
     [HttpPost]
     [AllowAnonymous]
+    [AssignActionRoute(IdentitySegments.CHANGE_FILE)]
+    public async Task<IActionResult> ChangeFile([FromForm] IFormFile fileLogo, [FromForm] string changeContract)
+    {
+        try
+        {
+            ChangeValueTableContract changeValueTableContract = JsonConvert.DeserializeObject<ChangeValueTableContract?>(changeContract);
+
+            if ( fileLogo != null)
+            {
+                string exention = ".png";
+                string pathLogo = Path.Combine(NoltFolderManager.GetFilesFolderPath(), NoltFolderManager.GetStaticImageFolder(), fileLogo.FileName + exention);
+                changeValueTableContract.ValueInTable = Path.Combine(NoltFolderManager.GetStaticImageFolder(), fileLogo.FileName + exention);
+                await _userIdentityService.ChangeValueTable(changeValueTableContract);
+                using (var stream = new FileStream(pathLogo, FileMode.Create))
+                {
+                    await fileLogo.CopyToAsync(stream);
+                }
+            }
+            return Ok(changeValueTableContract?.ValueInTable);
+        }
+        catch (InvalidIdentityException exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.GetUserMessageException, HttpStatusCode.BadRequest, exc.Body));
+        }
+        catch (Exception exc)
+        {
+            return BadRequest(ErrorResponseBody(exc.Message, HttpStatusCode.BadRequest));
+        }
+    }
+
+
+    [HttpPost]
+    [AllowAnonymous]
     [AssignActionRoute(IdentitySegments.SIGN_IN)]
     public async Task<IActionResult> SignIn([FromBody] AuthenticationDataContract authenticateDataContract)
     {
