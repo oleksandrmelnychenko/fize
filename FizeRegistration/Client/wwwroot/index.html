@@ -26,11 +26,12 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKezlv8p6NvSFS4ttH0830oiBepU85zMI&callback=initMap">
     </script>
     <script>
-
-        //var ListMarkers = {
-        //    idMarker; 
-        //    latLngMarker;
-        //}
+        
+        var ListMarkers = {
+            idMarker: null,
+            latLngMarker: null
+        }
+        var values = []
         function initMap() {
             const myLatlng = { lat: -25.363, lng: 131.044 };
 
