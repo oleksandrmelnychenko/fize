@@ -5,9 +5,25 @@
 @inherits AntDomComponentBase
 @inject NavigationManager NavigationManager
 
-@code{
+@*@code{
     protected override async Task OnInitializedAsync()
     {
          NavigationManager.NavigateTo("/auth");
+    }
+}*@
+
+
+@inject IJSRuntime JSRuntime
+
+<div id="map" style="height:500px;width:100%;">
+</div>
+
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+           await JSRuntime.InvokeVoidAsync("initMap", null); 
+        }
     }
 }

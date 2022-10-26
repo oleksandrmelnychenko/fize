@@ -19,8 +19,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Edu+QLD+Beginner:wght@400;600;700&family=Fredoka+One&family=Kanit:wght@200&family=Permanent+Marker&display=swap" rel="stylesheet">
 
     <script src="_framework/blazor.server.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=xxxmykeyxxx&v=3"></script>
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=xxxmykeyxxx&v=3"></script>-->
+
+    <script src="Map.js"></script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKezlv8p6NvSFS4ttH0830oiBepU85zMI&callback=initMap">
+    </script>
+    <script>
+
+        //var ListMarkers = {
+        //    idMarker; 
+        //    latLngMarker;
+        //}
+        function initMap() {
+            const myLatlng = { lat: -25.363, lng: 131.044 };
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 4,
+                center: myLatlng,
+            });
+            map.addListener("click", (e) => {
+                placeMarker(e.latLng)
+            });
+            map.addListener("rightclick", (e) => {
+                placeMarker(e.latLng)
+            });
+            function placeMarker(latLng) {
+                var marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
+                });
+            }
+        }
+            window.initMap = initMap;
+       
+    </script>
 </head>
+
 
 <body>
     <div id="app">Loading...</div>
