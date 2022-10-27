@@ -25,36 +25,7 @@
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKezlv8p6NvSFS4ttH0830oiBepU85zMI&callback=initMap">
     </script>
-    <script>
-        
-        var ListMarkers = {
-            idMarker: null,
-            latLngMarker: null
-        }
-        var values = []
-        function initMap() {
-            const myLatlng = { lat: -25.363, lng: 131.044 };
-
-            var map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 4,
-                center: myLatlng,
-            });
-            map.addListener("click", (e) => {
-                placeMarker(e.latLng)
-            });
-            map.addListener("rightclick", (e) => {
-                placeMarker(e.latLng)
-            });
-            function placeMarker(latLng) {
-                var marker = new google.maps.Marker({
-                    position: latLng,
-                    map: map
-                });
-            }
-        }
-            window.initMap = initMap;
-       
-    </script>
+  
 </head>
 
 

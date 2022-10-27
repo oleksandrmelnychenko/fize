@@ -1,33 +1,45 @@
-﻿//"use strict";
-//Object.defineProperty(exports, "__esModule", { value: true });
-//function initMap() {
-//    var directionsService = new google.maps.DirectionsService();
-//    var directionsRenderer = new google.maps.DirectionsRenderer();
-//    var map = new google.maps.Map(document.getElementById("map"), {
-//        zoom: 7,
-//        center: { lat: 41.85, lng: -87.65 },
-//    });
-//    directionsRenderer.setMap(map);
-//    var onChangeHandler = function () {
-//        calculateAndDisplayRoute(directionsService, directionsRenderer);
-//    };
-//    document.getElementById("start").addEventListener("change", onChangeHandler);
-//    document.getElementById("end").addEventListener("change", onChangeHandler);
-//}
-//function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-//    directionsService
-//        .route({
-//            origin: {
-//                query: document.getElementById("start").value,
-//            },
-//            destination: {
-//                query: document.getElementById("end").value,
-//            },
-//            travelMode: google.maps.TravelMode.DRIVING,
-//        })
-//        .then(function (response) {
-//            directionsRenderer.setDirections(response);
-//        })
-//        .catch(function (e) { return window.alert("Directions request failed due to " + status); });
-//}
-//window.initMap = initMap;
+﻿
+/*var latLngMarkerValue = { latLng: null }*/
+var markers = [];
+function initMap() {
+    const myLatlng = { lat: -25.363, lng: 131.044 };
+
+    var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 4,
+        center: myLatlng,
+    });
+    map.addListener("click", (e) => {
+        placeMarker(e.latLng)
+    });
+   
+    function placeMarker(latLng) {
+        var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+        });
+
+        markers.push(marker)
+        //setMapOnAll(map)
+
+        google.maps.event.addListener(marker, "dblclick", function () {
+            //info_Window.setContent(html);
+            //info_Window.open(map, marker);      
+            debugger
+            deleteMarkers(marker)
+        });
+        
+    }
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+}
+
+function deleteMarkers(marker) {
+   
+    var index = markers.indexOf(marker);
+    markers[index].setMap(null);
+
+}
+window.initMap = initMap;
