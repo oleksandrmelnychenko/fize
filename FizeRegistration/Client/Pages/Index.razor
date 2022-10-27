@@ -14,9 +14,11 @@
 
 
 @inject IJSRuntime JSRuntime
-
+<input type="button" value="calc" onclick="calcRoute()" />
 <div id="map" style="height:500px;width:100%;">
 </div>
+<div id="directions_panel" style="margin:20px;background-color:#FFEE77;"></div>
+
 
 @code{
     protected override async Task OnAfterRenderAsync(bool firstRender)
